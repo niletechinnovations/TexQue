@@ -1,0 +1,32 @@
+.card-stats .card-body {
+    padding: 15px 15px;
+}
+.card-stats .card-footer {
+    padding: 0 15px 15px;
+    background: none;
+    border: none;
+}
+.card-stats .icon-big i {
+    line-height: 59px;
+}
+.card-stats .card-body .numbers p{
+    text-align: right;
+    font-size: 2em;
+    font-weight: 600;
+    line-height: 1.2em;
+}
+.card-stats .card-body .numbers .card-category {
+    color: #9a9a9a;
+    font-size: 16px;
+    line-height: 1.4em;
+    text-transform: capitalize;
+    font-weight: 400;
+}
+.card-stats .card-body .numbers p {
+    margin-bottom: 0;
+}
+.card-stats .card-footer .stats {
+    color: #5c5c5c;
+    text-align: center;
+}
+.listing-table{ font-size: 14px;}

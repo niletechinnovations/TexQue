@@ -1,0 +1,92 @@
+.homepage-search-block{ background-color: #eef0ef; position: relative;padding: 4rem 0 }
+.homepage-search-title h1 {font-weight: 700;    padding: 0; color: #000000; margin-bottom: .5rem; font-size: 2.5rem; }
+.homepage-search-title h1 span {font-weight: bold; }
+.homepage-search-title h5 {color: #6c757d; font-size: 20px; font-weight: 300; padding: 0; margin-bottom: 20px; }
+
+.homepage-search-form .form-control {font-size: 16px;padding-right: 106px;font-weight: 300;height: 50px;border-radius: 2px;outline: none;}
+.homepage-search-form .custom-select {font-size: 16px;font-weight: 300;height: 50px;border-radius: 2px;outline: none;}
+.homepage-search-form .locate-me {background: #ececec; color: #4a4f5a; font-size: 12px; padding: 3px 10px; border-radius: 3px; position: absolute; right: 14px; top: 9px; font-weight: 600; }
+.homepage-category-list p {color: #6c757d; font-size: 16px; font-weight: 300; padding: 0; margin-bottom: 0; }
+button.btn-search {background: #002164; border: none; padding: 10px 20px; border-radius: 5px; color: #fff; font-size: 15px; font-weight: 600; height: 50px;  }
+
+.home-category-item{background: #fff;margin: 5px 2px;border-radius: 3px;text-align: center;padding: 6px;box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);border: 1px solid transparent;min-height: 110px;display: flex;} 
+.home-category-item:hover {border: 1px solid #d5042b; } 
+.home-category-item h6 {margin: 0px; font-size: 13px; color: #d5042b; } 
+.home-category-item p {margin: 0px; font-size: 12px; } 
+.home-category-item img {width: 40px !important;height: 40px;object-fit: cover;border-radius: 50px;box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);margin: 2px 0 8px 0;margin: 0 auto;}
+
+#offer-slider .owl-nav button {background: #fff; border-radius: 30px; box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2); color: #000; display: inline-block; font-size: 21px; height: 40px; line-height: 40px; margin: 0; text-align: center; text-transform: uppercase; width: 40px; }
+#offer-slider .owl-nav .owl-prev,
+#home-category-carousel .owl-nav .owl-prev{margin: 0 0 0 -15px; } 
+
+#homepage-slider .owl-nav button {background: #fff; border-radius: 30px; box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2); color: #000; display: inline-block; font-size: 21px; height: 40px; line-height: 40px; margin: 0; text-align: center; text-transform: uppercase; width: 40px; }
+#homepage-slider .owl-nav .owl-prev,
+#home-category-carousel .owl-nav .owl-prev{margin: 0 0 0 -15px; } 
+#homepage-slider .owl-nav .owl-next,
+#homepage-slider .owl-nav .owl-prev {margin: 0 -15px 0 0; } 
+.owl-prev {left: 0; position: absolute; top: 42%; transition: all 0.45s cubic-bezier(0.165, 0.84, 0.44, 1) 0s; } 
+.owl-next {position: absolute; right: 0; top: 42%; transition: all 0.45s cubic-bezier(0.165, 0.84, 0.44, 1) 0s; } 
+#homepage-slider .owl-dots{ display: none;}
+  
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    .slide-box img {
+      -ms-flex: 0 0 50%;
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+  
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    .slide-box img {
+      -ms-flex: 0 0 33.3333%;
+      flex: 0 0 33.3333%;
+      max-width: 33.3333%;
+    }
+  }
+  
+  @media (min-width: 992px)
+  {
+    .slide-box img {
+      -ms-flex: 0 0 25%;
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+  }
+  
+  .carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: .5rem;
+  }
+
+
+.how-it-section{padding: 2rem 0; position: relative;}
+.how-it-section .heading-title{margin-bottom: 40px;}
+.how-it-section  .heading-title h2 {font-weight: 700; padding: 0; color: #000000; margin-bottom: .5rem; font-size: 2.0rem; }
+.how-it-section  .heading-title p {color: #6c757d; font-size: 20px; font-weight: 300; padding: 0; margin-bottom: 20px;}
+
+.howitwork-card{border-radius: 4px; margin-bottom: 45px; display: flex; background: #ffffff; padding: 30px 15px; transition: all 0.5s ease-in-out; transition: all 0.5s ease-in-out; -moz-transition: all 0.5s ease-in-out; -ms-transition: all 0.5s ease-in-out; -o-transition: all 0.5s ease-in-out; -webkit-transition: all 0.5s ease-in-out; border: 1px solid #eff1fe; }
+.howitwork-card:hover {box-shadow: 4.871px 34.659px 30px -24px rgba(0, 0, 0, 0.06); }
+.howitwork-card-content h2 {font-size: 18px; padding: 0; font-weight: bold; }
+.howitwork-card-content p{font-size: 14px; font-weight: 300; text-align: justify; line-height: 22px; color: #607d8b; }
+.howitwork-card-media {width: 200px; margin-right: 10px; }
+
+section.products-section {padding: 2rem 0; position: relative; background: #f3f7f8; }
+.products-section .heading-title{margin-bottom: 40px;}
+.products-section  .heading-title h2 {font-weight: 700; padding: 0; color: #000000; margin-bottom: .5rem; font-size: 2.0rem; }
+.products-section  .heading-title p {color: #6c757d; font-size: 20px; font-weight: 300; padding: 0; margin-bottom: 20px;}
+
+#products-carousel .item{ margin: 10px;}
+.products-item-card{position: relative;}
+.products-item-content h2 {font-size: 16px; font-weight: bold; padding: 0 50px 0 0; }
+.products-item-content h2 a{color:#202223;}
+.location {font-size: 13px; color: #607D8B; line-height: normal; margin-bottom: 10px; }
+.products-item-image {border-radius: 5px; overflow: hidden; }
+.products-item-content{background-color: #fff;box-shadow: 0 12px 20px rgba(1,84,85,.1);border-radius: 10px;padding: 15px;position: relative;margin-left: auto;margin-top: -60px;width: calc(100% - 40px);margin-right: auto;}
+.products-item-content p {font-size: 14px; font-weight: 300; text-align: justify; line-height: 22px; color: #607d8b; }
+.products-rate {position: absolute; top: 10px; margin-top: 0; background-color: #4CAF50; font-size: 11px; color: #fff; font-weight: 700; padding:0px 10px; z-index: 1; -webkit-border-radius: 2px; border-radius: 2px; right: 10px; }
+.becomemember-section{padding: 2rem 0; position: relative; background:#ffffff; }
+.becomemember-section .heading-title{margin-bottom: 40px;}
+.becomemember-section  .heading-title h2 {font-weight: 700; padding: 0; color: #000000; margin-bottom: .5rem; font-size: 2.0rem; }
+.becomemember-section  .heading-title p {color: #6c757d; font-size: 20px; font-weight: 300; padding: 0; margin-bottom: 20px;}
+a.btn-blue {background: #002164; padding: 10px 15px; font-size: 14px; font-weight: bold; color: #fff; border-radius: 5px; display: inline-block; }
