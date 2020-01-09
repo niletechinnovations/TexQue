@@ -37,7 +37,7 @@ class UserAside extends Component {
             <img src="/images/avatar.jpg" alt="profile" />
           </div>
           <div className="user-profile-info-content">
-            <h2>John Doe</h2>
+            <h2>{localStorage.getItem( 'userName' )}</h2>
             <h4 className="locality">John.Doe@gmail.com</h4>	
           </div>
         </div>
@@ -50,6 +50,24 @@ class UserAside extends Component {
               </Link>
             </NavItem>
             <NavItem>
+              <Link to="/user/my-listings">
+                <span className="icon-orders"><img src="/images/food-truck-icon.png" height="20" alt="My Listing" /></span>
+                <span className="value-orders">My Listings</span>
+              </Link>
+            </NavItem>
+            <NavItem>
+              <Link to="/user/my-account">
+                <span className="icon-orders"><img src="/images/message-icon.png" height="20" alt="Enquiries" /></span>
+                <span className="value-orders">Enquiries</span>
+              </Link>
+            </NavItem>
+            <NavItem>
+              <Link to="/user/my-account">
+                <span className="icon-orders"><img src="/images/review-icon.png" height="20" alt="Enquiries" /></span>
+                <span className="value-orders">Reviews</span>
+              </Link>
+            </NavItem>
+            <NavItem>
               <Link to="/user/my-account">
                 <span className="icon-orders"><img src="/images/user-icon.svg" height="20" alt="My Profile" /></span>
                 <span className="value-orders">My Profile</span>
@@ -57,14 +75,8 @@ class UserAside extends Component {
             </NavItem>
             <NavItem>
               <Link to="/user/my-account">
-                <span className="icon-orders"><img src="/images/shopcard.svg" height="20" alt="Orders" /></span>
-                <span className="value-orders">Orders</span>
-              </Link>
-            </NavItem>
-            <NavItem>
-              <Link to="/user/my-account">
-                <span className="icon-orders"><img src="/images/cards.svg" height="20" alt="My Account" /></span>
-                <span className="value-orders">Payment</span>
+                <span className="icon-orders"><img src="/images/lock-icon.png" height="20" alt="Enquiries" /></span>
+                <span className="value-orders">Change Password</span>
               </Link>
             </NavItem>
             <NavItem>

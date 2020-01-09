@@ -1,7 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-
 // routes config
 import frontendRoutes from '../../routes/frontendRoutes.js';
 

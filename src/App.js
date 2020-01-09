@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
+import Loader from './views/Loader/Loader';
 
 // Containers
 const FrontEndLayout = React.lazy(() => import('./containers/FrontEndLayout/FrontEndLayout'));
 const CommonLayout = React.lazy(() => import('./containers/CommonLayout/CommonLayout'));
 const UserLayout = React.lazy(() => import('./containers/UserLayout/UserLayout'));
 
-const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
+const loading = () => <Loader />;
 
 class App extends Component {
   render(){

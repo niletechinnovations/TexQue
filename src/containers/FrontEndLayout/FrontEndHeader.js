@@ -41,7 +41,7 @@ class FrontEndHeader extends React.Component {
       headerItem = <>
       <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggleUserMenu} className="user-menu">
         <DropdownToggle nav caret>
-          <div className="user-name"><span><img src="/images/avatar.jpg" alt="" /></span>Hi, John!</div>
+          <div className="user-name"><span><img src="/images/avatar.jpg" alt="" /></span>Hi, {localStorage.getItem( 'userName' )}!</div>
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem><Link to="/user/profile"><i className="fa fa-user"></i> My Profile</Link></DropdownItem>
@@ -50,11 +50,7 @@ class FrontEndHeader extends React.Component {
           <DropdownItem><Link to= "/" onClick={() => this.logoutUser()}><i className="fa fa-sign-out"></i> Log Out</Link></DropdownItem>
         </DropdownMenu>
       </Dropdown>
-      <NavItem>
-        <Link className="nav-link btn-header-white" to= "/" onClick={() => this.logoutUser()}>
-          Logout
-        </Link>
-      </NavItem>
+      
       </>
       }
       else {

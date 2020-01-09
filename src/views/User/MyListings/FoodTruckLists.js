@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-//import { Bar, Line } from 'react-chartjs-2';
 import {
   Row, Col, Table,
-  Card, CardHeader, CardBody, CardFooter
+  Card, CardHeader, CardBody
 } from 'reactstrap';
 
-import './Dashboard.css';
 
-class Dashboard extends Component {
+class FoodTruckLists extends Component {
   constructor(props) {
     super( props );
 
@@ -16,87 +14,11 @@ class Dashboard extends Component {
     };
   }
 
-
-  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
-
   render() {
 
     return (
       <div className="user-dashboard">
-        <Row>
-          <Col xs="6" sm="6" md="4" lg="4">
-            <Card className="card-stats">
-              <CardBody>
-                <Row>
-                  <Col md="4" lg="5">
-                    <div className="icon-big text-center icon-warning">
-                      <img src="/images/listing-icon.png" alt="listings" width="64" />
-                    </div>
-                  </Col>
-                  <Col md="84" lg="7">
-                    <div className="numbers">
-                      <p className="card-category">Total Booking</p>
-                      <p className="card-title">15,000</p>
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats"><i className="fa fa-eye"></i> Browse All Bookings</div>
-              </CardFooter>
-            </Card>
-          </Col>
-          <Col xs="6" sm="6" md="4" lg="4">
-            <Card className="card-stats">
-              <CardBody>
-                <Row>
-                  <Col md="4" lg="5">
-                    <div className="icon-big text-center icon-warning">
-                      <img src="/images/message-icon.png" alt="Message" width="64" />
-                    </div>
-                  </Col>
-                  <Col md="84" lg="7">
-                    <div className="numbers">
-                      <p className="card-category">Messages</p>
-                      <p className="card-title">5,000</p>
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats"><i className="fa fa-eye"></i> Browse All Messages</div>
-              </CardFooter>
-            </Card>
-          </Col>
-          <Col xs="6" sm="6" md="4" lg="4">
-            <Card className="card-stats">
-              <CardBody>
-                <Row>
-                  <Col md="4" lg="5">
-                    <div className="icon-big text-center icon-warning">
-                      <img src="/images/user-rating-icon.png" alt="Review" width="64" />
-                    </div>
-                  </Col>
-                  <Col md="84" lg="7">
-                    <div className="numbers">
-                      <p className="card-category">Total Reviews</p>
-                      <p className="card-title">700</p>
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats"><i className="fa fa-eye"></i> Browse All Reviews</div>
-              </CardFooter>
-            </Card>
-          </Col>
-
-            
-        </Row>
-
+      
         <Row>
           <Col md="12" className="mt-4">
             <Card>
@@ -195,4 +117,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default FoodTruckLists;

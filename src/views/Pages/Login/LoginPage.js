@@ -49,7 +49,7 @@ class LoginPage extends Component {
           localStorage.setItem( 'accessToken', loggedInfo.data.accessToken );
           localStorage.setItem( 'refreshToken', loggedInfo.data.refreshToken );
           localStorage.setItem( 'role', loggedInfo.data.role );
-          localStorage.setItem( 'userName', loggedInfo.data.firstName );
+          localStorage.setItem( 'userName', loggedInfo.data.firstName+' '+loggedInfo.data.lastName );
   
           this.setState( {
             loading: false,              
@@ -130,9 +130,9 @@ class LoginPage extends Component {
         return ( <Redirect to={`/`} noThrow /> )
 
 		} else {
-    let loaderElement = '';
-    if(loading)
-      loaderElement = <Loader />
+      let loaderElement = '';
+      if(loading)
+        loaderElement = <Loader />
       return (
         <>
 
