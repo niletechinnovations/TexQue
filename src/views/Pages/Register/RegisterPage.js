@@ -166,54 +166,54 @@ class RegisterPage extends React.Component {
                       <Col md={6}>
                         <FormGroup>
                           <Label for="firstName">First Name</Label>
-                          <Input type="text" name="firstName" id="firstName" invalid={errors['firstName'] != undefined && errors['firstName'] != ""} value={firstName} onChange={this.changeHandler} placeholder="First Name *" required />
+                          <Input type="text" name="firstName" id="firstName" invalid={errors['firstName'] !== undefined && errors['firstName'] !== ""} value={firstName} onChange={this.changeHandler} placeholder="First Name *" required />
                           <FormFeedback>{errors['firstName']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
                           <Label for="lastName">Last Name</Label>
-                          <Input type="text" name="lastName" id="lastName" value={lastName} invalid={errors['lastName'] != undefined && errors['lastName'] != ""} onChange={this.changeHandler} placeholder="Last Name *" required />
+                          <Input type="text" name="lastName" id="lastName" value={lastName} invalid={errors['lastName'] !== undefined && errors['lastName'] !== ""} onChange={this.changeHandler} placeholder="Last Name *" required />
                           <FormFeedback>{errors['lastName']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
                           <Label for="email">Email</Label>
-                          <Input type="email" name="email" id="email" placeholder="Email *" invalid={errors['email'] != undefined && errors['email'] != ""} value={email} onChange={this.changeHandler} required />
+                          <Input type="email" name="email" id="email" placeholder="Email *" invalid={errors['email'] !== undefined && errors['email'] !== ""} value={email} onChange={this.changeHandler} required />
                           <FormFeedback>{errors['email']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
                           <Label for="phoneNumber">Mobile no.</Label>
-                          <Input type="number" name="phoneNumber" id="phoneNumber" invalid={errors['phoneNumber'] != undefined && errors['phoneNumber'] != ""} placeholder="Mobile no. *" value={phoneNumber} onChange={this.changeHandler} required />
+                          <Input type="number" name="phoneNumber" id="phoneNumber" invalid={errors['phoneNumber'] !== undefined && errors['phoneNumber'] !== ""} placeholder="Mobile no. *" value={phoneNumber} onChange={this.changeHandler} required />
                           <FormFeedback>{errors['phoneNumber']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
                           <Label for="password">Password</Label>
-                          <Input type="password" name="password" invalid={errors['password'] != undefined && errors['password'] != ""} id="password" value={password} onChange={this.changeHandler} placeholder="Enter Password" required />
+                          <Input type="password" name="password" invalid={errors['password'] !== undefined && errors['password'] !== ""} id="password" value={password} onChange={this.changeHandler} placeholder="Enter Password" required />
                           <FormFeedback>{errors['password']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
                           <Label for="confirmPassword">Confirm Password</Label>
-                          <Input type="password" name="confirmPassword" id="confirmPassword" invalid={errors['confirmPassword'] != undefined && errors['confirmPassword'] != ""} value={confirmPassword} onChange={this.changeHandler}  placeholder="Re-enter Password" required />
+                          <Input type="password" name="confirmPassword" id="confirmPassword" invalid={errors['confirmPassword'] !== undefined && errors['confirmPassword'] !== ""} value={confirmPassword} onChange={this.changeHandler}  placeholder="Re-enter Password" required />
                           <FormFeedback>{errors['confirmPassword']}</FormFeedback>
                         </FormGroup>
                       </Col>
                     </Row>
                     <FormGroup>
                       <Label for="organizationName">Organization</Label>
-                      <Input type="text" name="organizationName" id="organizationName" invalid={errors['organizationName'] != undefined && errors['organizationName'] != ""} placeholder="Organization Name" required/>
+                      <Input type="text" name="organizationName" id="organizationName" invalid={errors['organizationName'] !== undefined && errors['organizationName'] !== ""} placeholder="Organization Name" required/>
                       <FormFeedback>{errors['organizationName']}</FormFeedback>
                     </FormGroup>
                     <FormGroup>
                       <Label for="address">Address</Label>
-                      <Input type="text" name="address" id="address" invalid={errors['address'] != undefined && errors['address'] != ""} placeholder="1234 Main St" required/>
+                      <Input type="text" name="address" id="address" invalid={errors['address'] !== undefined && errors['address'] !== ""} placeholder="1234 Main St" required/>
                       <FormFeedback>{errors['address']}</FormFeedback>
                     </FormGroup>
                     <Row>
