@@ -30,3 +30,12 @@ button.Submit-form-button {background: #002164;border: none;font-size: 13px;font
 .location-group{position: relative;}
 .location-group input.form-control {padding-right: 8rem; }
 span.location-btn {position: absolute;top: 50%;right: 10px;background: #002164;padding: 0px 10px;border-radius: 2px;color: #fff;font-size: 11px;z-index: 9;cursor: pointer;}
+
+.form-control.is-invalid, .was-validated .form-control:invalid {
+    border-color: #dc3545 !important;
+    padding-right: calc(1.5em + .75rem) !important;
+    background-image: url('/images/download.svg') !important;
+    background-repeat: no-repeat !important;
+    background-position: right calc(.375em + .1875rem) center !important;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem) !important;
+}
