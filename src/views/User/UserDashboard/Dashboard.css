@@ -30,3 +30,13 @@
     text-align: center;
 }
 .listing-table{ font-size: 14px;}
+
+
+.card-list-info{border: none;}
+.card-list-info h4.card-header {background: #cbd4e4; font-size: 16px; border-radius: 5px 5px 0 0; border: none; }
+.card-list-info .card-body {background: #d9e0ec; border-radius: 0px 0px 5px 5px; }
+.listing-table thead,
+.listing-table tbody{background: #ffffff;}
+
+.listing-table thead th,
+.listing-table tbody tr td{ padding: 10px}

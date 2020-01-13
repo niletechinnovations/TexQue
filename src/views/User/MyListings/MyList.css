@@ -1,0 +1,13 @@
+.list-card {padding: 15px; position: relative; display: flex; }
+.list-card-media {width: 100px; vertical-align: middle; text-align: center; border: 1px solid #cfdae6; padding: 5px; height: 100px; position: relative; margin-right: 10px; }
+.list-card-media img {width: 100%; position: absolute; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); -moz-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
+.list-card-content h2 {font-size: 16px; font-weight: bold; color: #536382;  padding: 0;  }
+.list-card-content p{    color: #6c757d; font-size: 13px;padding: 0; margin-bottom: 0; line-height: normal;}
+.list-card-content span.location {font-size: 14px; font-weight: 300; color:#9bc3d6; margin-bottom: 10px; }
+
+.rating-star {font-family: "FontAwesome"; font-size: 18px; height: 20px; overflow: hidden; position: relative; width: 78px; margin: 5px 0; }
+.rating-star span{float: left; left: 0; overflow: hidden; padding-top: 1.7em; position: absolute; top: 0; } 
+.rating-star::before{color: #495057; content: "\f005\f005\f005\f005\f005"; float: left; font-size: 15px; left: 0; letter-spacing: 2px; position: absolute; top: 0; } 
+.rating-star span::before{color: #FF9800; content: "\f005\f005\f005\f005\f005"; font-size: 15px; left: 0; letter-spacing: 2px; position: absolute; top: 0; }
+
+.btn-view-card a {background: #002164; color: #fff; padding: 7px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; margin-top: 15px; display: inline-block; }

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import  { Link } from 'react-router-dom';
+
+import "./MyList.css";
 import {
-  Row, Col, Table,
+ // Row, Col, Table,
   Card, CardHeader, CardBody
 } from 'reactstrap';
 
@@ -18,100 +21,62 @@ class FoodTruckLists extends Component {
 
     return (
       <div className="user-dashboard">
-      
-        <Row>
-          <Col md="12" className="mt-4">
-            <Card>
-              <CardHeader tag="h4">Recent Requests</CardHeader>
-              <CardBody>
-                <Table size="sm" className="listing-table">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Name</th>
-                      <th>Phone</th>
-                      <th>Email</th>
-                      <th>Created on</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Royal Real Estates	</td>
-                      <td>9898989898</td>
-                      <td>abc@mdo.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Colors Car Services	</td>
-                      <td>8787878788</td>
-                      <td>xyz@fat.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Larry</td>
-                      <td>9898989898</td>
-                      <td>text@twitter.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">4</th>
-                      <td>Larry</td>
-                      <td>9898989898</td>
-                      <td>test@twitter.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">5</th>
-                      <td>Jb Montesari School	</td>
-                      <td>9898989898</td>
-                      <td>aa@twitter.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">6</th>
-                      <td>Larry Panna</td>
-                      <td>9898989898</td>
-                      <td>te@twitter.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">7</th>
-                      <td>Goman Travels	</td>
-                      <td>9898989898</td>
-                      <td>tt@twitter.co</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">8</th>
-                      <td>Pearl Perfumes	</td>
-                      <td>9898989898</td>
-                      <td>ttt@twitter.co</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">9</th>
-                      <td>Taj Luxury Hotel	</td>
-                      <td>9898989898</td>
-                      <td>eee@twitter.co</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">10</th>
-                      <td>National Auto Care	</td>
-                      <td>9898989898</td>
-                      <td>aaaa@twitter.co</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <div className="list-card bg-white rounded shadow-sm mb-4 ">
+          <div className="list-card-media">
+            <Link to="/user/listing-details">
+                <img src="/images/fb-restaurant-15.png" alt="" />                                
+            </Link>
+          </div>
+          <div className="list-card-content">
+            <h2>Taco Bell</h2>
+            <span className="location">United States, Florida, Miami</span>
 
+            <div className="rating-star">
+                <span className="rating-box" style={{width:"75%"}}></span>
+            </div>
+            <p><b>Type of food :</b> Apple Juice, BB.Q, Carrot Juice, Chines Soup, Cold Coffee, Cold Drink, Pastry, Sham pane, Soda water, Tea</p>
+          
+            <div className="btn-view-card"><Link to="/user/listing-details">View More</Link></div>
+          </div>
+        </div>
+
+        <div className="list-card bg-white rounded shadow-sm mb-4 ">
+          <div className="list-card-media">
+            <Link to="/user/listing-details">
+                <img src="/images/fb-restaurant-15.png" alt="" />                                
+            </Link>
+          </div>
+          <div className="list-card-content">
+            <h2>Taco Bell</h2>
+            <span className="location">United States, Florida, Miami</span>
+
+            <div className="rating-star">
+                <span className="rating-box" style={{width:"75%"}}></span>
+            </div>
+            <p><b>Type of food :</b> Apple Juice, BB.Q, Carrot Juice, Chines Soup, Cold Coffee, Cold Drink, Pastry, Sham pane, Soda water, Tea</p>
+          
+            <div className="btn-view-card"><Link to="/user/listing-details">View More</Link></div>
+          </div>
+        </div>
+
+        <div className="list-card bg-white rounded shadow-sm mb-4 ">
+          <div className="list-card-media">
+            <a href="#">
+                <img src="/images/fb-restaurant-15.png" alt="" />                                
+            </a>
+          </div>
+          <div className="list-card-content">
+            <h2>Taco Bell</h2>
+            <span className="location">United States, Florida, Miami</span>
+
+            <div className="rating-star">
+                <span className="rating-box" style={{width:"75%"}}></span>
+            </div>
+            <p><b>Type of food :</b> Apple Juice, BB.Q, Carrot Juice, Chines Soup, Cold Coffee, Cold Drink, Pastry, Sham pane, Soda water, Tea</p>
+          
+            <div className="btn-view-card"><a href="#">View More</a></div>
+          </div>
+        </div>
       </div>
     );
   }

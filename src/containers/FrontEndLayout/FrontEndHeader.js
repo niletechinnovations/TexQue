@@ -45,7 +45,7 @@ class FrontEndHeader extends React.Component {
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem><Link to="/user/profile"><i className="fa fa-user"></i> My Profile</Link></DropdownItem>
-          <DropdownItem><Link to="/user/listings"><i className="fa fa-list-ul"></i> My Listings</Link></DropdownItem>
+          <DropdownItem><Link to="/user/my-listings"><i className="fa fa-list-ul"></i> My Listings</Link></DropdownItem>
           <DropdownItem><Link to="/user/change-password"><i className="fa fa-key"></i> Change Password</Link></DropdownItem>
           <DropdownItem><Link to= "/" onClick={() => this.logoutUser()}><i className="fa fa-sign-out"></i> Log Out</Link></DropdownItem>
         </DropdownMenu>
