@@ -114,70 +114,70 @@ class Dashboard extends Component {
                   </thead>
                   <tbody>
                     <tr>
-                      <td scope="row">1</td>
+                      <th scope="row">1</th>
                       <td>Royal Real Estates	</td>
                       <td>9898989898</td>
                       <td>abc@mdo.com</td>
                       <td>02 Jan 2020</td>
                     </tr>
                     <tr>
-                      <td scope="row">2</td>
+                      <th scope="row">2</th>
                       <td>Colors Car Services	</td>
                       <td>8787878788</td>
                       <td>xyz@fat.com</td>
                       <td>02 Jan 2020</td>
                     </tr>
                     <tr>
-                      <td scope="row">3</td>
+                      <th scope="row">3</th>
                       <td>Larry</td>
                       <td>9898989898</td>
                       <td>text@twitter.com</td>
                       <td>02 Jan 2020</td>
                     </tr>
                     <tr>
-                      <td scope="row">4</td>
+                      <th scope="row">4</th>
                       <td>Larry</td>
                       <td>9898989898</td>
                       <td>test@twitter.com</td>
                       <td>02 Jan 2020</td>
                     </tr>
                     <tr>
-                      <td scope="row">5</td>
+                      <th scope="row">5</th>
                       <td>Jb Montesari School	</td>
                       <td>9898989898</td>
                       <td>aa@twitter.com</td>
                       <td>02 Jan 2020</td>
                     </tr>
                     <tr>
-                      <td scope="row">6</td>
+                      <th scope="row">6</th>
                       <td>Larry Panna</td>
                       <td>9898989898</td>
                       <td>te@twitter.com</td>
                       <td>02 Jan 2020</td>
                     </tr>
                     <tr>
-                      <td scope="row">7</td>
+                      <th scope="row">7</th>
                       <td>Goman Travels	</td>
                       <td>9898989898</td>
                       <td>tt@twitter.co</td>
                       <td>02 Jan 2020</td>
                     </tr>
                     <tr>
-                      <td scope="row">8</td>
+                      <th scope="row">8</th>
                       <td>Pearl Perfumes	</td>
                       <td>9898989898</td>
                       <td>ttt@twitter.co</td>
                       <td>02 Jan 2020</td>
                     </tr>
                     <tr>
-                      <td scope="row">9</td>
+                      <th scope="row">9</th>
                       <td>Taj Luxury Hotel	</td>
                       <td>9898989898</td>
                       <td>eee@twitter.co</td>
                       <td>02 Jan 2020</td>
                     </tr>
                     <tr>
-                      <td scope="row">10</td>
+                      <th scope="row">10</th>
                       <td>National Auto Care	</td>
                       <td>9898989898</td>
                       <td>aaaa@twitter.co</td>

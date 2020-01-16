@@ -4,9 +4,10 @@ import ContactPage from '../views/Pages/Frontend/ContactPage';
 import BlogPage from '../views/Pages/Frontend/BlogPage';
 import SingleBlogPage from '../views/Pages/Frontend/SingleBlogPage';
 import LoginPage from '../views/Pages/Login/LoginPage';
-// import ResetPassword from './views/Pages/Frontend/ResetPassword';
+ import ResetPassword from '../views/Pages/Login/ResetPassword';
 import RegisterPage from '../views/Pages/Register/RegisterPage';
 import AutoComplePlaces from '../core/google-map/AutoComplePlaces';
+import VerifyEmailPage from '../views/Pages/Login/VerifyEmailPage';
 
 const frontendRoutes = [
   { path: '/', exact: true, name: 'Home', component: HomePage },
@@ -18,7 +19,8 @@ const frontendRoutes = [
   { path: '/blog/:token', exact: true,  name: 'Single Blog', component: SingleBlogPage },
   { path: '/login', exact: true, name: 'Login', component: LoginPage },
   { path: '/register', exact: true,  name: 'Register', component: RegisterPage },
-  // { path: '/reset-password/:token', exact: true,  name: 'Reset Password', component: ResetPassword }
+  { path: '/verify-email/:token', exact: true,  name: 'Verify Email', component: VerifyEmailPage },
+  { path: '/reset-password/:token', exact: true,  name: 'Reset Password', component: ResetPassword }
 ];
 
 export default frontendRoutes;

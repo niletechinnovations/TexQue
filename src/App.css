@@ -46,5 +46,22 @@ button.primary-button{
    color: #fff;
    display: inline-block;
 }
+.btn.btn-primary {
+   color: #fff;
+   background-color: rgba(0,33,100,.9);
+   border-color: rgba(0,33,100,.9);
+   border-color: rgba(0,33,100,.9);
+
+}
+.btn.btn-primary:not(:disabled):not(.disabled).active, .btn.btn-primary:hover {
+   color: #fff;
+   background-color: #002164;
+   border-color: #002164;
+}
+.btn.btn-primary:not(:disabled):not(.disabled):active:focus{
+   box-shadow: 0 0 0 0.2rem rgba(0,33,100,.5);
+   background-color: #002164;
+   border-color: #002164;
+}
 .errorMsg { width: 100%; font-size: 80%; color: #dc3545; }
 .sucessMsg { width: 100%; font-size: 80%; color: #6B8E23; }

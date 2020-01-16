@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import { Nav, NavItem} from 'reactstrap';
+import UserAvtar from "./UserAvtar";
 
 import './UserLayout.css';
 
@@ -34,7 +35,8 @@ class UserAside extends Component {
       <div className="user-sidebar">
         <div className="user-widget-info">
           <div className="user-profile-info-media">
-            <img src="/images/avatar.jpg" alt="profile" />
+            {/* <img src="/images/avatar.jpg" alt="profile" /> */}
+            <UserAvtar />
           </div>
           <div className="user-profile-info-content">
             <h2>{localStorage.getItem( 'userName' )}</h2>

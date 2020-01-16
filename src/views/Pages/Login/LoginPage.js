@@ -32,7 +32,10 @@ class LoginPage extends Component {
       email: this.state.email,
       password: this.state.password
     };
-    
+    if(this.state.email === '' && this.state.password === '' ) {
+      toast.error("Please enter your email and password!");
+      return;
+    }
     this.setState( { loading: true }, () => {
       commenService.postAPI( `auth/sign-in`, loginData )
         .then( res => {
@@ -45,7 +48,11 @@ class LoginPage extends Component {
           }
   
           const loggedInfo = res.data;
-          
+          if(loggedInfo.data.role.toLowerCase() === 'user'){
+            this.setState( { loading: false } );
+            toast.error('Your are not authorized to access! Please use our mobile application.');
+            return;
+          }
           localStorage.setItem( 'accessToken', loggedInfo.data.accessToken );
           localStorage.setItem( 'refreshToken', loggedInfo.data.refreshToken );
           localStorage.setItem( 'role', loggedInfo.data.role );
@@ -58,7 +65,7 @@ class LoginPage extends Component {
           toast.success(res.data.message);
           if(loggedInfo.data.role.toLowerCase() === 'admin')
             this.props.history.push('/admin/dashboard');
-          else if(loggedInfo.data.role.toLowerCase() === 'user')
+          else if(loggedInfo.data.role.toLowerCase() === 'organization')
             this.props.history.push('/user/dashboard');
           else
             this.props.history.push('/');

@@ -20,6 +20,7 @@ class RegisterPage extends React.Component {
       phoneNumber:'',
       password: '',
       confirmPassword: '',
+      organizationName: '',
       loading: false,
       errors: {}
     };
@@ -43,6 +44,7 @@ class RegisterPage extends React.Component {
           email: this.state.email,
           phoneNumber: this.state.phoneNumber,
           password: this.state.password,
+          organizationName: this.state.organizationName,
           role: 'organization'
         };
         console.log(signupData);
@@ -61,7 +63,7 @@ class RegisterPage extends React.Component {
                 loading: false,              
               } )
               toast.success(res.data.message);
-              //this.props.history.push('/login');
+              this.props.history.push('/login');
             } )
             .catch( err => {
               
@@ -140,7 +142,7 @@ class RegisterPage extends React.Component {
   }
 
   render() {
-    const { loading, firstName, lastName, email, password,confirmPassword,phoneNumber,errors} = this.state;
+    const { loading, firstName, lastName, email, password,confirmPassword,phoneNumber,organizationName,errors} = this.state;
     
     let loaderElement = '';
     if(loading)
@@ -208,7 +210,7 @@ class RegisterPage extends React.Component {
                     </Row>
                     <FormGroup>
                       <Label for="organizationName">Organization</Label>
-                      <Input type="text" name="organizationName" id="organizationName" invalid={errors['organizationName'] !== undefined && errors['organizationName'] !== ""} placeholder="Organization Name" required/>
+                      <Input type="text" name="organizationName" id="organizationName" value={organizationName} invalid={errors['organizationName'] !== undefined && errors['organizationName'] !== ""} onChange={this.changeHandler} placeholder="Organization Name" required/>
                       <FormFeedback>{errors['organizationName']}</FormFeedback>
                     </FormGroup>
                     <FormGroup>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import  { Link } from 'react-router-dom';
 import {
- // Row, Col, Table,
-  Card, CardHeader, CardBody, TabContent, TabPane, Nav, NavItem, NavLink,
+  TabContent, TabPane, NavItem, NavLink,
 } from 'reactstrap';
 import "./FoodTruckDetails.css";
 
@@ -26,14 +26,14 @@ class FoodTruckDetails extends Component {
       <div className="user-dashboard">
           <section className="truck-detailed-banner">
                <div className="text-center">
-                  <img className="img-fluid cover" src="/images/bg-cover.jpg" />
+                  <img className="img-fluid cover" src="/images/bg-cover.jpg" alt="Truck" />
                </div>
                <div className="truck-detailed-header">
                   <div className="container-fluid">
                      <div className="row d-flex align-items-end">
                         <div className="col-md-8">
                            <div className="truck-detailed-header-left">
-                              <img className="float-left" src="/images/t1.jpg" />
+                              <img className="float-left" src="/images/t1.jpg" alt="Truck" />
                               <h2>DupChuk Food Truck</h2>
                               <p>2036 2ND AVE, NEW YORK, NY 10029 </p>
                            </div>
@@ -274,7 +274,7 @@ class FoodTruckDetails extends Component {
                                   <div className="address-map float-right ml-5">
                                      <div className="mapouter">
                                         <div className="gmap_canvas">
-                                          <img src="/images/google_maps.jpg" />
+                                          <img src="/images/google_maps.jpg" alt="Map" />
                                         </div>
                                      </div>
                                   </div>
@@ -297,11 +297,10 @@ class FoodTruckDetails extends Component {
                                      <h3>Ratings</h3>
                                      <div className="star-rating-card">
                                         <div className="star-rating">
-                                           <a href="#"><i className="fa fa-star active"></i></a>
-                                           <a href="#"><i className="fa fa-star active"></i></a>
-                                           <a href="#"><i className="fa fa-star active"></i></a>
-                                           <a href="#"><i className="fa fa-star active"></i></a>
-                                           <a href="#"><i className="fa fa-star"></i></a>  
+                                           <a href="#!"><i className="fa fa-star active"></i></a>
+                                           <a href="#!"><i className="fa fa-star active"></i></a>
+                                           <a href="#!"><i className="fa fa-star active"></i></a>
+                                           <a href="#!"><i className="fa fa-star"></i></a>  
                                            <b className="text-black ml-2">334</b>
                                         </div>
                                         <p className="text-black mb-4 mt-2">Rated 3.5 out of 5</p>
@@ -374,17 +373,17 @@ class FoodTruckDetails extends Component {
                                         <h3>Reviews</h3>
                                         <div className="ratings-reviews-item pt-4 pb-4 border-bottom">
                                            <div className="ratings-reviews-media">
-                                              <a href="#"><img src="images/user.png" className="mr-3" /></a>
+                                              <Link to="/user/"><img src="images/user.png" className="mr-3" alt="User" /></Link>
                                               <div className="ratings-reviews-body">
                                                  <div className="ratings-reviews-info">
                                                     <span className="star-rating float-right">
-                                                    <a href="#"><i className="fa fa-star active"></i></a>
-                                                    <a href="#"><i className="fa fa-star active"></i></a>
-                                                    <a href="#"><i className="fa fa-star active"></i></a>
-                                                    <a href="#"><i className="fa fa-star active"></i></a>
-                                                    <a href="#"><i className="fa fa-star"></i></a>
+                                                    <a href="#!"><i className="fa fa-star active"></i></a>
+                                                    <a href="#!"><i className="fa fa-star active"></i></a>
+                                                    <a href="#!"><i className="fa fa-star active"></i></a>
+                                                    <a href="#!"><i className="fa fa-star active"></i></a>
+                                                    <a href="#!"><i className="fa fa-star"></i></a>
                                                     </span>
-                                                    <h6><a href="#">Singh Osahan</a></h6>
+                                                    <h6><Link to="/user/">Singh Osahan</Link></h6>
                                                     <p className="text-gray">Tue, 20 Mar 2020</p>
                                                  </div>
                                                  <div className="ratings-reviews-content">
@@ -395,17 +394,17 @@ class FoodTruckDetails extends Component {
                                         </div>
                                         <div className="ratings-reviews-item pt-4 pb-4 border-bottom">
                                            <div className="ratings-reviews-media">
-                                              <a href="#"><img src="images/user.png" className="mr-3" /></a>
+                                             <Link to="/user/"><img src="images/user.png" alt="User" className="mr-3" /></Link>
                                               <div className="ratings-reviews-body">
                                                  <div className="ratings-reviews-info">
                                                     <span className="star-rating float-right">
-                                                    <a href="#"><i className="fa fa-star active"></i></a>
-                                                    <a href="#"><i className="fa fa-star active"></i></a>
-                                                    <a href="#"><i className="fa fa-star active"></i></a>
-                                                    <a href="#"><i className="fa fa-star active"></i></a>
-                                                    <a href="#"><i className="fa fa-star"></i></a>
+                                                    <a href="#!"><i className="fa fa-star active"></i></a>
+                                                    <a href="#!"><i className="fa fa-star active"></i></a>
+                                                    <a href="#!"><i className="fa fa-star active"></i></a>
+                                                    <a href="#!"><i className="fa fa-star active"></i></a>
+                                                    <a href="#!"><i className="fa fa-star"></i></a>
                                                     </span>
-                                                    <h6><a href="#">Singh Osahan</a></h6>
+                                                    <h6><a href="#!">Singh Osahan</a></h6>
                                                     <p className="text-gray">Tue, 20 Mar 2020</p>
                                                  </div>
                                                  <div className="ratings-reviews-content">

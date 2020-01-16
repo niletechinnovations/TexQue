@@ -24,8 +24,8 @@ class SingleBlogPage extends React.Component {
                           <div className="date"><span>08</span>Dec</div>
                           <h3>Had creepeth them multiply lights brought had said</h3>
                           <ul className="post-meta">
-                              <li><a href="#"><span className="icon flaticon-user-shape"></span> John Loe</a></li>
-                              <li><a href="#"><span className="icon fa fa-comments"></span> 207</a></li>
+                              <li><Link to="/blog"><span className="icon flaticon-user-shape"></span> John Loe</Link></li>
+                              <li><Link to="/blog"><span className="icon fa fa-comments"></span> 207</Link></li>
                           </ul>
                       </div>
                   </div>
@@ -56,20 +56,20 @@ class SingleBlogPage extends React.Component {
                       <h2>related Posts</h2>
                   </div>
                   <article className="post">
-                    <figure className="post-thumb"><a href="#"><img src="/images/t2.jpg" alt="" /></a></figure>
-                      <h4><a href="#">man named Brady who was with three boys.</a></h4>
+                    <figure className="post-thumb"><Link to="/blog"><img src="/images/t2.jpg" alt="" /></Link></figure>
+                      <h4><Link to="/blog">man named Brady who was with three boys.</Link></h4>
                       <div className="price">Dec 12, 2016</div>
                   </article>
 
                   <article className="post">
-                    <figure className="post-thumb"><a href="#"><img src="/images/t1.jpg" alt="" /></a></figure>
-                      <h4><a href="#">These Happy Days are yours mine Happy Days.</a></h4>
+                    <figure className="post-thumb"><Link to="/blog"><img src="/images/t1.jpg" alt="" /></Link></figure>
+                      <h4><Link to="/blog">These Happy Days are yours mine Happy Days.</Link></h4>
                       <div className="price">Dec 26, 2016</div>
                   </article>
                   
                   <article className="post">
-                    <figure className="post-thumb"><a href="#"><img src="/images/t3.jpg" alt="" /></a></figure>
-                      <h4><a href="#">Pork belly strip steak  flan pastrami biltong</a></h4>
+                    <figure className="post-thumb"><Link to="/blog"><img src="/images/t3.jpg" alt="" /></Link></figure>
+                      <h4><Link to="/blog">Pork belly strip steak  flan pastrami biltong</Link></h4>
                       <div className="price">Sep 16, 2016</div>
                   </article>
 
@@ -77,8 +77,8 @@ class SingleBlogPage extends React.Component {
           </div>
       </div>
       
+    </div>
   </div>
-</div>
 </section>
 
             

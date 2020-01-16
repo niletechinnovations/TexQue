@@ -5,6 +5,7 @@ import { Collapse, Navbar, NavbarToggler, Nav, NavItem, Dropdown, DropdownItem, 
 
 import commonService from '../../core/services/commonService';
 import './FrontEndHeader.css';
+import UserAvtar from '../UserLayout/UserAvtar'
 
 class FrontEndHeader extends React.Component {
   constructor(props){
@@ -41,10 +42,10 @@ class FrontEndHeader extends React.Component {
       headerItem = <>
       <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggleUserMenu} className="user-menu">
         <DropdownToggle nav caret>
-          <div className="user-name"><span><img src="/images/avatar.jpg" alt="" /></span>Hi, {localStorage.getItem( 'userName' )}!</div>
+          <div className="user-name"><span><UserAvtar /></span>Hi, {localStorage.getItem( 'userName' )}!</div>
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem><Link to="/user/profile"><i className="fa fa-user"></i> My Profile</Link></DropdownItem>
+          <DropdownItem><Link to="/user/my-profile"><i className="fa fa-user"></i> My Profile</Link></DropdownItem>
           <DropdownItem><Link to="/user/my-listings"><i className="fa fa-list-ul"></i> My Listings</Link></DropdownItem>
           <DropdownItem><Link to="/user/change-password"><i className="fa fa-key"></i> Change Password</Link></DropdownItem>
           <DropdownItem><Link to= "/" onClick={() => this.logoutUser()}><i className="fa fa-sign-out"></i> Log Out</Link></DropdownItem>

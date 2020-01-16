@@ -14,3 +14,7 @@ ul.user-widget-list li {padding:10px 0px;border-top: 1px solid #f7f7f7; cursor: 
 
 .user-dashboard .card .card-category{color: #8d9ebb;}
 .user-dashboard .card .stats {color: #607d8b; text-align: center; }
+.MuiTableCell-head{ font-weight: 600 !important; }
+.MuiTable-root .btn.btn-sm{ padding: .25rem .5rem; font-size: 12px;}
+.MuiTable-root .MuiTableCell-root{ padding: 7px 10px;}
+.MuiPaper-root .MuiToolbar-gutters{ padding-left: 10px;}
