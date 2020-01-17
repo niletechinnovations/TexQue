@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import { toast } from 'react-toastify';
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 import { FormErrors } from '../../Formerrors/Formerrors';
@@ -56,15 +55,14 @@ class Organization extends Component {
             return;
           }   
 
-          this.setState({loading:false, organizationList: res.data.data});     
+          this.setState({loading:false, organizationList: res.data.data.profileList});     
          
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else {
+          }else {
             this.setState( { loading: false } );
             toast.error(err.message);
           }
@@ -167,7 +165,7 @@ class Organization extends Component {
         fieldValidationErrors.organization_name = (value !== '') ? '' : ' is required';
         break; 
       case 'email':        
-        fieldValidationErrors.email = (value !== '') ? ((!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))) ? " invalid format" : "") : ' is required';
+        fieldValidationErrors.email = (value !== '') ? '' : ' is required';
         break; 
       case 'first_name':        
         fieldValidationErrors.contact_person = (value !== '') ? '' : ' is required';
@@ -269,7 +267,7 @@ class Organization extends Component {
     if(loading)        
       loaderElement = <Loader />
     const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
-    const priorityCountry = ['US'];
+    
     return (
       <div className="animated fadeIn">
         <Row>
@@ -286,19 +284,16 @@ class Organization extends Component {
                     <Row>                      
                       <Col md={"3"}>
                         <FormGroup> 
-                          <Label htmlFor="filter_organization_id">Country</Label>            
-                          <CountryDropdown id="filterCountry" priorityOptions={priorityCountry} name="filterCountry" className="form-control" value={this.state.filterItem.country}  onChange={(val) => this.selectFilterCountry(val)} />
+                          <Input id="organizationName" name="organizationName" className="form-control" value={this.state.filterItem.organizationName}  onChange={this.changeFilterHandler} />
                         </FormGroup>  
                       </Col>
                       <Col md={"3"}>
                         <FormGroup> 
-                          <Label htmlFor="filter_organization_id">State</Label>            
-                          <RegionDropdown  id="filterState" name="filterState" className="form-control" country={this.state.filterItem.country} defaultOptionLabel="Select State" blankOptionLabel="Select State"   value={this.state.filterItem.state}  onChange={(val) => this.selectFilterRegion(val)} /> 
+                          <Input id="location" name="location" className="form-control" value={this.state.filterItem.location}  onChange={this.changeFilterHandler} /> 
                         </FormGroup>  
                       </Col>
                       <Col md={"3"}>
                         <FormGroup> 
-                          <Label htmlFor="filter_organization_id">Search By Email/ Name</Label>            
                           <Input type="text" placeholder="Search By Email/ Name" id="custom_search" name="custom_search" value={this.state.formField.custom_search} onChange={this.changeFilterHandler} />
                         </FormGroup>  
                       </Col>
@@ -360,31 +355,7 @@ class Organization extends Component {
                     <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
                   </FormGroup>
                 </Col>                
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="country">Country</Label>     
-                    <CountryDropdown id="country" priorityOptions={priorityCountry} name="country" className="form-control" value={this.state.formField.country}  onChange={(val) => this.selectCountry(val)} />       
-                    
-                  </FormGroup>
-                </Col>                
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="state">State</Label>  
-                    <RegionDropdown  id="state" name="state" className="form-control" country={this.state.formField.country} defaultOptionLabel="Select State" blankOptionLabel="Select State"   value={this.state.formField.state}  onChange={(val) => this.selectRegion(val)} /> 
-                  </FormGroup>
-                </Col>
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="city">City</Label>            
-                    <Input type="text" placeholder="City" id="city" name="city" value={this.state.formField.city} onChange={this.changeHandler}  />
-                  </FormGroup>
-                </Col>
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="postalCode">Postal Code</Label>            
-                    <Input type="text" placeholder="Postal Code" id="postalCode" name="postalCode" value={this.state.formField.postalCode} onChange={this.changeHandler}  />
-                  </FormGroup>
-                </Col>
+                
               </Row>           
             </ModalBody>
             <ModalFooter>

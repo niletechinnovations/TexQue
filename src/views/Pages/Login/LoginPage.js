@@ -57,7 +57,8 @@ class LoginPage extends Component {
           localStorage.setItem( 'refreshToken', loggedInfo.data.refreshToken );
           localStorage.setItem( 'role', loggedInfo.data.role );
           localStorage.setItem( 'userName', loggedInfo.data.firstName+' '+loggedInfo.data.lastName );
-  
+          localStorage.setItem( 'userEmail', loggedInfo.data.email );
+          
           this.setState( {
             loading: false,              
             loggedIn: true

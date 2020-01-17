@@ -40,7 +40,7 @@ class UserAside extends Component {
           </div>
           <div className="user-profile-info-content">
             <h2>{localStorage.getItem( 'userName' )}</h2>
-            <h4 className="locality">John.Doe@gmail.com</h4>	
+            <h4 className="locality">{localStorage.getItem( 'userEmail' )}</h4>	
           </div>
         </div>
         <div className="user-widget-info">

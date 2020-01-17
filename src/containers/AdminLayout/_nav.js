@@ -6,23 +6,18 @@ export default {
       icon: 'icon-speedometer',     
     },
     {
-      name: 'Manage Menu',
-      url: '/admin/menu',
-      icon: 'icon-list',
-    },  
-    {
-      name: 'Manage Owners',
+      name: 'Manage Food Truck',
       url: '/admin/organization',
-      icon: 'icon-people', 
+      icon: 'fa fa-truck', 
       children: [{
-          name: 'Food Truck Owner List',
+          name: 'Manage Truck Owner',
           url: '/admin/organization',
           icon: 'icon-people',     
         },
         {
-          name: 'Food Truck List',
-          url: '/admin/organization/employee',
-          icon: 'icon-people',     
+          name: 'Manage Truck Listing',
+          url: '/admin/organization/listing',
+          icon: 'fa fa-truck',     
         },
       ]    
     },
@@ -33,14 +28,19 @@ export default {
       url: '/admin/enquiry',  
     },
     {
+      name: 'Manage Cuisine',
+      url: '/admin/cuisine',
+      icon: 'fa fa-cutlery',
+    },  
+    {
       name: 'Reports',
-      url: '#!',
+      url: 'admin/reports',
       icon: 'icon-pie-chart',     
     },
     {
       name: 'Logout',
       url: '#!',
-      icon: 'icon-logout',     
+      icon: 'icon-logout',
     }
   ],
 };
