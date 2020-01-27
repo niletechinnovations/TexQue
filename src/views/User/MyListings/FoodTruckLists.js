@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Button, Input, FormGroup, Label} from 'reactstrap';
+import { 
+  Card, CardBody, CardHeader, Col, Row, Button, Form, Input, FormGroup, Label,
+  Modal, ModalHeader, ModalBody, ModalFooter
+} from 'reactstrap';
 
 //import  { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -8,45 +11,50 @@ import commonService from '../../../core/services/commonService';
 
 import FoodTruckData from './FoodTruckData';
 import Loader from '../../Loader/Loader';
+import { FormErrors } from '../../Formerrors/Formerrors';
 
-//import "./MyList.css";
+import "./MyList.css";
 
 class FoodTruckLists extends Component {
   constructor(props){
     super(props);
     this.state = {
-      truckLists: [],      
+      modal: false,
+      truckLists: [],
+      categoryList: [],
       loading: true,
       formProccessing: false,
       rowIndex: -1,
-      formField: { truckName: '', phoneNumber: '', address: '', city: '', state: '', country: '', postalCode: ''},
-      formErrors: { truckName: '', error: ''},
+      featuredImage: '',
+      menuImages: [],
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
+      formErrors: { truckName: '', contactPerson: '', phoneNumber:'', address:'', error: ''},
       formValid: false,
-      filterItem: { filter_organization_id: '', custom_search: ''},
+      filterItem: { filter_organization_id: '', truckName: '', location: '', custom_search: ''}
     } 
-    this.handleDeleteStore = this.handleDeleteStore.bind(this);
     this.filterTruckLists = this.filterTruckLists.bind(this);
-    
+    this.submitHandler = this.submitHandler.bind(this);
+    this.handleEditTruck = this.handleEditTruck.bind(this);
+    this.handleDeleteTruck = this.handleDeleteTruck.bind(this);
   }
   // Fetch the Employee List
   componentDidMount() {     
     this.truckLists({});   
-    
+    this.categoryList();
   }
   /*Employee List API*/
   truckLists(filterItem = {}) {
     let stroreWalkQuery = "";
     
-    if(filterItem.country !== undefined && filterItem.country !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&country="+filterItem.country: "?country="+filterItem.country;
-    if(filterItem.state !== undefined && filterItem.state !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&state="+filterItem.state: "?state="+filterItem.state;
+    if(filterItem.truckName !== undefined && filterItem.truckName !== "" ) 
+      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&truckName="+filterItem.truckName: "?truckName="+filterItem.truckName;
+    if(filterItem.location !== undefined && filterItem.location !== "" ) 
+      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&address="+filterItem.location: "?address="+filterItem.location;
     if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
       stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&keyword="+filterItem.custom_search: "?keyword="+filterItem.custom_search;
     this.setState( { loading: true}, () => {
       commonService.getAPIWithAccessToken('food-truck'+stroreWalkQuery)
         .then( res => {
-          
            
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( { loading: false } );
@@ -54,13 +62,13 @@ class FoodTruckLists extends Component {
             return;
           }   
 
-          this.setState({loading:false, truckLists: res.data.data});     
+          this.setState({loading:false, truckLists: res.data.data.truckList});     
          
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
-            this.props.history.push('/login');
+            //this.props.history.push('/login');
           }
           else {
             this.setState( { loading: false } );
@@ -81,20 +89,22 @@ class FoodTruckLists extends Component {
     event.target.className += " was-validated";
     this.setState( { formProccessing: true}, () => {
       const formInputField = this.state.formField;
-      const formData = {       
-        "truckName": formInputField.truckName, 
-        "phoneNumber": formInputField.phoneNumber, 
-        "address": formInputField.address, 
-        "city": formInputField.city, 
-        "state": formInputField.state, 
-        "country": formInputField.country, 
-        "postalCode": formInputField.postalCode,      
-      };
+      const formData = new FormData();
+      formData.append('truckName', formInputField.truckName);
+      formData.append('address', formInputField.address);
+      formData.append('contactPerson', formInputField.contactPerson);
+      formData.append('phoneNumber', formInputField.phoneNumber);
+      formData.append('category_id', formInputField.category_id);
+      formData.append('featuredImage', this.state.featuredImage, this.state.featuredImage.name);
+      formData.append('menu', this.state.menuImages);
+     
+
+      
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
         const storeInfo = this.state.truckLists[rowIndex];
 
-        commonService.putAPIWithAccessToken('food-truck/'+storeInfo.storeId, formData)
+        commonService.postMultipartDataAPIWithAccessToken('food-truck/'+storeInfo.storeId, formData)
         .then( res => {
           
            
@@ -121,7 +131,7 @@ class FoodTruckLists extends Component {
         } )
       }
       else{
-        commonService.postAPIWithAccessToken('store', formData)
+        commonService.postAPIWithAccessToken('food-truck', formData)
         .then( res => {
          
           if ( undefined === res.data.data || !res.data.status ) { 
@@ -157,6 +167,16 @@ class FoodTruckLists extends Component {
     this.setState({ formField: formField },
                   () => { this.validateField(name, value) });
   };
+  handleImageChange = (e) => {
+    this.setState({
+      featuredImage: e.target.files[0]
+    })
+  };
+  onMenuImageChange = event => {
+    this.setState({
+      menuImages: event.target.files,
+    });
+  };
 
   changeFilterHandler = event => {
     const name = event.target.name;
@@ -176,6 +196,15 @@ class FoodTruckLists extends Component {
       case 'truckName':        
         fieldValidationErrors.truckName = (value !== '') ? '' : ' is required';
         break;
+      case 'contactPerson':        
+        fieldValidationErrors.contactPerson = (value !== '') ? '' : ' is required';
+        break;
+      case 'phoneNumber':        
+        fieldValidationErrors.phoneNumber = (value !== '') ? '' : ' is required';
+        break;
+      case 'address':        
+        fieldValidationErrors.address = (value !== '') ? '' : ' is required';
+        break;
                  
       default:
         break;
@@ -189,7 +218,7 @@ class FoodTruckLists extends Component {
     const formErrors = this.state.formErrors;
     const formField = this.state.formField;
     this.setState({formValid: 
-      (formErrors.store_name === "" && formField.store_name !== "") 
+      (formErrors.truckName === "" && formField.truckName !== "") 
       ? true : false});
   }
   /* Set Error Class*/
@@ -202,50 +231,55 @@ class FoodTruckLists extends Component {
       modal: !this.state.modal,
       rowIndex: -1,
       formValid: false,
-      formField: { truckName: '', phoneNumber: '', address: '', city: '', state: '', country: '', postalCode: '' },
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '', },
       formErrors: {truckName: '', error: ''}
     });
   }
-  /* Edit Employee*/
-  handleEditStore(rowIndex){
+  /* Edit Food Truck*/
+  handleEditTruck(rowIndex){
       const storeInfo = this.state.truckLists[rowIndex];
       const formField = {        
         truckName: storeInfo.truckName, 
-        phoneNumber: storeInfo.phoneNumber, 
+        contactPerson: storeInfo.contactPerson, 
+        phoneNumber: storeInfo.phoneNumber,
         address: storeInfo.address, 
-        city: storeInfo.city, 
-        state: storeInfo.state, 
-        country: storeInfo.country, 
-        postalCode: storeInfo.postalCode };
+        defaultImage: storeInfo.defaultImage };
       this.setState({rowIndex: rowIndex, formField: formField, modal: true, formValid: true});
   }
-  /* Delete Employee*/
-  handleDeleteStore(rowIndex){
+  /* Delete Food Truck*/
+  handleDeleteTruck(rowIndex){
    
     
   }
-  
- 
-  selectRegion (val) {
-    let formField = this.state.formField;
-    formField.state = val
-    this.setState({ formField: formField });
-  }
 
-  selectFilterCountry (val) {
-    let filterItem = this.state.filterItem;
-    filterItem.country = val
-    this.setState({ filterItem: filterItem });
+  /*Category List API*/
+  categoryList() {   
+    
+    commonService.getAPIWithAccessToken('category')
+      .then( res => {       
+         
+        if ( undefined === res.data.data || !res.data.status ) {
+          this.setState( { loading: false } );
+          toast.error(res.data.message);
+          return;
+        }   
+        this.setState({loading:false, categoryList: res.data.data});     
+      } )
+      .catch( err => {         
+        if(err.response !== undefined && err.response.status === 401) {
+          localStorage.clear();
+          this.props.history.push('/login');
+        }
+        else 
+          this.setState( { loading: false } );
+      } )
+    
   }
- 
-  selectFilterRegion (val) {
-    let filterItem = this.state.filterItem;
-    filterItem.state = val
-    this.setState({ filterItem: filterItem });
-  }
+  
 
   render() {
-    const { truckLists, loading } = this.state;     
+    const { truckLists, loading, modal, formProccessing, categoryList } = this.state;
+    const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
     let loaderElement = '';
     if(loading)        
       loaderElement = <Loader />
@@ -255,7 +289,8 @@ class FoodTruckLists extends Component {
         {loaderElement}
         <Card>
           <CardHeader className="mainHeading">
-            <strong>Food Truck Lists</strong> <Button color="abc" className="addListing" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
+            <strong>Food Truck Lists</strong>
+            <Button size="sm" color="secondary" className="addListing pull-right" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
           </CardHeader>
           <CardBody>
             
@@ -264,12 +299,12 @@ class FoodTruckLists extends Component {
                 <Row>                     
                   <Col md={"5"}>
                     <FormGroup> 
-                    <Input type="text" placeholder="Search By Name" name="truckName" value={this.state.formField.truckName} onChange={this.changeFilterHandler} />            
+                    <Input type="text" placeholder="Search By Name" name="truckName" value={this.state.filterItem.truckName} onChange={this.changeFilterHandler} />            
                     </FormGroup>  
                   </Col>
                   <Col md={"5"}>
                     <FormGroup> 
-                    <Input type="text" placeholder="Search By Location" name="location" value={this.state.formField.location} onChange={this.changeFilterHandler} />       
+                    <Input type="text" placeholder="Search By Location" name="location" value={this.state.filterItem.location} onChange={this.changeFilterHandler} />       
                     </FormGroup>  
                   </Col>
                   <Col md={"2"}>
@@ -286,9 +321,89 @@ class FoodTruckLists extends Component {
             </Row> 
           </CardBody>
         </Card>
+
+        <Modal isOpen={modal} toggle={this.toggle} className="full-width-modal-section employee-modal">
+          <ModalHeader toggle={this.toggle}>Food Truck</ModalHeader>
+          <Form onSubmit={this.submitHandler} noValidate className="texQueForm">
+            <ModalBody>
+              <FormErrors formErrors={this.state.formErrors} />
+              <Row>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="truckName">Truck Name *</Label>            
+                    <Input type="text" placeholder="Truck Name *" id="truckName" name="truckName" value={this.state.formField.truckName} onChange={this.changeHandler} required />
+                  </FormGroup>  
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="contactPerson">Contact Person *</Label>            
+                    <Input type="text" placeholder="Contact Person" id="contactPerson" name="contactPerson" value={this.state.formField.contactPerson} onChange={this.changeHandler}  />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="phoneNumber">Phone Number *</Label>            
+                    <Input type="text" placeholder="Phone Number" id="phoneNumber" name="phoneNumber" value={this.state.formField.phoneNumber} onChange={this.changeHandler}  />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="category_id">Category</Label>            
+                    <Input type="select" placeholder="Category *" id="category_id" name="category_id" value={this.state.formField.category_id} onChange={this.changeHandler} >
+                      <option value="">Select Category</option>
+                      {categoryList.map((categoryInfo, index) =>
+                        <SetCategoryDropDownItem key={index} categoryInfo={categoryInfo} />
+                      )}
+                    </Input>
+                    {/*        
+                    <FormGroup check inline>
+                      <Label check>
+                        <Input type="checkbox" id="checkbox2" /> Check me out
+                      </Label>
+                      <Label check>
+                        <Input type="checkbox" id="checkbox2" /> Check me out
+                      </Label>
+                    </FormGroup>
+                    */}
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="defaultImage">Default Image *</Label>            
+                    <Input type="file" id="defaultImage" name="defaultImage" className="form-control"  onChange={this.handleImageChange} required />
+                  </FormGroup>              
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="menu">Menu Images</Label>            
+                    <Input type="file" id="menu" name="menu" className="form-control" multiple onChange={this.onMenuImageChange} />
+                  </FormGroup>              
+                </Col>
+                <Col md={"12"}>
+                  <FormGroup> 
+                    <Label htmlFor="address">Address</Label>            
+                    <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
+                  </FormGroup>
+                </Col>
+              </Row>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" disabled={!this.state.formValid || formProccessing} type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
+              <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+            </ModalFooter>
+          </Form>
+        </Modal>
       </div>
+
+  
+
     );
   }
+}
+
+function SetCategoryDropDownItem (props) {
+  const categoryInfo = props.categoryInfo;
+  return (<option value={categoryInfo.categoryId} >{categoryInfo.categoryName}</option>)
 }
 
 export default FoodTruckLists;

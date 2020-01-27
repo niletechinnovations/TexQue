@@ -17,8 +17,9 @@ class FoodTruckData extends Component {
   componentDidMount() {   
   }
   /* Edit Store Info */
-  editStoreItem(rowIndex){    
-    this.props.editStoreAction(rowIndex);
+  editStoreItem(value, tableMeta, updateValue){
+    alert( JSON.stringify(tableMeta.rowIndex) );
+    //this.props.editStoreAction(rowIndex);
   }
 
   deleteStoreItem(rowIndex){    
@@ -28,64 +29,32 @@ class FoodTruckData extends Component {
   render() {
     
     let rowsItem = []; 
-    /*
-    for(const [i, Store] of this.props.data.entries()){
-      let orgInfo = {  
-        storeName: Store.storeName,        
-        phoneNumber: Store.phoneNumber || " ",
-        address: Store.address || " ",
-        city: Store.city || " ",      
-        state: Store.state || " ",
-        country: Store.country || " ",
-        status: Store.status ? 'Active' : 'Inactive',   
-        action: <p><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
+   
+    for(const [i, orgnization] of this.props.data.entries()){
+      console.log(i);
+      let orgInfo = {
+        organizationName: orgnization.organizationName,  
+        contactPerson: orgnization.contactPerson,
+        truckName: orgnization.truckName,
+        phoneNumber: orgnization.phoneNumber || " ",
+        address: orgnization.address || " ",
+        status: orgnization.status ? "Active" : "Inactive",   
+        createdAt: (new Date(orgnization.createdAt)).toLocaleDateString("en-US"),
+        
+       /* action: <p><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
           this.editStoreItem(i)}><i className="fa fa-pencil"></i> </button>
           <button href className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => 
-          this.deleteStoreItem(i)}><i className="fa fa-trash"></i></button></p>,       
+          this.deleteStoreItem(i)}><i className="fa fa-trash"></i></button></p>,      */ 
       }      
       rowsItem.push(orgInfo);
     }      
-    */
-   let actionBtn =  <> 
-    <Button color="info" size="sm" disabled={this.state.buttonProcessing} ><i className="fa fa-pencil"></i> </Button>&nbsp;
-    <Button color="danger" size="sm" disabled={this.state.buttonProcessing} ><i className="fa fa-trash"></i></Button>&nbsp;
-    <Button color="primary" size="sm" disabled={this.state.buttonProcessing} ><i className="fa fa-eye"></i> </Button>
-    </>;
+    
+   
 
-    rowsItem = [
-    {
-      truckImage: <img src="/images/t1.jpg" className="img-fluid img-thumbnail" width="50px" alt="" />,
-      truckName: 'Tiger Nixon',
-      address: 'Edinburgh',
-      status: 'Active',
-      date: '2011/04/25',
-      action: actionBtn
-    },
-    {
-      truckImage: <img src="/images/t2.jpg" className="img-fluid img-thumbnail" width="50px" alt="" />,
-      truckName: 'Garrett Winters',
-      address: 'Tokyo',
-      status: 'Active',
-      date: '2011/07/25',
-      action: actionBtn
-    },
-    {
-      truckImage: <img src="/images/t3.jpg" className="img-fluid img-thumbnail" width="50px" alt="" />,
-      truckName: 'Ashton Cox',
-      address: 'San Francisco',
-      status: 'Active',
-      date: '2009/01/12',
-      action: actionBtn
-    }
-  ];
 
     const columns = [ 
       {
         label: 'Listing',
-        name: 'truckImage',
-      }, 
-      {
-        label: 'Name',
         name: 'truckName',
       }, 
       {
@@ -94,17 +63,40 @@ class FoodTruckData extends Component {
       },
       {
         label: 'Date',
-        name: 'date',
+        name: 'createdAt',
       },
       {
         label: 'Status',
         name: 'status',
       },
       {
-        label: 'Action',
-        name: 'action',
+        name: "Action",
+        options: {
+          filter: false,
+          sort: false,
+          empty: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return (  <>
+              <Button color="info" size="sm" disabled={this.state.buttonProcessing} onClick={() => {
+                //const truckID = value;
+                //this.setState({ rowsItem });
+                this.editStoreItem(value, tableMeta, updateValue);
+              }}
+              ><i className="fa fa-pencil"></i></Button>&nbsp;
+              <Button color="danger" size="sm" disabled={this.state.buttonProcessing} onClick={() => window.alert(`Clicked "Delete" for row ${tableMeta.rowIndex}`)} ><i className="fa fa-trash"></i></Button>&nbsp;
+              <Button color="primary" size="sm" disabled={this.state.buttonProcessing} onClick={() => {
+                const { rowsItem } = this.state;
+                rowsItem.shift();
+                this.setState({ rowsItem });
+              }}><i className="fa fa-eye"></i></Button>
+              </>     
+            );
+          }
+        }
       },
     ];
+
+    
     const options = {
       search: true,
       filter: false,

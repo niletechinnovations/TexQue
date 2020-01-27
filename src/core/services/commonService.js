@@ -32,6 +32,16 @@ class ApiService {
         return axios.post(API_BASE_URL+urlSegment, formdata, {headers: headers});
     } 
 
+    /*Post form data API With Authentication header */
+    postMultipartDataAPIWithAccessToken(urlSegment, formdata){
+        const accessToken = localStorage.getItem("accessToken");
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'JWT '+accessToken
+        }
+        return axios.post(API_BASE_URL+urlSegment, formdata, {headers: headers} );
+    } 
+
     /*PUt API With Authentication header */
     putAPIWithAccessToken(urlSegment, formdata){
         const accessToken = localStorage.getItem("accessToken");
