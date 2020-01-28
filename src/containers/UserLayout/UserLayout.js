@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container,Col,Row } from 'reactstrap';
-
+import { ToastContainer } from 'react-toastify';
 // routes config
 import userRoutes from '../../routes/userRoutes';
 
@@ -29,6 +29,7 @@ class UserLayout extends Component {
               <Row>
                 <Col md={3}><UserSidebar /></Col>
                 <Col md={9}>
+                  <ToastContainer />
                   <Suspense fallback={this.loading()}>
                     <Switch>
                       {userRoutes.map((route, idx) => {

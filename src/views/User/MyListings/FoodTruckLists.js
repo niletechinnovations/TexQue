@@ -35,7 +35,7 @@ class FoodTruckLists extends Component {
     this.filterTruckLists = this.filterTruckLists.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.handleEditTruck = this.handleEditTruck.bind(this);
-    this.handleDeleteTruck = this.handleDeleteTruck.bind(this);
+    this.handleDeleteFoodTruck = this.handleDeleteFoodTruck.bind(this);
   }
   // Fetch the Employee List
   componentDidMount() {     
@@ -94,17 +94,17 @@ class FoodTruckLists extends Component {
       formData.append('address', formInputField.address);
       formData.append('contactPerson', formInputField.contactPerson);
       formData.append('phoneNumber', formInputField.phoneNumber);
-      formData.append('category_id', formInputField.category_id);
-      formData.append('featuredImage', this.state.featuredImage, this.state.featuredImage.name);
-      formData.append('menu', this.state.menuImages);
-     
-
+      formData.append('categoryId[0]', formInputField.category_id);
+      formData.append('featuredImage', this.state.featuredImage);
       
+      for(let i =0; i < this.state.menuImages.length; i++){
+        formData.append('menuImages', this.state.menuImages[i]);
+      }
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
         const storeInfo = this.state.truckLists[rowIndex];
 
-        commonService.postMultipartDataAPIWithAccessToken('food-truck/'+storeInfo.storeId, formData)
+        commonService.postAPIWithAccessToken('food-truck/'+storeInfo.storeId, formData)
         .then( res => {
           
            
@@ -172,7 +172,7 @@ class FoodTruckLists extends Component {
       featuredImage: e.target.files[0]
     })
   };
-  onMenuImageChange = event => {
+  onMenuImageChange = event => {   
     this.setState({
       menuImages: event.target.files,
     });
@@ -247,9 +247,35 @@ class FoodTruckLists extends Component {
       this.setState({rowIndex: rowIndex, formField: formField, modal: true, formValid: true});
   }
   /* Delete Food Truck*/
-  handleDeleteTruck(rowIndex){
+  handleDeleteFoodTruck(rowIndex){
+
+    const foodTruckItem = this.state.truckLists[rowIndex];
    
-    
+    this.setState( { loading: true}, () => {
+      commonService.deleteAPIWithAccessToken( `food-truck/`, {foodTruckId: foodTruckItem.foodTruckId})
+        .then( res => {
+          
+          this.setState({loading: false});
+          if ( undefined === res.data || !res.data.status ) {            
+             toast.error(res.data.message);      
+            return;
+          }         
+          
+          toast.success(res.data.message);
+          this.truckLists({});
+        } )
+        .catch( err => {       
+            
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else{
+            this.setState( { loading: false } );
+            toast.error(err.message);
+          }
+      } )
+    })
   }
 
   /*Category List API*/
@@ -316,7 +342,7 @@ class FoodTruckLists extends Component {
                 </Row>  
               </Col>
               <Col md={12}>
-                <FoodTruckData data={truckLists} editStoreAction={this.handleEditStore} deleteStoreAction={this.handleDeleteStore} dataTableLoadingStatus = {this.state.loading} />
+                <FoodTruckData data={truckLists} editStoreAction={this.handleEditStore} deleteFoodTruckAction={this.handleDeleteFoodTruck} dataTableLoadingStatus = {this.state.loading} />
               </Col>
             </Row> 
           </CardBody>
