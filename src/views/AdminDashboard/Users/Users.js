@@ -35,7 +35,7 @@ class Users extends Component {
             return;
           }   
 
-          this.setState({loading:false, userList: res.data.data});     
+          this.setState({loading:false, userList: res.data.data.profileList});     
          
         } )
         .catch( err => {   

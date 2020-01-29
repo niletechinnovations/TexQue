@@ -18,10 +18,10 @@ class Organization extends Component {
       loading: true,
       rowIndex: -1,
       formProccessing: false,
-      formField: {organization_name: '', email: '', first_name: '', phoneNumber: '', address: '', city: '', state: '', country: '', postalCode: '', role: '' },
-      formErrors: {organization_name: '', email: '', contact_person: '', role: '', error: ''},
+      formField: {organization_name: '', email: '', first_name: '', last_name: '', phoneNumber: '', address: '' },
+      formErrors: {organization_name: '', email: '', first_name: '', last_name: '', error: ''},
       formValid: false,
-      filterItem: { filter_organization_id: '', country: '', state: '', custom_search: ''},
+      filterItem: { filter_organization_id: '',organization_name: '', location: '', custom_search: ''},
 
     } 
     this.handleEditOrganization = this.handleEditOrganization.bind(this);
@@ -38,8 +38,8 @@ class Organization extends Component {
   organizationList(filterItem = {}) {
     let organizationQuery = "";
     
-    if(filterItem.country !== undefined && filterItem.country !== "" ) 
-      organizationQuery += (organizationQuery !=="" ) ? "&country="+filterItem.country: "?country="+filterItem.country;
+    if(filterItem.organization_name !== undefined && filterItem.organization_name !== "" ) 
+      organizationQuery += (organizationQuery !=="" ) ? "&organization_name="+filterItem.organization_name: "?organization_name="+filterItem.organization_name;
     if(filterItem.state !== undefined && filterItem.state !== "" ) 
       organizationQuery += (organizationQuery !=="" ) ? "&state="+filterItem.state: "?state="+filterItem.state;
     if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
@@ -78,19 +78,16 @@ class Organization extends Component {
       const formData = {
         "email": formInputField.email,
         "firstName": formInputField.first_name, 
+        "lastName": formInputField.last_name, 
         "phoneNumber": formInputField.phoneNumber, 
         "address": formInputField.address, 
-        "roleName": formInputField.role, 
-        "city": formInputField.city, 
-        "state": formInputField.state, 
-        "country": formInputField.country, 
-        "postalCode": formInputField.postalCode, 
         "organizationName": formInputField.organization_name
       };
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
-        const organizationInfo = this.state.organizationList[rowIndex];
-        commonService.putAPIWithAccessToken('organization/'+organizationInfo.organizationId, formData)
+       const organizationInfo = this.state.organizationList[rowIndex];
+       formData['profileId'] = organizationInfo.profileId;
+        commonService.putAPIWithAccessToken('organization', formData)
         .then( res => {
           
            
@@ -119,7 +116,6 @@ class Organization extends Component {
       else{
         commonService.postAPIWithAccessToken('organization', formData)
         .then( res => {
-          
            
           if ( undefined === res.data.data || !res.data.status ) { 
             this.setState( { formProccessing: false} );
@@ -169,10 +165,10 @@ class Organization extends Component {
         break; 
       case 'first_name':        
         fieldValidationErrors.contact_person = (value !== '') ? '' : ' is required';
+        break; 
+      case 'last_name':
+        fieldValidationErrors.contact_person = (value !== '') ? '' : ' is required';
         break;
-      case 'role':        
-        fieldValidationErrors.role = (value !== '') ? '' : ' is required';
-        break;               
       default:
         break;
     }
@@ -185,7 +181,7 @@ class Organization extends Component {
     const formErrors = this.state.formErrors;
     const formField = this.state.formField;
     this.setState({formValid: 
-      (formErrors.organization_name === ""  && formErrors.email === "" && formErrors.contact_person === "" && formErrors.role === "" && formField.organization_name !== "" && formField.role !== "" && formField.first_name !== "" && formField.email !== "") 
+      (formErrors.organization_name === ""  && formErrors.email === "" && formErrors.first_name === "" && formField.organization_name !== "" && formField.first_name !== "" && formField.email !== "") 
       ? true : false});
   }
   /* Set Error Class*/
@@ -198,60 +194,34 @@ class Organization extends Component {
       modal: !this.state.modal,
       rowIndex: -1,
       formValid: false,
-      formField: {organization_name: '', email: '', first_name: '', phoneNumber: '', address: '', city: '', state: '', country: '', postalCode: '', role: '' },
-      formErrors: {organization_name: '', email: '', contact_person: '', role: '', error: ''}
+      formField: {organization_name: '', email: '', first_name: '', last_name: '', phoneNumber: '', address: '' },
+      formErrors: {organization_name: '', email: '', first_name: '', last_name: '', error: ''}
     });
   }
   /* Edit organization*/
   handleEditOrganization(rowIndex){
       const organizationInfo = this.state.organizationList[rowIndex];
       const formField = {
-        organization_name: organizationInfo.organizationName, 
+        organization_name: organizationInfo.organizationName,
         email: organizationInfo.email, 
         first_name: organizationInfo.firstName, 
+        last_name: organizationInfo.lastName, 
         phoneNumber: organizationInfo.phoneNumber, 
         address: organizationInfo.address, 
-        city: organizationInfo.city, 
-        state: organizationInfo.state, 
-        country: organizationInfo.country, 
-        postalCode: organizationInfo.postalCode, 
-        role: organizationInfo.roleName };
+       };
       this.setState({rowIndex: rowIndex, formField: formField, modal: true, formValid: true});
   }
   /* Delete organization*/
   handleDeleteOrganization(rowIndex){
    
     
-   
     
   }
   filterOragnizationList(){
     const filterItem = this.state.filterItem;
     this.organizationList(filterItem);
   }
-  selectCountry (val) {
-    let formField = this.state.formField;
-    formField.country = val
-    this.setState({ formField: formField });
-  }
- 
-  selectRegion (val) {
-    let formField = this.state.formField;
-    formField.state = val
-    this.setState({ formField: formField });
-  }
-
-  selectFilterCountry (val) {
-    let filterItem = this.state.filterItem;
-    filterItem.country = val
-    this.setState({ filterItem: filterItem });
-  }
- 
-  selectFilterRegion (val) {
-    let filterItem = this.state.filterItem;
-    filterItem.state = val
-    this.setState({ filterItem: filterItem });
-  }
+  
   changeFilterHandler = event => {
     const name = event.target.name;
     const value = event.target.value;
@@ -276,7 +246,8 @@ class Organization extends Component {
           <Col lg={12}>
             <Card>
               <CardHeader className="mainHeading">
-                <strong>Organization List</strong> <Button color="" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
+                <strong>Food Truck Owner Lists</strong>
+                {/* <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button> */}
               </CardHeader>
               <CardBody>
                 <Row>
@@ -284,20 +255,20 @@ class Organization extends Component {
                     <Row>                      
                       <Col md={"3"}>
                         <FormGroup> 
-                          <Input id="organizationName" name="organizationName" className="form-control" value={this.state.filterItem.organizationName}  onChange={this.changeFilterHandler} />
+                          <Input id="organizationName" name="organizationName" placeholder="Organization Name" className="form-control" value={this.state.filterItem.organizationName}  onChange={this.changeFilterHandler} />
                         </FormGroup>  
                       </Col>
                       <Col md={"3"}>
                         <FormGroup> 
-                          <Input id="location" name="location" className="form-control" value={this.state.filterItem.location}  onChange={this.changeFilterHandler} /> 
+                          <Input id="location" name="location" placeholder="Location" className="form-control" value={this.state.filterItem.location}  onChange={this.changeFilterHandler} /> 
                         </FormGroup>  
                       </Col>
-                      <Col md={"3"}>
+                      <Col md={"4"}>
                         <FormGroup> 
                           <Input type="text" placeholder="Search By Email/ Name" id="custom_search" name="custom_search" value={this.state.formField.custom_search} onChange={this.changeFilterHandler} />
                         </FormGroup>  
                       </Col>
-                      <Col md={"3"}>
+                      <Col md={"2"}>
                         <FormGroup className="filter-button-section"> 
                           <Label htmlFor="filter_organization_id">&nbsp;</Label> 
                           <Button color="success" type="button" onClick={this.filterOragnizationList}>Search</Button> 
@@ -314,11 +285,23 @@ class Organization extends Component {
           </Col>
         </Row>
         <Modal isOpen={modal} toggle={this.toggle} className="full-width-modal-section organization-modal">
-          <ModalHeader toggle={this.toggle}>Organization</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Food Truck Owner</ModalHeader>
           <Form onSubmit={this.submitHandler} noValidate>
             <ModalBody>
               <FormErrors formErrors={this.state.formErrors} />
               <Row>
+                <Col md={"6"}>  
+                  <FormGroup> 
+                    <Label htmlFor="first_name">First Name</Label>            
+                    <Input type="text" placeholder="First Person *" id="first_name" name="first_name" value={this.state.formField.first_name} onChange={this.changeHandler} required />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>  
+                  <FormGroup> 
+                    <Label htmlFor="last_name">Last Name</Label>            
+                    <Input type="text" placeholder="Last Person *" id="last_name" name="last_name" value={this.state.formField.last_name} onChange={this.changeHandler} />
+                  </FormGroup>
+                </Col>
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="organization_name">Organization Name</Label>            
@@ -329,18 +312,6 @@ class Organization extends Component {
                   <FormGroup> 
                     <Label htmlFor="email">Email</Label>            
                     <Input type="text" placeholder="Email *" id="email" name="email" value={this.state.formField.email} onChange={this.changeHandler} required />
-                  </FormGroup>
-                </Col>
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="first_name">Contact Person</Label>            
-                    <Input type="text" placeholder="Contact Person *" id="first_name" name="first_name" value={this.state.formField.first_name} onChange={this.changeHandler} required />
-                  </FormGroup>
-                </Col>
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="role">Role</Label>            
-                    <Input type="text" placeholder="Role *" id="role" name="role" value={this.state.formField.role} onChange={this.changeHandler} required />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>  

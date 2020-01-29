@@ -52,7 +52,7 @@ footer.app-footer {background: #fff; border: none; font-size: 12px; }
 
 a.btn-edit, button.btn-edit {background: #fff; padding: 5px; width: 30px; height: 30px; border: 1px solid #4CAF50; text-align: center; border-radius: 5px; margin: 0 2px; color: #4CAF50; display: inline-block; }
 a.btn-delete, button.btn-delete {background: #fff; padding: 5px; width: 30px; height: 30px; border: 1px solid #F44336; text-align: center; border-radius: 5px; margin: 0 2px; color: #F44336; display: inline-block; }
-a.btn-view, button.btn-view {background: #fff; padding: 5px; width: 30px; height: 30px; border: 1px solid #ffc108; text-align: center; border-radius: 5px; margin: 0 2px; color: #FFC107; display: inline-block; }
+a.btn-view, button.btn-view {background: #fff; padding: 5px; width: 30px; height: 30px; border: 1px solid #001540; text-align: center; border-radius: 5px; margin: 0 2px; color: #001540; display: inline-block; }
 .sidebar .nav-link .nav-icon{ color: #c6c7c7;}
 .sidebar .nav-dropdown.open .nav-icon{ color: #000000;}
 .admin-avatar .profileImage{
@@ -60,3 +60,8 @@ a.btn-view, button.btn-view {background: #fff; padding: 5px; width: 30px; height
     margin-left: 20px; margin-right: 10px;
 }
 .admin-dashboard .MuiSvgIcon-root{ font-size: 3em;}
+.mainHeading card-header{ font-size: 18px; padding: 5px;}
+.MuiTable-root .MuiTableCell-head{ font-weight: bold;}
+.MuiTableCell-root td{ padding: 0 5px;}
+h6.MuiTypography-root{ font-size: 16px; font-weight: 600;}
+.modal .modal-title{ padding-bottom: 0px;}

@@ -21,7 +21,11 @@ export default {
         },
       ]    
     },
-    
+    {
+      name: 'Manage Users',
+      url: '/admin/users',
+      icon: 'icon-user',     
+    },
     {
       name: 'Manage Enquiries',      
       icon: 'icon-envelope', 

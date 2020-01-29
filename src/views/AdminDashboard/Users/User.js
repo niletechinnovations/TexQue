@@ -26,7 +26,7 @@ class User extends Component {
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( {  loading: false } );
             toast.error(res.data.message);  
-            this.props.history.push('/user');  
+            this.props.history.push('/admin/users');  
             return;
           }   
 

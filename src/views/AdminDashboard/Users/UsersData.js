@@ -42,7 +42,7 @@ class UsersData extends Component {
         phoneNumber: userInfo.phoneNumber || " ",
         address: userInfo.address || " ",
         status: userInfo.status || true,
-        action: <p><Link to={`/admin/users/${userInfo.profileId}`}><i className="fa fa-eye"></i> </Link>
+        action: <p><Link to={`/admin/user/${userInfo.profileId}`}><i className="fa fa-eye"></i> </Link>
           <a href="#!" disabled={this.state.buttonProcessing} ><i className="fa fa-trash"></i></a></p>,
 
       }  

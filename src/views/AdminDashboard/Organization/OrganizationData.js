@@ -30,19 +30,14 @@ class OrganizationData extends Component {
     for(const [i, orgnization] of this.props.data.entries()){
       let orgInfo = {
         organizationName: orgnization.organizationName,  
-        firstName: orgnization.firstName,
+        firstName: orgnization.firstName +' '+ orgnization.lastName,
         email: orgnization.email,
-        roleName: orgnization.organizationRole || " ",
         phoneNumber: orgnization.phoneNumber || " ",
         address: orgnization.address || " ",
-        city: orgnization.city || " ",      
-        state: orgnization.state || " ",
-        country: orgnization.country || " ",
         status: orgnization.status ? "Active" : "Inactive",   
         action: <p><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
           this.editOrganizationItem(i)}><i className="fa fa-pencil"></i> </button>
-          <Link className="btn-view" to={`/admin/organization/employee/${orgnization.authId}`}><i className="fa fa-user"></i> </Link>
-          <Link className="btn-view" to={`/admin/organization/store/${orgnization.authId}`}><i className="fa fa-venus"></i> </Link>
+          <Link className="btn-view" to={`/admin/organization/truck/${orgnization.authId}`}><i className="fa fa-truck"></i> </Link>
           <a href="#!" className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => 
           this.deleteOrganizationItem(i)}><i className="fa fa-trash"></i></a></p>,       
       }      
@@ -96,7 +91,7 @@ class OrganizationData extends Component {
     
     return (
       <MUIDataTable
-        title={"Organization"}
+        title={"Truck Owner Lists"}
         data={rowsItem}
         columns={columns}
         options={options}
