@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-
+import {Link} from 'react-router-dom';
 import MUIDataTable from "mui-datatables";
 
 class FoodTruckData extends Component {
@@ -22,9 +22,7 @@ class FoodTruckData extends Component {
     //this.props.editStoreAction(rowIndex);
   }
 
-  deleteStoreItem(rowIndex){    
-    this.props.deleteStoreAction(rowIndex);
-  }
+ 
 
   render() {
     
@@ -40,7 +38,9 @@ class FoodTruckData extends Component {
         address: orgnization.address || " ",
         status: orgnization.status ? "Active" : "Inactive",   
         createdAt: (new Date(orgnization.createdAt)).toLocaleDateString("en-US"),
-        
+        indexVal: i,
+        foodTruckId: orgnization.foodTruckId,
+        action: orgnization
        /* action: <p><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
           this.editStoreItem(i)}><i className="fa fa-pencil"></i> </button>
           <button href className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => 
@@ -70,20 +70,19 @@ class FoodTruckData extends Component {
         name: 'status',
       },
       {
-        name: "Action",
+        name: "action",
+        label: "Action",
         options: {
           filter: false,
           sort: false,
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
+            
             return (  <>
-              <Button color="info" size="sm" disabled={this.state.buttonProcessing} onClick={() => {
-                //const truckID = value;
-                //this.setState({ rowsItem });
-                this.editStoreItem(value, tableMeta, updateValue);
-              }}
-              ><i className="fa fa-pencil"></i></Button>&nbsp;
-              <Button color="danger" size="sm" disabled={this.state.buttonProcessing} onClick={() => window.alert(`Clicked "Delete" for row ${tableMeta.rowIndex}`)} ><i className="fa fa-trash"></i></Button>&nbsp;
+              <Link to={`/user/my-listings/${value.foodTruckId}`} className="btn btn-info btn-sm"><i className="fa fa-pencil"></i></Link>
+             &nbsp;
+              <Button color="danger" size="sm" disabled={this.state.buttonProcessing} onClick={() => {
+          if (window.confirm('Are you sure you wish to delete this food truck?')) this.props.deleteFoodTruckAction(tableMeta.rowIndex) }} ><i className="fa fa-trash"></i></Button>&nbsp;
               <Button color="primary" size="sm" disabled={this.state.buttonProcessing} onClick={() => {
                 const { rowsItem } = this.state;
                 rowsItem.shift();
