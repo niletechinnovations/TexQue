@@ -60,7 +60,7 @@ class ApiService {
             'Authorization': 'JWT '+accessToken
         }
 
-        debugger;
+        //debugger;
         return axios.delete(API_BASE_URL+urlSegment, { headers: headers , data: formdata});
     } 
     /* Check user logged in or not */

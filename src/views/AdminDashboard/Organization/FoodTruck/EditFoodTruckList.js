@@ -7,13 +7,14 @@ import Select from 'react-select';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import commonService from '../../../core/services/commonService';
-//import SetCategoryDropDownItem from '../../../core/commonComponent/categoryDropDown';
-import Loader from '../../Loader/Loader';
-import { FormErrors } from '../../Formerrors/Formerrors';
-import "./EditFoodTruck.css";
+import commonService from '../../../../core/services/commonService';
+import { FormErrors } from '../../../Formerrors/Formerrors';
 
-class EditFoodTruck extends Component {
+import Loader from '../../../Loader/Loader';
+import './FoodTruck.css'
+
+
+class EditFoodTruckList extends Component {
   constructor(props) {
     super( props );
 
@@ -22,13 +23,14 @@ class EditFoodTruck extends Component {
       loading: false,
       formProccessing: false,
       foodTruckId: "",
+      organizationList: [],
       categoryList: [],
       featuredImage: '',
       galleryImages:[],
       menuImages: [],
       selectedCategories: [],
       foodTruckDetail: {},
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
+      formField: { organizationId:'', truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', address:'', error: ''},
       formValid: false,
     };
@@ -43,7 +45,9 @@ class EditFoodTruck extends Component {
       this.getFoodTruckDetail(params.foodTruckId);
     }
     else 
-        this.props.history.push('/user/my-listings');
+        this.props.history.push('/admin/organization/truck-listing');
+    
+    this.organizationList();
     this.categoryList();
   }
 
@@ -60,6 +64,7 @@ class EditFoodTruck extends Component {
           const foodTruckDetail = res.data.data;
           let formField = this.state.formField;
           formField.truckName = foodTruckDetail.truckName;
+          formField.organizationId = foodTruckDetail.authId;
           formField.contactPerson = foodTruckDetail.contactPerson;
           formField.phoneNumber = foodTruckDetail.phoneNumber;
           formField.address = foodTruckDetail.address;
@@ -78,7 +83,6 @@ class EditFoodTruck extends Component {
             }
             this.setState({ selectedCategories: selectedOption });
           }
-          
 
           this.setState({ loading: false, foodTruckDetail: foodTruckDetail, formValid: true, formField: formField});
         } )
@@ -102,11 +106,13 @@ class EditFoodTruck extends Component {
     this.setState( { formProccessing: true}, () => {
       const formInputField = this.state.formField;
       const formData = new FormData();
+      formData.append('organizationId', formInputField.organizationId);
       formData.append('foodTruckId', this.state.foodTruckId);
       formData.append('truckName', formInputField.truckName);
       formData.append('address', formInputField.address);
       formData.append('contactPerson', formInputField.contactPerson);
       formData.append('phoneNumber', formInputField.phoneNumber);
+      
       if(this.state.featuredImage !== "")
         formData.append('featuredImage', this.state.featuredImage);
       
@@ -122,24 +128,18 @@ class EditFoodTruck extends Component {
         formData.append('categoryId', this.state.selectedCategories[j].value );
       }
       
-      //console.log(this.state.selectedCategories);
-      //return;
       commonService.putAPIWithAccessToken('food-truck', formData)
       .then( res => {
-        //debugger;
         if ( undefined === res.data.data || !res.data.status ) { 
           this.setState( { formProccessing: false} );
           toast.error(res.data.message);
           return;
         } 
         
-        this.setState({ modal: false});
         toast.success(res.data.message);
-        //this.props.history.push('/user/my-listings');
-       
+        this.props.history.push('/admin/organization/truck-listing');
       } )
       .catch( err => { 
-        //debugger;        
         if(err.response !== undefined && err.response.status === 401) {
           localStorage.clear();
           this.props.history.push('/login');
@@ -231,10 +231,28 @@ class EditFoodTruck extends Component {
     });
   }
   
+/*Organization List API*/
+organizationList() {   
+  commonService.getAPIWithAccessToken('organization?pageSize=10000')
+    .then( res => {       
+      if ( undefined === res.data.data || !res.data.status ) {
+        this.setState( { loading: false } );
+        toast.error(res.data.message);
+        return;
+      }   
+      this.setState({loading:false, organizationList: res.data.data.profileList});     
+    } )
+    .catch( err => {         
+      if(err.response !== undefined && err.response.status === 401) {
+        localStorage.clear();
+        this.props.history.push('/login');
+      }else 
+        this.setState( { loading: false } );
+    } ) 
+}
 
   /*Category List API*/
   categoryList() {   
-    
     commonService.getAPIWithAccessToken('category')
       .then( res => {       
          
@@ -248,8 +266,7 @@ class EditFoodTruck extends Component {
       .catch( err => {         
         if(err.response !== undefined && err.response.status === 401) {
           toast.error(err.response);
-        }
-        else 
+        }else 
           this.setState( { loading: false } );
       } )
   }
@@ -270,16 +287,14 @@ class EditFoodTruck extends Component {
             return;
           }         
           toast.success(res.data.message);
-          //this.props.history.push(`/user/my-listings/`+this.state.foodTruckId);
-          //window.location.reload();
+          this.props.history.push(`/admin/organization/truck-listing/`);
         } )
         .catch( err => {       
             
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else{
+          }else{
             this.setState( { loading: false } );
             toast.error(err.message);
           }
@@ -289,7 +304,7 @@ class EditFoodTruck extends Component {
 
 
   render() {
-    const { loading, formProccessing, categoryList, foodTruckDetail,selectedCategories } = this.state;
+    const { loading, formProccessing, organizationList, categoryList, foodTruckDetail,selectedCategories } = this.state;
     const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
     let loaderElement = '';
     let defaultImagePreview = '';  
@@ -320,7 +335,7 @@ class EditFoodTruck extends Component {
         <Card>
           <CardHeader className="mainHeading">
             <strong>Food Truck</strong>
-            <Link to="/user/my-listings" className="btn btn-sm btn-secondary addListing pull-right"><i className="fa fa-arrow-left"></i> Back</Link>
+            <Link to="/admin/organization/truck-listing" className="btn btn-sm btn-secondary backButtonRight pull-right"><i className="fa fa-arrow-left"></i> Back</Link>
           </CardHeader>
           <CardBody>
             
@@ -328,6 +343,17 @@ class EditFoodTruck extends Component {
             
               <FormErrors formErrors={this.state.formErrors} />
               <Row>
+              <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="organizationId">Organization</Label>            
+                    <Input type="select" placeholder="Organization *" id="organizationId" name="organizationId" value={this.state.formField.organizationId} onChange={this.changeHandler} required >
+                      <option value="">Select Organization</option>
+                      {organizationList.map((organizationInfo, index) =>
+                        <SetOrganizationDropDownItem key={index} organizationInfo={organizationInfo} />
+                      )}
+                    </Input>
+                  </FormGroup>  
+                </Col>
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="truckName">Truck Name *</Label>            
@@ -352,7 +378,7 @@ class EditFoodTruck extends Component {
                     <Select name="category_id" id="category_id" options={categoryItems} value={selectedCategories} onChange={this.handleCategoryChange} isMulti />
                   </FormGroup>  
                 </Col>
-                <Col md={"12"}>
+                <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="address">Address</Label>            
                     <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
@@ -395,11 +421,10 @@ class EditFoodTruck extends Component {
                       )}
                   </div>             
                 </Col>
-                
               </Row>
-              <Button color="primary" disabled={!this.state.formValid || formProccessing} type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
+              <Button color="primary" disabled={!this.state.formValid || formProccessing} type="submit">{formProccessing ? processingBtnText : 'Update Details' }</Button>
               &nbsp; 
-              <Link className="btn btn-secondary" to='/user/my-listings'>Cancel</Link>
+              <Link className="btn btn-secondary" to='/admin/organization/truck-listing'>Cancel</Link>
             
             </Form> 
           </CardBody>
@@ -409,6 +434,9 @@ class EditFoodTruck extends Component {
   }
 }
 
-export default EditFoodTruck;
+export default EditFoodTruckList;
 
-
+function SetOrganizationDropDownItem (props) {
+  const organizationInfo = props.organizationInfo;
+  return (<option value={organizationInfo.authId} >{organizationInfo.organizationName}</option>)
+}

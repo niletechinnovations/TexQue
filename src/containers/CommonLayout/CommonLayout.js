@@ -1,7 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-
 // routes config
 import commonRoutes from '../../routes/commonRoutes';
 
@@ -9,13 +8,7 @@ class CommonLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
-  signOut(e) {
-    e.preventDefault();
-    localStorage.clear();
-    this.props.history.push('/login')
-  }
-
-  render() {
+   render() {
     return (
       <div className="app">
         <div className="flyout">           

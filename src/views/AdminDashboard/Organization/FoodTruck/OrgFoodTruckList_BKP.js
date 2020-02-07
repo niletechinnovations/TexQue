@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../../core/services/commonService';
 import { FormErrors } from '../../../Formerrors/Formerrors';
 
 import Loader from '../../../Loader/Loader';
-import StoreData from './StoreData';
-import './Store.css'
+import FoodTruckData from './FoodTruckData';
+import './FoodTruck.css'
 
-class Store extends Component {
+class OrgFoodTruckList extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -28,7 +27,7 @@ class Store extends Component {
     this.handleEditStore = this.handleEditStore.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.handleDeleteStore = this.handleDeleteStore.bind(this);
-    this.filterStoreList = this.filterStoreList.bind(this);
+    this.filterTruckList = this.filterTruckList.bind(this);
     
   }
   // Fetch the Employee List
@@ -41,12 +40,12 @@ class Store extends Component {
       filterItem.filter_organization_id = params.organizationId;
       this.setState({filterItem: filterItem});
     }
-    this.storeList({filter_organization_id: organizationId});
+    this.foodTruckList({filter_organization_id: organizationId});
     this.organizationList();
     
   }
-  /*Employee List API*/
-  storeList(filterItem = {}) {
+  /*Food Truck List API*/
+  foodTruckList(filterItem = {}) {
     let stroreWalkQuery = "";
     if(filterItem.filter_organization_id !== undefined && filterItem.filter_organization_id !== "" ) 
       stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&organizationId="+filterItem.filter_organization_id: "?organizationId="+filterItem.filter_organization_id;
@@ -57,7 +56,7 @@ class Store extends Component {
     if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
       stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&keyword="+filterItem.custom_search: "?keyword="+filterItem.custom_search;
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('store'+stroreWalkQuery)
+      commonService.getAPIWithAccessToken('food-truck?pageSize=10000'+stroreWalkQuery)
         .then( res => {
           
            
@@ -67,7 +66,7 @@ class Store extends Component {
             return;
           }   
 
-          this.setState({loading:false, storeList: res.data.data});     
+          this.setState({loading:false, storeList: res.data.data.truckList});     
          
         } )
         .catch( err => {         
@@ -86,7 +85,7 @@ class Store extends Component {
   /*Organization List API*/
   organizationList() {   
     
-    commonService.getAPIWithAccessToken('organization')
+    commonService.getAPIWithAccessToken('organization?pageSize=10000')
       .then( res => {       
          
         if ( undefined === res.data.data || !res.data.status ) {
@@ -95,7 +94,7 @@ class Store extends Component {
           return;
         }   
 
-        this.setState({loading:false, organizationList: res.data.data});     
+        this.setState({loading:false, organizationList: res.data.data.profileList});     
        
       } )
       .catch( err => {         
@@ -108,9 +107,9 @@ class Store extends Component {
       } )
     
   }
-  filterStoreList(){
+  filterTruckList(){
     const filterItem = this.state.filterItem;
-    this.storeList(filterItem);
+    this.foodTruckList(filterItem);
   }
   /* Submit Form Handler*/
   submitHandler (event) {
@@ -265,29 +264,7 @@ class Store extends Component {
    
     
   }
-  selectCountry (val) {
-    let formField = this.state.formField;
-    formField.country = val
-    this.setState({ formField: formField });
-  }
- 
-  selectRegion (val) {
-    let formField = this.state.formField;
-    formField.state = val
-    this.setState({ formField: formField });
-  }
-
-  selectFilterCountry (val) {
-    let filterItem = this.state.filterItem;
-    filterItem.country = val
-    this.setState({ filterItem: filterItem });
-  }
- 
-  selectFilterRegion (val) {
-    let filterItem = this.state.filterItem;
-    filterItem.state = val
-    this.setState({ filterItem: filterItem });
-  }
+  
   render() {
 
     const { storeList, loading, modal, formProccessing, organizationList } = this.state;     
@@ -296,7 +273,6 @@ class Store extends Component {
       loaderElement = <Loader />
 
     const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
-    const priorityCountry = ['US'];
     return (
       <div className="animated fadeIn">
         <Row>
@@ -305,14 +281,14 @@ class Store extends Component {
           <Col lg={12}>
             <Card>
               <CardHeader className="mainHeading">
-                <strong>Store List</strong> <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
+                <strong>Food Truck List</strong> <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
               </CardHeader>
               <CardBody>
                 
                 <Row>
                   <Col md={12}>
                     <Row>
-                      <Col md={"2"}>
+                      <Col md={"3"}>
                         <FormGroup> 
                           <Label htmlFor="filter_organization_id">Organization</Label>            
                           <Input type="select" placeholder="Organization *" id="filter_organization_id" name="filter_organization_id" value={this.state.filterItem.filter_organization_id} onChange={this.changeFilterHandler} >
@@ -325,32 +301,32 @@ class Store extends Component {
                       </Col>
                       <Col md={"2"}>
                         <FormGroup> 
-                          <Label htmlFor="filter_organization_id">Country</Label>            
-                          <CountryDropdown id="filterCountry" name="filterCountry" priorityOptions={priorityCountry} className="form-control" value={this.state.filterItem.country}  onChange={(val) => this.selectFilterCountry(val)} />
+                          <Label htmlFor="filterFoodTruckName">Food Truck Name</Label>
+                          <Input type="text" placeholder="Search by Food Truck Name" id="filterFoodTruckName" name="filterFoodTruckName" value={this.state.formField.filterFoodTruckName} onChange={this.changeFilterHandler} />   
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"2"}>
+                        <FormGroup> 
+                          <Label htmlFor="filterFoodTruckOwner">Food Truck Name</Label>
+                          <Input type="text" placeholder="Search by Owner Name" id="filterFoodTruckOwner" name="filterFoodTruckOwner" value={this.state.formField.filterFoodTruckOwner} onChange={this.changeFilterHandler} />   
                         </FormGroup>  
                       </Col>
                       <Col md={"3"}>
                         <FormGroup> 
-                          <Label htmlFor="filter_organization_id">State</Label>            
-                          <RegionDropdown  id="filterState" name="filterState" className="form-control" country={this.state.filterItem.country} defaultOptionLabel="Select State" blankOptionLabel="Select State"   value={this.state.filterItem.state}  onChange={(val) => this.selectFilterRegion(val)} /> 
-                        </FormGroup>  
-                      </Col>
-                      <Col md={"3"}>
-                        <FormGroup> 
-                          <Label htmlFor="filter_organization_id">Search By Store/ City</Label>            
-                          <Input type="text" placeholder="Search By Store/ City" id="custom_search" name="custom_search" value={this.state.formField.custom_search} onChange={this.changeFilterHandler} />
+                          <Label htmlFor="filter_organization_id">Search by Location</Label>            
+                          <Input type="text" placeholder="Search by Address/ Location" id="custom_search" name="custom_search" value={this.state.formField.custom_search} onChange={this.changeFilterHandler} />
                         </FormGroup>  
                       </Col>
                       <Col md={"2"}>
                         <FormGroup className="filter-button-section"> 
-                          <Label htmlFor="filter_organization_id">&nbsp;</Label> 
-                          <Button color="success" type="button" onClick={this.filterStoreList}>Search</Button> 
+                          <Label htmlFor="filter_organization_id">&nbsp;</Label>
+                          <Button color="success" type="button" onClick={this.filterTruckList}>Search</Button> 
                         </FormGroup>             
                       </Col>
                     </Row>  
                   </Col>
                   <Col md={12}>
-                    <StoreData data={storeList} editStoreAction={this.handleEditStore} deleteStoreAction={this.handleDeleteStore} dataTableLoadingStatus = {this.state.loading} />
+                    <FoodTruckData data={storeList} editStoreAction={this.handleEditStore} deleteStoreAction={this.handleDeleteStore} dataTableLoadingStatus = {this.state.loading} />
                   </Col>
                 </Row> 
               </CardBody>
@@ -392,31 +368,7 @@ class Store extends Component {
                     <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
                   </FormGroup>
                 </Col>
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="country">Country</Label>     
-                    <CountryDropdown id="country" name="country" priorityOptions={priorityCountry} className="form-control" value={this.state.formField.country}  onChange={(val) => this.selectCountry(val)} />       
-                    
-                  </FormGroup>
-                </Col>                
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="state">State</Label>  
-                    <RegionDropdown  id="state" name="state" className="form-control" country={this.state.formField.country} defaultOptionLabel="Select State" blankOptionLabel="Select State"   value={this.state.formField.state}  onChange={(val) => this.selectRegion(val)} /> 
-                  </FormGroup>
-                </Col>
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="city">City</Label>            
-                    <Input type="text" placeholder="City" id="city" name="city" value={this.state.formField.city} onChange={this.changeHandler}  />
-                  </FormGroup>
-                </Col>
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="postalCode">Postal Code</Label>            
-                    <Input type="text" placeholder="Postal Code" id="postalCode" name="postalCode" value={this.state.formField.postalCode} onChange={this.changeHandler}  />
-                  </FormGroup>
-                </Col>
+                
               </Row>
             </ModalBody>
             <ModalFooter>
@@ -436,4 +388,4 @@ function SetOrganizationDropDownItem (props) {
   return (<option value={organizationInfo.authId} >{organizationInfo.organizationName}</option>)
 }
 
-export default Store;
+export default OrgFoodTruckList;

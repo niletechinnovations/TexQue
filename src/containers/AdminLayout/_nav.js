@@ -16,7 +16,7 @@ export default {
         },
         {
           name: 'Manage Truck Listing',
-          url: '/admin/organization/listing',
+          url: '/admin/organization/truck-listing',
           icon: 'fa fa-truck',     
         },
       ]    

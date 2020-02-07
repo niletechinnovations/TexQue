@@ -59,9 +59,16 @@ a.btn-view, button.btn-view {background: #fff; padding: 5px; width: 30px; height
     width: 35px; height: 35px; line-height: 35px; font-size: 16px;
     margin-left: 20px; margin-right: 10px;
 }
+.sidebar .nav-item:last-of-type .nav-link {
+    background:#002164;
+}
+.sidebar .nav-dropdown.open .nav-item:last-of-type .nav-link { background: transparent;}
 .admin-dashboard .MuiSvgIcon-root{ font-size: 3em;}
 .mainHeading card-header{ font-size: 18px; padding: 5px;}
 .MuiTable-root .MuiTableCell-head{ font-weight: bold;}
 .MuiTableCell-root td{ padding: 0 5px;}
 h6.MuiTypography-root{ font-size: 16px; font-weight: 600;}
 .modal .modal-title{ padding-bottom: 0px;}
+.profileImage.userImg{ width: 36px; height: 36px; line-height: 32px; font-size: 16px;}
+table th.th-user-img{ padding-left: 25px;}
+.statusDrodownBtn .btn-sm{ padding: 0.25rem 0.5rem; font-size: 13px;}

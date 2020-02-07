@@ -35,8 +35,8 @@ class NewUserData extends Component{
                 <tr key={user.SNo}>
                     <td className="text-center">
                         <div className="avatar">
-                            <img src="/images/avtar3.jpg" className="img-avatar" alt={user.userName} />
-                            <span className="avatar-status badge-success"></span>
+                            {/* <img src="/images/avtar3.jpg" className="img-avatar" alt={user.userName} /> */}
+                            <div className="profileImage userImg">{user.userName.substring(0, 1)}</div>
                         </div>
                     </td>
                     <td>{user.userName}</td>

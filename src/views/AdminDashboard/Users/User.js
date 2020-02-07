@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Label } from 'reactstrap';
+import {Link} from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
@@ -61,19 +62,17 @@ class User extends Component {
             <Card>
               <CardHeader>
                 <strong><i className="icon-info pr-1"></i>User Profile</strong>
+                <Link to="/admin/users" className="btn btn-sm btn-secondary pull-right"><i className="fa fa-arrow-left"></i> Back</Link>
               </CardHeader>
               <CardBody className="profileInfo">
                   {loaderElement}
                   <ToastContainer />
                   <Row>
-                    <Col md={4}><Label>Name: </Label><span> {profileInfo.firstName || 'N/A'}</span></Col>
-                    <Col md={4}><Label>Email: </Label><span> {profileInfo.email || 'N/A' }</span></Col>
-                    <Col md={4}><Label>Phone: </Label><span> {profileInfo.phoneNumber || 'N/A'}</span></Col>
-                    <Col md={4}><Label>Address: </Label><span> {profileInfo.address || 'N/A'}</span></Col>
-                    <Col md={4}><Label>City: </Label><span> {profileInfo.city || 'N/A'}</span></Col>
-                    <Col md={4}><Label>State: </Label><span> {profileInfo.state || 'N/A'}</span></Col>
-                    <Col md={4}><Label>Country: </Label><span> {profileInfo.country || 'N/A'}</span></Col>
-                    <Col md={4}><Label>Postal Code: </Label><span> {profileInfo.postalCode || 'N/A'}</span></Col>
+                    <Col md={4}><Label className="h6">First name: </Label><span> {profileInfo.firstName || 'N/A'}</span></Col>
+                    <Col md={8}><Label className="h6">Last name: </Label><span> {profileInfo.lastName || 'N/A'}</span></Col>
+                    <Col md={4}><Label className="h6">Email: </Label><span> {profileInfo.email || 'N/A' }</span></Col>
+                    <Col md={8}><Label className="h6">Phone: </Label><span> {profileInfo.phoneNumber || 'N/A'}</span></Col>
+                    <Col md={12}><Label className="h6">Address: </Label><span> {profileInfo.address || 'N/A'}</span></Col>
                   </Row>
               </CardBody>
             </Card>

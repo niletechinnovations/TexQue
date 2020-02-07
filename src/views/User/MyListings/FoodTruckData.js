@@ -29,7 +29,7 @@ class FoodTruckData extends Component {
     let rowsItem = []; 
    
     for(const [i, orgnization] of this.props.data.entries()){
-      console.log(i);
+      //console.log(i);
       let orgInfo = {
         organizationName: orgnization.organizationName,  
         contactPerson: orgnization.contactPerson,
@@ -82,12 +82,8 @@ class FoodTruckData extends Component {
               <Link to={`/user/my-listings/${value.foodTruckId}`} className="btn btn-info btn-sm"><i className="fa fa-pencil"></i></Link>
              &nbsp;
               <Button color="danger" size="sm" disabled={this.state.buttonProcessing} onClick={() => {
-          if (window.confirm('Are you sure you wish to delete this food truck?')) this.props.deleteFoodTruckAction(tableMeta.rowIndex) }} ><i className="fa fa-trash"></i></Button>&nbsp;
-              <Button color="primary" size="sm" disabled={this.state.buttonProcessing} onClick={() => {
-                const { rowsItem } = this.state;
-                rowsItem.shift();
-                this.setState({ rowsItem });
-              }}><i className="fa fa-eye"></i></Button>
+            if (window.confirm('Are you sure you wish to delete this food truck?')) this.props.deleteFoodTruckAction(tableMeta.rowIndex) }} ><i className="fa fa-trash"></i></Button>&nbsp;
+              <Link to={`/user/listing-details/${value.foodTruckId}`} className="btn btn-primary btn-sm"><i className="fa fa-eye"></i></Link>
               </>     
             );
           }

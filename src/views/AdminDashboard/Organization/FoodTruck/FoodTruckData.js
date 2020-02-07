@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import MUIDataTable from "mui-datatables";
+import {Link} from "react-router-dom";
 
-class StoreData extends Component {
+class FoodTruckData extends Component {
   
   constructor(props){
     super(props);   
@@ -29,25 +30,25 @@ class StoreData extends Component {
     for(const [i, Store] of this.props.data.entries()){
       let orgInfo = {   
         organizationName: Store.organizationName,      
-        storeName: Store.storeName,        
+        truckName: Store.truckName,        
+        featuredImage: Store.featuredImage ? <img src={Store.featuredImage} width="50" alt="Food Truck" className="img-thumbnail" /> : '' ,
         phoneNumber: Store.phoneNumber || " ",
         address: Store.address || " ",
-        city: Store.city || " ",      
-        state: Store.state || " ",
-        country: Store.country || " ",
         status: Store.status ? 'Active' : 'Inactive',   
-        action: <p><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
-          this.editStoreItem(i)}><i className="fa fa-pencil"></i> </button>
-          <button className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => 
-          this.deleteStoreItem(i)}><i className="fa fa-trash"></i></button></p>,       
+        action: <p><Link className="btn-edit" disabled={this.state.buttonProcessing} to={`/admin/organization/edit-truck/${Store.foodTruckId}`}><i className="fa fa-pencil"></i> </Link>
+          <button className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => {if(window.confirm('Are you sure you want to delete this record?')){ this.deleteStoreItem(i) };}} ><i className="fa fa-trash"></i></button></p>,
       }      
       rowsItem.push(orgInfo);
     }      
     
     const columns = [ 
       {
-        label: 'Store Name',
-        name: 'storeName',
+        label: 'Image',
+        name: 'featuredImage',
+      },     
+      {
+        label: 'Truck Name',
+        name: 'truckName',
       },     
       {
         label: 'Organization Name',
@@ -92,7 +93,7 @@ class StoreData extends Component {
     
     return (
       <MUIDataTable
-        title={"Store List"}
+        title={"Food Truck List"}
         data={rowsItem}
         columns={columns}
         options={options}
@@ -101,4 +102,4 @@ class StoreData extends Component {
   }
 }
 
-export default StoreData;
+export default FoodTruckData;

@@ -4,6 +4,8 @@ import {
   Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 
+import Select from 'react-select';
+
 //import  { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,14 +29,12 @@ class FoodTruckLists extends Component {
       rowIndex: -1,
       featuredImage: '',
       menuImages: [],
+      selectedCategories: [],
       formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', address:'', error: ''},
       formValid: false,
-      filterItem: { filter_organization_id: '', truckName: '', location: '', custom_search: ''}
     } 
-    this.filterTruckLists = this.filterTruckLists.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
-    this.handleEditTruck = this.handleEditTruck.bind(this);
     this.handleDeleteFoodTruck = this.handleDeleteFoodTruck.bind(this);
   }
   // Fetch the Employee List
@@ -43,17 +43,9 @@ class FoodTruckLists extends Component {
     this.categoryList();
   }
   /*Employee List API*/
-  truckLists(filterItem = {}) {
-    let stroreWalkQuery = "";
-    
-    if(filterItem.truckName !== undefined && filterItem.truckName !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&truckName="+filterItem.truckName: "?truckName="+filterItem.truckName;
-    if(filterItem.location !== undefined && filterItem.location !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&address="+filterItem.location: "?address="+filterItem.location;
-    if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&keyword="+filterItem.custom_search: "?keyword="+filterItem.custom_search;
+  truckLists() {
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('food-truck'+stroreWalkQuery)
+      commonService.getAPIWithAccessToken('food-truck?pageSize=10000')
         .then( res => {
            
           if ( undefined === res.data.data || !res.data.status ) {
@@ -78,11 +70,6 @@ class FoodTruckLists extends Component {
     } )
   }
 
-  
-  filterTruckLists(){
-    const filterItem = this.state.filterItem;
-    this.truckLists(filterItem);
-  }
   /* Submit Form Handler*/
   submitHandler (event) {
     event.preventDefault();
@@ -94,22 +81,19 @@ class FoodTruckLists extends Component {
       formData.append('address', formInputField.address);
       formData.append('contactPerson', formInputField.contactPerson);
       formData.append('phoneNumber', formInputField.phoneNumber);
-      formData.append('categoryId[0]', formInputField.category_id);
       formData.append('featuredImage', this.state.featuredImage);
-      
       for(let i =0; i < this.state.menuImages.length; i++){
         formData.append('menuImages', this.state.menuImages[i]);
       }
+      for(let j =0; j < this.state.selectedCategories.length; j++){
+        formData.append('categoryId', this.state.selectedCategories[j].value );
+      }
+      
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
-        const storeInfo = this.state.truckLists[rowIndex];
-
-        commonService.postAPIWithAccessToken('food-truck/'+storeInfo.storeId, formData)
+        commonService.postAPIWithAccessToken('food-truck/', formData)
         .then( res => {
-          
-           
-          if ( undefined === res.data.data || !res.data.status ) {
-           
+          if ( undefined === res.data.data || !res.data.status ) {           
             this.setState( { formProccessing: false} );
             toast.error(res.data.message);
             return;
@@ -177,15 +161,11 @@ class FoodTruckLists extends Component {
       menuImages: event.target.files,
     });
   };
+    
+  handleCategoryChange = (selectedOptions) => {
+    this.setState({ selectedCategories: selectedOptions });
+  }
 
-  changeFilterHandler = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-    const filterItem = this.state.filterItem
-    filterItem[name] = value;
-    this.setState({ filterItem: filterItem });
-  };
-  
   /* Validate Form Field */
   validateField(fieldName, value) {
     let fieldValidationErrors = this.state.formErrors;
@@ -235,17 +215,7 @@ class FoodTruckLists extends Component {
       formErrors: {truckName: '', error: ''}
     });
   }
-  /* Edit Food Truck*/
-  handleEditTruck(rowIndex){
-      const storeInfo = this.state.truckLists[rowIndex];
-      const formField = {        
-        truckName: storeInfo.truckName, 
-        contactPerson: storeInfo.contactPerson, 
-        phoneNumber: storeInfo.phoneNumber,
-        address: storeInfo.address, 
-        defaultImage: storeInfo.defaultImage };
-      this.setState({rowIndex: rowIndex, formField: formField, modal: true, formValid: true});
-  }
+  
   /* Delete Food Truck*/
   handleDeleteFoodTruck(rowIndex){
 
@@ -280,7 +250,6 @@ class FoodTruckLists extends Component {
 
   /*Category List API*/
   categoryList() {   
-    
     commonService.getAPIWithAccessToken('category')
       .then( res => {       
          
@@ -289,7 +258,8 @@ class FoodTruckLists extends Component {
           toast.error(res.data.message);
           return;
         }   
-        this.setState({loading:false, categoryList: res.data.data});     
+        this.setState({loading:false, categoryList: res.data.data}); 
+
       } )
       .catch( err => {         
         if(err.response !== undefined && err.response.status === 401) {
@@ -299,12 +269,23 @@ class FoodTruckLists extends Component {
         else 
           this.setState( { loading: false } );
       } )
-    
   }
   
 
   render() {
     const { truckLists, loading, modal, formProccessing, categoryList } = this.state;
+    let categoryItems = []; 
+    let counter = 0;
+    for(const [i, category] of categoryList.entries()){
+      let categoryInfo = {
+        label: category.categoryName,
+        value: category.categoryId
+      }
+      categoryItems.push(categoryInfo);
+      counter = counter+i;
+    }
+
+
     const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
     let loaderElement = '';
     if(loading)        
@@ -321,26 +302,7 @@ class FoodTruckLists extends Component {
           <CardBody>
             
             <Row>
-              <Col md={12}>
-                <Row>                     
-                  <Col md={"5"}>
-                    <FormGroup> 
-                    <Input type="text" placeholder="Search By Name" name="truckName" value={this.state.filterItem.truckName} onChange={this.changeFilterHandler} />            
-                    </FormGroup>  
-                  </Col>
-                  <Col md={"5"}>
-                    <FormGroup> 
-                    <Input type="text" placeholder="Search By Location" name="location" value={this.state.filterItem.location} onChange={this.changeFilterHandler} />       
-                    </FormGroup>  
-                  </Col>
-                  <Col md={"2"}>
-                    <FormGroup className="filter-button-section"> 
-                      <Label htmlFor="filter_organization_id">&nbsp;</Label> 
-                      <Button color="success" type="button" onClick={this.filterTruckLists}>Search</Button> 
-                    </FormGroup>             
-                  </Col>
-                </Row>  
-              </Col>
+              
               <Col md={12}>
                 <FoodTruckData data={truckLists} editStoreAction={this.handleEditStore} deleteFoodTruckAction={this.handleDeleteFoodTruck} dataTableLoadingStatus = {this.state.loading} />
               </Col>
@@ -348,7 +310,7 @@ class FoodTruckLists extends Component {
           </CardBody>
         </Card>
 
-        <Modal isOpen={modal} toggle={this.toggle} className="full-width-modal-section employee-modal">
+        <Modal isOpen={modal} toggle={this.toggle} size="lg" className="full-width-modal-section employee-modal">
           <ModalHeader toggle={this.toggle}>Food Truck</ModalHeader>
           <Form onSubmit={this.submitHandler} noValidate className="texQueForm">
             <ModalBody>
@@ -373,25 +335,10 @@ class FoodTruckLists extends Component {
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
-                  <FormGroup> 
-                    <Label htmlFor="category_id">Category</Label>            
-                    <Input type="select" placeholder="Category *" id="category_id" name="category_id" value={this.state.formField.category_id} onChange={this.changeHandler} >
-                      <option value="">Select Category</option>
-                      {categoryList.map((categoryInfo, index) =>
-                        <SetCategoryDropDownItem key={index} categoryInfo={categoryInfo} />
-                      )}
-                    </Input>
-                    {/*        
-                    <FormGroup check inline>
-                      <Label check>
-                        <Input type="checkbox" id="checkbox2" /> Check me out
-                      </Label>
-                      <Label check>
-                        <Input type="checkbox" id="checkbox2" /> Check me out
-                      </Label>
-                    </FormGroup>
-                    */}
-                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="category_id">Cuisine </Label>            
+                    <Select name="category_id" id="category_id" options={categoryItems} onChange={this.handleCategoryChange} isMulti />
+                  </FormGroup> 
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
@@ -426,10 +373,12 @@ class FoodTruckLists extends Component {
     );
   }
 }
-
+/*
 function SetCategoryDropDownItem (props) {
   const categoryInfo = props.categoryInfo;
-  return (<option value={categoryInfo.categoryId} >{categoryInfo.categoryName}</option>)
+  //return (<option value={categoryInfo.categoryId} >{categoryInfo.categoryName}</option>)
+  
 }
+*/
 
 export default FoodTruckLists;

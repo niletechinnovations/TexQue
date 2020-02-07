@@ -4,17 +4,13 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
-class AutoComplePlaces extends React.Component {
+class AutoCompletePlaces extends React.Component {
   constructor(props) {
     super(props);
     this.state = { address: '' };
   }
   componentDidMount() {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDzoKFBNcgXihrRB9cXrWEa5mJ8b8sCIiQ&libraries=places";
-    document.head.appendChild(script);
-    //document.body.appendChild(script);
+    
   }
   handleChange = address => {
     this.setState({ address });
@@ -29,7 +25,7 @@ class AutoComplePlaces extends React.Component {
  
   render() {
     return (
-      <div className="row">
+      
       <PlacesAutocomplete
         value={this.state.address}
         onChange={this.handleChange}
@@ -39,8 +35,9 @@ class AutoComplePlaces extends React.Component {
           <div>
             <input
               {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input',
+                name: 'address',
+                placeholder: 'Search Your Location ...',
+                className: 'form-control location-search-input',
               })}
             />
             <div className="autocomplete-dropdown-container">
@@ -68,8 +65,8 @@ class AutoComplePlaces extends React.Component {
           </div>
         )}
       </PlacesAutocomplete>
-      </div>
+      
     );
   }
 }
-export default AutoComplePlaces;
+export default AutoCompletePlaces;

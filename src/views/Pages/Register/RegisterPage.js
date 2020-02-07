@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commenService from '../../../core/services/commonService';
 import Loader from '../../../views/Loader/Loader';
+import AutoCompletePlaces from '../../../core/google-map/AutoCompletePlaces';
 
 import "../Login/loginPage.css";
 
@@ -215,7 +216,8 @@ class RegisterPage extends React.Component {
                     </FormGroup>
                     <FormGroup>
                       <Label for="address">Address</Label>
-                      <Input type="text" name="address" id="address" invalid={errors['address'] !== undefined && errors['address'] !== ""} placeholder="1234 Main St" required/>
+                      <AutoCompletePlaces />
+                      {/* <Input type="text" name="address" id="address" invalid={errors['address'] !== undefined && errors['address'] !== ""} placeholder="1234 Main St" required/> */}
                       <FormFeedback>{errors['address']}</FormFeedback>
                     </FormGroup>
                     <Row>

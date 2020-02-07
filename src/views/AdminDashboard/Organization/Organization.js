@@ -22,7 +22,6 @@ class Organization extends Component {
       formErrors: {organization_name: '', email: '', first_name: '', last_name: '', error: ''},
       formValid: false,
       filterItem: { filter_organization_id: '',organization_name: '', location: '', custom_search: ''},
-
     } 
     this.handleEditOrganization = this.handleEditOrganization.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
@@ -45,7 +44,7 @@ class Organization extends Component {
     if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
       organizationQuery += (organizationQuery !=="" ) ? "&keyword="+filterItem.custom_search: "?keyword="+filterItem.custom_search;
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('organization'+organizationQuery)
+      commonService.getAPIWithAccessToken('organization?pageSize=10000'+organizationQuery)
         .then( res => {
           
            
@@ -213,8 +212,32 @@ class Organization extends Component {
   }
   /* Delete organization*/
   handleDeleteOrganization(rowIndex){
-   
-    
+
+    const orgInfo = this.state.organizationList[rowIndex];
+    //console.log(orgInfo);return;
+    let formdata = { "profileId":orgInfo.profileId }
+
+    this.setState( { loading: true}, () => {
+      commonService.deleteAPIWithAccessToken( 'organization',formdata)
+        .then( res => {
+          this.setState({loading: false});
+          if ( undefined === res.data || !res.data.status ) {            
+             toast.error(res.data.message);      
+            return;
+          }         
+          toast.success(res.data.message);
+          this.organizationList();
+        } )
+        .catch( err => {       
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }else{
+            this.setState( { loading: false } );
+            toast.error(err.message);
+          }
+      } )
+    })
     
   }
   filterOragnizationList(){

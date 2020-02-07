@@ -6,14 +6,14 @@ import SingleBlogPage from '../views/Pages/Frontend/SingleBlogPage';
 import LoginPage from '../views/Pages/Login/LoginPage';
  import ResetPassword from '../views/Pages/Login/ResetPassword';
 import RegisterPage from '../views/Pages/Register/RegisterPage';
-import AutoComplePlaces from '../core/google-map/AutoComplePlaces';
+import AutoCompletePlaces from '../core/google-map/AutoCompletePlaces';
 import VerifyEmailPage from '../views/Pages/Login/VerifyEmailPage';
 
 const frontendRoutes = [
   { path: '/', exact: true, name: 'Home', component: HomePage },
   { path: '/home', name: 'Home', component: HomePage },  
   { path: '/about-us', exact: true,  name: 'About us', component: AboutPage },
-  { path: '/map-location', exact: true,  name: 'Map Location', component: AutoComplePlaces },
+  { path: '/test', exact: true,  name: 'Map Location', component: AutoCompletePlaces },
   { path: '/contact-us', exact: true,  name: 'Contact us', component: ContactPage },
   { path: '/blog', exact: true,  name: 'Blog', component: BlogPage },
   { path: '/blog/:token', exact: true,  name: 'Single Blog', component: SingleBlogPage },

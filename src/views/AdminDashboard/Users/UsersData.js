@@ -9,6 +9,7 @@ function UsersRow(props) {
   }  
   return (
     <tr>      
+      <td><div className="profileImage userImg">{Users.firstName.substring(0, 1)}</div></td>
       <td>{Users.firstName}</td>
       <td>{Users.email}</td>
       <td>{Users.phoneNumber}</td>
@@ -42,8 +43,8 @@ class UsersData extends Component {
         phoneNumber: userInfo.phoneNumber || " ",
         address: userInfo.address || " ",
         status: userInfo.status || true,
-        action: <p><Link to={`/admin/user/${userInfo.profileId}`}><i className="fa fa-eye"></i> </Link>
-          <a href="#!" disabled={this.state.buttonProcessing} ><i className="fa fa-trash"></i></a></p>,
+        action: <p><Link to={`/admin/user/${userInfo.profileId}`} className="btn-edit"><i className="fa fa-eye"></i> </Link>
+          <a href="#!" disabled={this.state.buttonProcessing} className="btn-delete" ><i className="fa fa-trash"></i></a></p>,
 
       }  
       rowsItem.push(userDetail);
@@ -55,6 +56,7 @@ class UsersData extends Component {
       <Table responsive hover>
         <thead>
           <tr>            
+            <th scope="col" className="th-user-img"><i className="icon-people"></i></th>
             <th scope="col">Name</th> 
             <th scope="col">Email</th>
             <th scope="col">Phone</th>          
