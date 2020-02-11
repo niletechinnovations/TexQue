@@ -26,6 +26,7 @@ class EnquiryLists extends Component {
     this.submitHandler = this.submitHandler.bind(this);
     this.handleEditEnquiry = this.handleEditEnquiry.bind(this);
     this.acceptEnquiry = this.acceptEnquiry.bind(this);
+    this.rejectEnquiry = this.rejectEnquiry.bind(this);
   }
 
   // Fetch the Enquiry List
@@ -162,7 +163,7 @@ class EnquiryLists extends Component {
   }
 
   acceptEnquiry(){
-    this.setState( { loading: true}, () => {
+    this.setState( { formProccessing: true}, () => {
       const formInputField = this.state.formField;
       const formData = {
         "enquiryId": formInputField.enquiryId,
@@ -172,7 +173,7 @@ class EnquiryLists extends Component {
       commonService.putAPIWithAccessToken('food-truck/enquiry/status/', formData)
         .then( res => {
           if ( undefined === res.data.data || !res.data.status ) {           
-            this.setState( { loading: false} );
+            this.setState( { formProccessing: false} );
             toast.error(res.data.message);
             return;
           } 
@@ -186,7 +187,7 @@ class EnquiryLists extends Component {
             this.props.history.push('/login');
           }
           else
-            this.setState( { loading: false } );
+            this.setState( { formProccessing: false } );
             toast.error(err.message);
         } )
     } );  
@@ -227,7 +228,8 @@ class EnquiryLists extends Component {
   render() {
     const { enquiryLists, loading, modal, formField, formProccessing } = this.state;
     
-    const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
+    const acceptBtnText = <>Submitting <i className="fa fa-spinner"></i></>;
+    
     let loaderElement = '';
     if(loading)        
       loaderElement = <Loader />
@@ -308,10 +310,9 @@ class EnquiryLists extends Component {
               </Row>
             </ModalBody>
             <ModalFooter>
-                <Button className="btn-success" type="button" onClick={this.acceptEnquiry}> <i className="fa fa-check"></i> Accept</Button>
+                <Button className="btn-success" type="button" onClick={this.acceptEnquiry}> <i className="fa fa-check"></i> {formProccessing ? acceptBtnText : 'Accept' } </Button>
                 <Button className="btn-danger" type="button" onClick={this.rejectEnquiry}> <i className="fa fa-times"></i> Reject</Button>
-                <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
-                <Button color="primary" type="submit">{formProccessing ? processingBtnText : 'Update Details' }</Button>
+                {/* <Button color="primary" type="submit">{formProccessing ? processingBtnText : 'Update Details' }</Button> */}
                 <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
           </Form>
