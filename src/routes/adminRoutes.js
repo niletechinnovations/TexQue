@@ -6,6 +6,7 @@ import UserDetails from '../views/AdminDashboard/Users/User';
 import foodTruckList from '../views/AdminDashboard/Organization/FoodTruck/FoodTruckListing';
 import EditFoodTruck from '../views/AdminDashboard/Organization/FoodTruck/EditFoodTruckList';
 import OrgFoodTruckList from '../views/AdminDashboard/Organization/FoodTruck/FoodTruckListing';
+import EnquiryListing from '../views/AdminDashboard/Organization/Enquiry/EnquiryListing';
 
 
 /*
@@ -21,6 +22,7 @@ const adminRoutes = [
   { path: '/admin/organization/truck-listing', exact: true, name: 'Manage Food Truck', component: foodTruckList },
   { path: '/admin/organization/truck-listing/:organizationId', exact: true, name: 'Organization Food Truck Listings', component: OrgFoodTruckList },
   { path: '/admin/organization/edit-truck/:foodTruckId', exact: true,  name: 'Edit Food Truck', component: EditFoodTruck },
+  { path: '/admin/enquiries', exact: true, name: 'Manage Enquiries', component: EnquiryListing },
   /* { path: '/user/change-password', exact: true,  name: 'Change Password', component: ChangePassword },
   */
 ];

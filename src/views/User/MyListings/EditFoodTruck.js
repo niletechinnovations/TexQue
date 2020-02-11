@@ -135,7 +135,7 @@ class EditFoodTruck extends Component {
         
         this.setState({ modal: false});
         toast.success(res.data.message);
-        //this.props.history.push('/user/my-listings');
+        this.props.history.push('/user/my-listings');
        
       } )
       .catch( err => { 
@@ -271,7 +271,7 @@ class EditFoodTruck extends Component {
           }         
           toast.success(res.data.message);
           //this.props.history.push(`/user/my-listings/`+this.state.foodTruckId);
-          //window.location.reload();
+          window.location.reload();
         } )
         .catch( err => {       
             

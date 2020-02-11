@@ -4,6 +4,7 @@ import ChangePassword from '../views/User/MyProfile/ChangePassword';
 import MyListings from '../views/User/MyListings/FoodTruckLists';
 import ListingDetails from '../views/User/MyListings/FoodTruckDetails';
 import EditFoodTruck from '../views/User/MyListings/EditFoodTruck';
+import EnquiryLists from '../views/User/Enquiries/EnquiryLists';
 
 const userRoutes = [
   { path: '/user/', exact: true, name: 'Home' },
@@ -13,6 +14,7 @@ const userRoutes = [
   { path: '/user/my-listings', exact: true, name: 'My Listings', component: MyListings },
   { path: '/user/my-listings/:foodTruckId', exact: true, name: 'Edit Food Truck', component: EditFoodTruck },
   { path: '/user/listing-details', exact: true, name: 'My Listings', component: ListingDetails },
+  { path: '/user/enquiries', exact:true, name:'Enquiry Lists', component: EnquiryLists}
 ];
 
 export default userRoutes;

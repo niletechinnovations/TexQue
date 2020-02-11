@@ -4,6 +4,9 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
+import Script from 'react-load-script'
+
+
 class AutoCompletePlaces extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +28,8 @@ class AutoCompletePlaces extends React.Component {
  
   render() {
     return (
+      <>
+      <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaq7mc_lts3Xensjk7JvnUU1q8dNG0avo&libraries=places" />
       
       <PlacesAutocomplete
         value={this.state.address}
@@ -65,7 +70,7 @@ class AutoCompletePlaces extends React.Component {
           </div>
         )}
       </PlacesAutocomplete>
-      
+      </>
     );
   }
 }

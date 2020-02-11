@@ -38,5 +38,4 @@
 .listing-table thead,
 .listing-table tbody{background: #ffffff;}
 
-.listing-table thead th,
-.listing-table tbody tr td{ padding: 10px}
+.listing-table thead th,.listing-table tbody tr td, .listing-table.table-sm th{ padding: 7px}

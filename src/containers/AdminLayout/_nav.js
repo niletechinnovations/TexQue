@@ -29,7 +29,7 @@ export default {
     {
       name: 'Manage Enquiries',      
       icon: 'icon-envelope', 
-      url: '/admin/enquiry',  
+      url: '/admin/enquiries',  
     },
     {
       name: 'Manage Cuisine',

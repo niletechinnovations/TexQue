@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import { Card, CardBody, CardHeader, Media, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
@@ -15,6 +15,8 @@ class Organization extends Component {
     this.state = {
       modal: false,      
       organizationList: [],
+      orgDocument: [],
+      organizationDocuments: [],
       loading: true,
       rowIndex: -1,
       formProccessing: false,
@@ -27,7 +29,7 @@ class Organization extends Component {
     this.submitHandler = this.submitHandler.bind(this);
     this.handleDeleteOrganization = this.handleDeleteOrganization.bind(this);
     this.filterOragnizationList = this.filterOragnizationList.bind(this);
-    
+    this.uploadOrgDocument = this.uploadOrgDocument.bind(this);
   }
   // Fetch the organization List
   componentDidMount() { 
@@ -82,6 +84,7 @@ class Organization extends Component {
         "address": formInputField.address, 
         "organizationName": formInputField.organization_name
       };
+
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
        const organizationInfo = this.state.organizationList[rowIndex];
@@ -208,7 +211,7 @@ class Organization extends Component {
         phoneNumber: organizationInfo.phoneNumber, 
         address: organizationInfo.address, 
        };
-      this.setState({rowIndex: rowIndex, formField: formField, modal: true, formValid: true});
+      this.setState({rowIndex: rowIndex, formField: formField, organizationDocuments:organizationInfo.documents, modal: true, formValid: true});
   }
   /* Delete organization*/
   handleDeleteOrganization(rowIndex){
@@ -253,9 +256,55 @@ class Organization extends Component {
     this.setState({ filterItem: filterItem });
   };
 
+  //Set organization document on change
+  onDocumentChange = event => {   
+    this.setState({
+      orgDocument: event.target.files,
+    });
+  };
+  
+  //To upload organization documentes
+  uploadOrgDocument(event) {
+    event.preventDefault();
+    const rowIndex = this.state.rowIndex;
+    if( rowIndex > -1 && this.state.orgDocument.length>0){
+      const formData = new FormData();
+      for(let i =0; i < this.state.orgDocument.length; i++){
+        formData.append('documents', this.state.orgDocument[i]);
+      }
+
+      const orgInfo = this.state.organizationList[rowIndex];
+      formData.append('organizationId', orgInfo.organizationId);
+      
+       commonService.putAPIWithAccessToken('organization/documents', formData)
+       .then( res => {
+         
+         if ( undefined === res.data.data || !res.data.status ) {
+           this.setState( { formProccessing: false} );
+           toast.error(res.data.message);
+           return;
+         }
+         this.setState({ modal: false, formProccessing: false});
+         toast.success(res.data.message);
+         this.organizationList();
+       } )
+       .catch( err => {         
+         if(err.response !== undefined && err.response.status === 401) {
+           localStorage.clear();
+           this.props.history.push('/login');
+         }
+         else
+           this.setState( { formProccessing: false } );
+           toast.error(err.message);
+       } )
+    }
+  }
+
+
+
   render() {
 
-    const { organizationList, loading, modal, formProccessing } = this.state;     
+    const { organizationList,organizationDocuments, loading, modal, formProccessing } = this.state;     
     let loaderElement = '';
     if(loading)        
       loaderElement = <Loader />
@@ -292,8 +341,7 @@ class Organization extends Component {
                         </FormGroup>  
                       </Col>
                       <Col md={"2"}>
-                        <FormGroup className="filter-button-section"> 
-                          <Label htmlFor="filter_organization_id">&nbsp;</Label> 
+                        <FormGroup> 
                           <Button color="success" type="button" onClick={this.filterOragnizationList}>Search</Button> 
                         </FormGroup>             
                       </Col>
@@ -348,7 +396,21 @@ class Organization extends Component {
                     <Label htmlFor="address">Address</Label>            
                     <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
                   </FormGroup>
-                </Col>                
+                </Col>
+                <Col md={"6"}>  
+                  <FormGroup> 
+                    <Label htmlFor="orgDoc">Company Documents</Label>            
+                    <Input type="file" id="orgDoc" className="chooseOrgDoc" name="orgDoc" multiple onChange={this.onDocumentChange} />
+                    <Button color="info" className="uploadDocBtn" size="sm" onClick={this.uploadOrgDocument}>Upload</Button>
+                  </FormGroup>
+                </Col>
+                <Col md={"12"} className="mt-2"> 
+                  {organizationDocuments.map((doc, index) =>
+                    <Media className="docBtnArea" key={index}>
+                      <a className="btn btn-primary btn-sm" href={doc} target="_blank" rel="noopener noreferrer" > <i className="fa fa-download"></i></a>
+                    </Media>
+                  )}
+                </Col>             
                 
               </Row>           
             </ModalBody>
