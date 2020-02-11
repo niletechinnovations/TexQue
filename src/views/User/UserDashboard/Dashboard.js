@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-//import { Bar, Line } from 'react-chartjs-2';
 import {
   Row, Col, Table,
   Card, CardHeader, CardBody, CardFooter
 } from 'reactstrap';
-
+import commonService from '../../../core/services/commonService';
+import Loader from '../../Loader/Loader';
 import './Dashboard.css';
 
 class Dashboard extends Component {
@@ -13,16 +13,52 @@ class Dashboard extends Component {
 
     this.state = {
       data: '',
+      enquiryLists: [],
+      loading: false
     };
+  }
+
+  // Fetch the Enquiry List
+  componentDidMount() {     
+    this.enquiryLists({});   
+  }
+
+  /* Enquiry List API */
+  enquiryLists() {
+    this.setState( { loading: true}, () => {
+      commonService.getAPIWithAccessToken('food-truck/enquiry?pageSize=10')
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {
+            this.setState( { loading: false } );
+            return;
+          }   
+          this.setState({loading:false, enquiryLists: res.data.data.enquiryList});     
+         
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else {
+            this.setState( { loading: false } );
+          }
+        } )
+    } )
   }
 
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   render() {
+    const { loading, enquiryLists }  = this.state;
+    let loaderElement = '';
+    if(loading)        
+      loaderElement = <Loader />
 
     return (
       <div className="user-dashboard">
+        {loaderElement}
         <Row>
           <Col xs="6" sm="6" md="4" lg="4">
             <Card className="card-stats">
@@ -35,15 +71,15 @@ class Dashboard extends Component {
                   </Col>
                   <Col md="84" lg="7">
                     <div className="numbers">
-                      <p className="card-category">Total Booking</p>
-                      <p className="card-title">15,000</p>
+                      <p className="card-category">Total Listing</p>
+                      <p className="card-title">1,000</p>
                     </div>
                   </Col>
                 </Row>
               </CardBody>
               <CardFooter>
                 <hr />
-                <div className="stats"><i className="fa fa-eye"></i> Browse All Bookings</div>
+                <div className="stats"><i className="fa fa-eye"></i> Browse All Listings</div>
               </CardFooter>
             </Card>
           </Col>
@@ -100,7 +136,7 @@ class Dashboard extends Component {
         <Row>
           <Col md="12" className="mt-4">
             <Card className="card-list-info">
-              <CardHeader tag="h4">Recent Requests</CardHeader>
+              <CardHeader tag="h4">Recent Enquiries</CardHeader>
               <CardBody>
                 <Table size="sm" className="listing-table">
                   <thead>
@@ -108,81 +144,21 @@ class Dashboard extends Component {
                       <th>#</th>
                       <th>Name</th>
                       <th>Phone</th>
-                      <th>Email</th>
-                      <th>Created on</th>
+                      <th>Food Truck</th>
+                      <th>Date</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Royal Real Estates	</td>
-                      <td>9898989898</td>
-                      <td>abc@mdo.com</td>
-                      <td>02 Jan 2020</td>
+                  {enquiryLists.map((enqInfo, index) => 
+                    <tr key={index}>
+                      <th scope="row">{index+1}</th>
+                      <td>{enqInfo.contactPerson}</td>
+                      <td>{enqInfo.contactNo}</td>
+                      <td>{enqInfo.truckName}</td>
+                      <td>{(new Date(enqInfo.createdAt)).toLocaleDateString("en-US")}</td>
                     </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Colors Car Services	</td>
-                      <td>8787878788</td>
-                      <td>xyz@fat.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Larry</td>
-                      <td>9898989898</td>
-                      <td>text@twitter.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">4</th>
-                      <td>Larry</td>
-                      <td>9898989898</td>
-                      <td>test@twitter.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">5</th>
-                      <td>Jb Montesari School	</td>
-                      <td>9898989898</td>
-                      <td>aa@twitter.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">6</th>
-                      <td>Larry Panna</td>
-                      <td>9898989898</td>
-                      <td>te@twitter.com</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">7</th>
-                      <td>Goman Travels	</td>
-                      <td>9898989898</td>
-                      <td>tt@twitter.co</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">8</th>
-                      <td>Pearl Perfumes	</td>
-                      <td>9898989898</td>
-                      <td>ttt@twitter.co</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">9</th>
-                      <td>Taj Luxury Hotel	</td>
-                      <td>9898989898</td>
-                      <td>eee@twitter.co</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">10</th>
-                      <td>National Auto Care	</td>
-                      <td>9898989898</td>
-                      <td>aaaa@twitter.co</td>
-                      <td>02 Jan 2020</td>
-                    </tr>
+                  )}
+                  
                   </tbody>
                 </Table>
               </CardBody>
