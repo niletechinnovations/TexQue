@@ -4,16 +4,26 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
-import Script from 'react-load-script'
+
 
 
 class AutoCompletePlaces extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { address: '' };
+    this.state = { address: '', scriptLoading: false };
   }
   componentDidMount() {
     
+  }
+  componentWillMount() {
+    var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = `https://maps.google.com/maps/api/js?key=AIzaSyBaq7mc_lts3Xensjk7JvnUU1q8dNG0avo&libraries=places`;
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+        s.addEventListener('load', e => {
+            this.setState({scriptLoading: true});
+        })
   }
   handleChange = address => {
     this.setState({ address });
@@ -27,9 +37,13 @@ class AutoCompletePlaces extends React.Component {
   };
  
   render() {
+   
+    if(!this.state.scriptLoading)
+      return (<></>);
+    
     return (
       <>
-      <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaq7mc_lts3Xensjk7JvnUU1q8dNG0avo&libraries=places" />
+      
       
       <PlacesAutocomplete
         value={this.state.address}
@@ -72,6 +86,7 @@ class AutoCompletePlaces extends React.Component {
       </PlacesAutocomplete>
       </>
     );
+    
   }
 }
 export default AutoCompletePlaces;
