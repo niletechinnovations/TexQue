@@ -22,13 +22,16 @@ class RegisterPage extends React.Component {
       password: '',
       confirmPassword: '',
       organizationName: '',
+      address: '',
+      latitude:'',
+      longitude:'',
       loading: false,
       errors: {}
     };
 
     this.changeHandler = this.changeHandler.bind(this);
     this.submituserRegistrationForm = this.submituserRegistrationForm.bind(this);
-    
+    this.setLatitudeLongitude = this.setLatitudeLongitude.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +49,9 @@ class RegisterPage extends React.Component {
           phoneNumber: this.state.phoneNumber,
           password: this.state.password,
           organizationName: this.state.organizationName,
+          address: this.state.address,
+          latitude: this.state.latitude,
+          longitude: this.state.longitude,
           role: 'organization'
         };
         console.log(signupData);
@@ -64,7 +70,7 @@ class RegisterPage extends React.Component {
                 loading: false,              
               } )
               toast.success(res.data.message);
-              this.props.history.push('/login');
+              //this.props.history.push('/login');
             } )
             .catch( err => {
               
@@ -138,8 +144,12 @@ class RegisterPage extends React.Component {
       loading: false,
       errors: errors
     });
-    console.error(errors);
+    //console.error(errors);
     return formIsValid;
+  }
+
+  setLatitudeLongitude(address, latLng){
+    this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address })
   }
 
   render() {
@@ -216,7 +226,7 @@ class RegisterPage extends React.Component {
                     </FormGroup>
                     <FormGroup>
                       <Label for="address">Address</Label>
-                      <AutoCompletePlaces />
+                      <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} />
                       {/* <Input type="text" name="address" id="address" invalid={errors['address'] !== undefined && errors['address'] !== ""} placeholder="1234 Main St" required/> */}
                       <FormFeedback>{errors['address']}</FormFeedback>
                     </FormGroup>

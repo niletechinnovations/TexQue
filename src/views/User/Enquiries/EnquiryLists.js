@@ -20,11 +20,12 @@ class EnquiryLists extends Component {
       enquiryLists: [],
       loading: true,
       rowIndex: -1,
-      formField: { enquiryId: '', truckName: '', contactPerson: '', phoneNumber:'' },
+      formField: { enquiryId: '', truckName: '', contactPerson: '', phoneNumber:'', comment:'' },
      
     } 
     this.submitHandler = this.submitHandler.bind(this);
     this.handleEditEnquiry = this.handleEditEnquiry.bind(this);
+    this.acceptEnquiry = this.acceptEnquiry.bind(this);
   }
 
   // Fetch the Enquiry List
@@ -160,10 +161,68 @@ class EnquiryLists extends Component {
       this.setState({rowIndex: rowIndex, formField: formField, modal: true });
   }
 
-/*  changeStatusUpdate(statusCode){
-    this.submitHandler();
+  acceptEnquiry(){
+    this.setState( { loading: true}, () => {
+      const formInputField = this.state.formField;
+      const formData = {
+        "enquiryId": formInputField.enquiryId,
+        "status": 1, 
+        "comments": formInputField.comment
+      };
+      commonService.putAPIWithAccessToken('food-truck/enquiry/status/', formData)
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {           
+            this.setState( { loading: false} );
+            toast.error(res.data.message);
+            return;
+          } 
+          this.setState({ modal: false, loading: false});
+          toast.success(res.data.message);
+          this.enquiryLists();        
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else
+            this.setState( { loading: false } );
+            toast.error(err.message);
+        } )
+    } );  
   }
-*/
+
+  // Reject enquiry
+  rejectEnquiry(){
+    this.setState( { loading: true}, () => {
+      const formInputField = this.state.formField;
+      const formData = {
+        "enquiryId": formInputField.enquiryId,
+        "status": 2, 
+        "comments": formInputField.comment
+      };
+      commonService.putAPIWithAccessToken('food-truck/enquiry/status/', formData)
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {           
+            this.setState( { loading: false} );
+            toast.error(res.data.message);
+            return;
+          } 
+          this.setState({ modal: false, loading: false});
+          toast.success(res.data.message);
+          this.enquiryLists();        
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else
+            this.setState( { loading: false } );
+            toast.error(err.message);
+        } )
+    } );  
+  }
 
   render() {
     const { enquiryLists, loading, modal, formField, formProccessing } = this.state;
@@ -243,14 +302,14 @@ class EnquiryLists extends Component {
                 <Col md={"12"}>
                   <FormGroup> 
                     <Label htmlFor="comment">Comment</Label>            
-                    <Input type="textarea" placeholder="Put your comments here" id="comment" name="comment" value={formField.comment} />
+                    <Input type="textarea" placeholder="Put your comments here" id="comment" name="comment" value={formField.comment} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
               </Row>
             </ModalBody>
             <ModalFooter>
-                <Button className="btn-success" type="submit" value="1"> <i className="fa fa-check"></i> Accept</Button>
-                <Button className="btn-danger" type="submit"> <i className="fa fa-times"></i> Reject</Button>
+                <Button className="btn-success" type="button" onClick={this.acceptEnquiry}> <i className="fa fa-check"></i> Accept</Button>
+                <Button className="btn-danger" type="button" onClick={this.rejectEnquiry}> <i className="fa fa-times"></i> Reject</Button>
                 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
                 <Button color="primary" type="submit">{formProccessing ? processingBtnText : 'Update Details' }</Button>
                 <Button color="secondary" onClick={this.toggle}>Cancel</Button>

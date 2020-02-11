@@ -10,7 +10,7 @@ import PlacesAutocomplete, {
 class AutoCompletePlaces extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { address: '', scriptLoading: false };
+    this.state = { address: '', latitude:'', longitude:'', scriptLoading: false };
   }
   componentDidMount() {
     
@@ -30,9 +30,19 @@ class AutoCompletePlaces extends React.Component {
   };
  
   handleSelect = address => {
+    this.setState({ address });
+    console.log(address);
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
+      //.then(latLng => console.log('Success', latLng))
+      .then( 
+        latLng => this.props.setLatitudeLongitude(address,latLng) 
+      )
+      /*.then(({ lat, lng }) =>
+        this.setState({ latitude:lat, longitude:lng })
+        
+        //this.props.setLatitudeLongitude(latLng)
+      )*/
       .catch(error => console.error('Error', error));
   };
  
