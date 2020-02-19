@@ -14,8 +14,12 @@ import commonService from '../../../core/services/commonService';
 import FoodTruckData from './FoodTruckData';
 import Loader from '../../Loader/Loader';
 import { FormErrors } from '../../Formerrors/Formerrors';
+import AutoCompletePlaces from '../../../core/google-map/AutoCompletePlaces';
 
 import "./MyList.css";
+
+import Checkbox from "../../../core/commonComponent/Checkbox";
+const weekArr = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
 class FoodTruckLists extends Component {
   constructor(props){
@@ -28,21 +32,34 @@ class FoodTruckLists extends Component {
       formProccessing: false,
       rowIndex: -1,
       featuredImage: '',
+      galleryImages:[],
       menuImages: [],
       selectedCategories: [],
+      address: '',
+      latitude:'',
+      longitude:'',
+      checkboxes: weekArr.reduce(
+        (options, option) => ({
+          ...options,
+          [option]: false
+        }),
+        {}
+      ),
       formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
-      formErrors: { truckName: '', contactPerson: '', phoneNumber:'', address:'', error: ''},
+      formErrors: { truckName: '', contactPerson: '', phoneNumber:'', error: ''},
       formValid: false,
     } 
     this.submitHandler = this.submitHandler.bind(this);
     this.handleDeleteFoodTruck = this.handleDeleteFoodTruck.bind(this);
+    this.setLatitudeLongitude = this.setLatitudeLongitude.bind(this);
+
   }
-  // Fetch the Employee List
+
   componentDidMount() {     
     this.truckLists({});   
     this.categoryList();
   }
-  /*Employee List API*/
+
   truckLists() {
     this.setState( { loading: true}, () => {
       commonService.getAPIWithAccessToken('food-truck?pageSize=10000')
@@ -78,16 +95,27 @@ class FoodTruckLists extends Component {
       const formInputField = this.state.formField;
       const formData = new FormData();
       formData.append('truckName', formInputField.truckName);
-      formData.append('address', formInputField.address);
       formData.append('contactPerson', formInputField.contactPerson);
       formData.append('phoneNumber', formInputField.phoneNumber);
+      formData.append('address', this.state.address);
+      formData.append('latitude', this.state.latitude);
+      formData.append('longitude', this.state.longitude);
       formData.append('featuredImage', this.state.featuredImage);
+      for(let i =0; i < this.state.galleryImages.length; i++){
+        formData.append('truckImages', this.state.galleryImages[i]);
+      }
       for(let i =0; i < this.state.menuImages.length; i++){
         formData.append('menuImages', this.state.menuImages[i]);
       }
       for(let j =0; j < this.state.selectedCategories.length; j++){
         formData.append('categoryId', this.state.selectedCategories[j].value );
       }
+
+      Object.keys(this.state.checkboxes)
+      .filter(checkbox => this.state.checkboxes[checkbox])
+      .forEach(checkbox => {
+        formData.append('schedules', checkbox );
+      });
       
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
@@ -156,6 +184,11 @@ class FoodTruckLists extends Component {
       featuredImage: e.target.files[0]
     })
   };
+  onGalleryImageChange = event => {   
+    this.setState({
+      galleryImages: event.target.files,
+    });
+  };
   onMenuImageChange = event => {   
     this.setState({
       menuImages: event.target.files,
@@ -165,6 +198,16 @@ class FoodTruckLists extends Component {
   handleCategoryChange = (selectedOptions) => {
     this.setState({ selectedCategories: selectedOptions });
   }
+
+  handleAvlChange = e => {
+    const { name } = e.target;
+    this.setState(prevState => ({
+      checkboxes: {
+        ...prevState.checkboxes,
+        [name]: !prevState.checkboxes[name]
+      }
+    }));
+  };
 
   /* Validate Form Field */
   validateField(fieldName, value) {
@@ -270,6 +313,11 @@ class FoodTruckLists extends Component {
           this.setState( { loading: false } );
       } )
   }
+
+  // Set address, latitude and longitude
+  setLatitudeLongitude(address, latLng){
+    this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address })
+  }
   
 
   render() {
@@ -336,15 +384,21 @@ class FoodTruckLists extends Component {
                 </Col>
                 <Col md={"6"}>
                   <FormGroup>
-                    <Label htmlFor="category_id">Cuisine </Label>            
+                    <Label htmlFor="category_id">Cuisine</Label>            
                     <Select name="category_id" id="category_id" options={categoryItems} onChange={this.handleCategoryChange} isMulti />
                   </FormGroup> 
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="defaultImage">Default Image *</Label>            
+                    <Label htmlFor="defaultImage">Main Image *</Label>            
                     <Input type="file" id="defaultImage" name="defaultImage" className="form-control"  onChange={this.handleImageChange} required />
                   </FormGroup>              
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup>
+                    <Label htmlFor="truckImages">Gallery Images</Label>            
+                    <Input type="file" id="truckImages" name="truckImages" className="form-control" multiple onChange={this.onGalleryImageChange} />
+                  </FormGroup> 
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
@@ -352,11 +406,29 @@ class FoodTruckLists extends Component {
                     <Input type="file" id="menu" name="menu" className="form-control" multiple onChange={this.onMenuImageChange} />
                   </FormGroup>              
                 </Col>
-                <Col md={"12"}>
+                <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="address">Address</Label>            
-                    <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
+                    <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} />
                   </FormGroup>
+                </Col>
+                <Col md={"12"}>
+                  <FormGroup>
+                    <Label htmlFor="avl">Availability </Label>
+                    {weekArr.map((week, index) =>  
+                    <FormGroup check inline key={index}>
+                      <Label check>
+                      <Checkbox
+                        label={week}
+                        isSelected={ this.state.checkboxes[week]}
+                        onCheckboxChange={this.handleAvlChange}
+                        key={week}
+                      />
+                        {/* <Input type="checkbox" value={week} onChange={this.handleAvlChange} /> {week} */}
+                      </Label>
+                    </FormGroup>
+                    )}
+                  </FormGroup>  
                 </Col>
               </Row>
             </ModalBody>
@@ -373,12 +445,5 @@ class FoodTruckLists extends Component {
     );
   }
 }
-/*
-function SetCategoryDropDownItem (props) {
-  const categoryInfo = props.categoryInfo;
-  //return (<option value={categoryInfo.categoryId} >{categoryInfo.categoryName}</option>)
-  
-}
-*/
 
 export default FoodTruckLists;

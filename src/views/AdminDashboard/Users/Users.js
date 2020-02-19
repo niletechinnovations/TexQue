@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row} from 'reactstrap';
+import { Card, CardBody, Col, Row} from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
@@ -64,14 +64,10 @@ class Users extends Component {
         <Row>
           <Col lg={12}>
             <Card>
-              <CardHeader>
-                <strong>Users List</strong> 
-              </CardHeader>
               <CardBody>
                 <ToastContainer />
                 {loaderElement}
-                <UsersData data={userList} />
-                  
+                <UsersData data={userList} editUserAction={this.handleEditUser} deleteUserAction={this.handleDeleteUser} dataTableLoadingStatus = {this.state.loading} />
               </CardBody>
             </Card>
           </Col>

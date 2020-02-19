@@ -8,10 +8,15 @@ import Select from 'react-select';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
-//import SetCategoryDropDownItem from '../../../core/commonComponent/categoryDropDown';
 import Loader from '../../Loader/Loader';
 import { FormErrors } from '../../Formerrors/Formerrors';
+import AutoCompletePlaces from '../../../core/google-map/AutoCompletePlaces';
+
 import "./EditFoodTruck.css";
+
+import Checkbox from "../../../core/commonComponent/Checkbox";
+const weekArr = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
 
 class EditFoodTruck extends Component {
   constructor(props) {
@@ -28,14 +33,27 @@ class EditFoodTruck extends Component {
       menuImages: [],
       selectedCategories: [],
       foodTruckDetail: {},
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
-      formErrors: { truckName: '', contactPerson: '', phoneNumber:'', address:'', error: ''},
+      address: '',
+      latitude:'',
+      longitude:'',
+      checkboxes: weekArr.reduce(
+        (options, option) => ({
+          ...options,
+          [option]: false
+        }),
+        {}
+      ),
+      schedules: [],
+      selectedDays: [],
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', address:'', description:'', defaultImage: '',category_id:''},
+      formErrors: { truckName: '', contactPerson: '', phoneNumber:'', error: ''},
       formValid: false,
     };
     this.submitHandler = this.submitHandler.bind(this);
     this.deleteTruckImage = this.deleteTruckImage.bind(this);
+    this.setLatitudeLongitude = this.setLatitudeLongitude.bind(this);
   }
-
+  
   componentDidMount() {     
     const { match: { params } } = this.props;    
     if(params.foodTruckId !== undefined && params.foodTruckId !=="") {
@@ -52,7 +70,6 @@ class EditFoodTruck extends Component {
         commonService.getAPIWithAccessToken('food-truck/'+foodTruckId)
         .then( res => {
           if ( undefined === res.data.data || !res.data.status ) {
-           
             this.setState( { loading: false} );
             toast.error(res.data.message);
             return;
@@ -63,6 +80,7 @@ class EditFoodTruck extends Component {
           formField.contactPerson = foodTruckDetail.contactPerson;
           formField.phoneNumber = foodTruckDetail.phoneNumber;
           formField.address = foodTruckDetail.address;
+          formField.description = foodTruckDetail.description;
           formField.category_id = foodTruckDetail.categories.length > 0 ? foodTruckDetail.categories : "";
 
           let selectedOption = [];
@@ -79,6 +97,10 @@ class EditFoodTruck extends Component {
             this.setState({ selectedCategories: selectedOption });
           }
           
+          const listItems = foodTruckDetail.schedules;
+          //const listItems = foodTruckDetail.schedules.map();
+          this.setState({ schedules: listItems });
+          
 
           this.setState({ loading: false, foodTruckDetail: foodTruckDetail, formValid: true, formField: formField});
         } )
@@ -94,7 +116,6 @@ class EditFoodTruck extends Component {
     } );
   }
  
-
   /* Submit Form Handler*/
   submitHandler (event) {
     event.preventDefault();
@@ -104,9 +125,13 @@ class EditFoodTruck extends Component {
       const formData = new FormData();
       formData.append('foodTruckId', this.state.foodTruckId);
       formData.append('truckName', formInputField.truckName);
-      formData.append('address', formInputField.address);
       formData.append('contactPerson', formInputField.contactPerson);
       formData.append('phoneNumber', formInputField.phoneNumber);
+      formData.append('description', formInputField.description);
+      formData.append('address', this.state.address);
+      formData.append('latitude', this.state.latitude);
+      formData.append('longitude', this.state.longitude);
+      
       if(this.state.featuredImage !== "")
         formData.append('featuredImage', this.state.featuredImage);
       
@@ -122,11 +147,15 @@ class EditFoodTruck extends Component {
         formData.append('categoryId', this.state.selectedCategories[j].value );
       }
       
-      //console.log(this.state.selectedCategories);
-      //return;
+      Object.keys(this.state.checkboxes)
+      .filter(checkbox => this.state.checkboxes[checkbox])
+      .forEach(checkbox => {
+        formData.append('schedules', checkbox );
+      });
+      
+      
       commonService.putAPIWithAccessToken('food-truck', formData)
       .then( res => {
-        //debugger;
         if ( undefined === res.data.data || !res.data.status ) { 
           this.setState( { formProccessing: false} );
           toast.error(res.data.message);
@@ -139,7 +168,6 @@ class EditFoodTruck extends Component {
        
       } )
       .catch( err => { 
-        //debugger;        
         if(err.response !== undefined && err.response.status === 401) {
           localStorage.clear();
           this.props.history.push('/login');
@@ -158,9 +186,19 @@ class EditFoodTruck extends Component {
     const value = event.target.value;
     const formField = this.state.formField
     formField[name] = value;
-    this.setState({ formField: formField },
+    this.setState({ formField: formField, },
                   () => { this.validateField(name, value) });
   };
+  handleAvlChange = e => {
+    const { name } = e.target;
+    this.setState(prevState => ({
+      checkboxes: {
+        ...prevState.checkboxes,
+        [name]: !prevState.checkboxes[name]
+      }
+    }));
+  };
+
   handleImageChange = (e) => {
     this.setState({
       featuredImage: e.target.files[0]
@@ -197,10 +235,7 @@ class EditFoodTruck extends Component {
       case 'phoneNumber':        
         fieldValidationErrors.phoneNumber = (value !== '') ? '' : ' is required';
         break;
-      case 'address':        
-        fieldValidationErrors.address = (value !== '') ? '' : ' is required';
-        break;
-                 
+                
       default:
         break;
     }
@@ -226,7 +261,7 @@ class EditFoodTruck extends Component {
       modal: !this.state.modal,
       rowIndex: -1,
       formValid: false,
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '', },
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', description:'', address: '', },
       formErrors: {truckName: '', error: ''}
     });
   }
@@ -270,7 +305,6 @@ class EditFoodTruck extends Component {
             return;
           }         
           toast.success(res.data.message);
-          //this.props.history.push(`/user/my-listings/`+this.state.foodTruckId);
           window.location.reload();
         } )
         .catch( err => {       
@@ -285,6 +319,11 @@ class EditFoodTruck extends Component {
           }
       } )
     })
+  }
+
+  // Set address, latitude and longitude
+  setLatitudeLongitude(address, latLng){
+    this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address })
   }
 
 
@@ -309,7 +348,7 @@ class EditFoodTruck extends Component {
       categoryItems.push(categoryInfo);
       counter = counter+i;
     }
-
+    
     
     
     if(loading)        
@@ -319,7 +358,10 @@ class EditFoodTruck extends Component {
         {loaderElement}
         <Card>
           <CardHeader className="mainHeading">
-            <strong>Food Truck</strong>
+            <strong className="mr-5">Food Truck</strong>
+            <Link to={`/user/comments/`+ this.state.foodTruckId} className="ml-5 btn btn-sm btn btn-outline-info">Comments: {foodTruckDetail.totalComments}</Link> &nbsp;
+            <Link to={`/user/reviews/`+ this.state.foodTruckId} className="btn btn-sm btn btn-outline-info">Reviews: {foodTruckDetail.totalReviews}</Link>
+            
             <Link to="/user/my-listings" className="btn btn-sm btn-secondary addListing pull-right"><i className="fa fa-arrow-left"></i> Back</Link>
           </CardHeader>
           <CardBody>
@@ -337,13 +379,13 @@ class EditFoodTruck extends Component {
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="contactPerson">Contact Person *</Label>            
-                    <Input type="text" placeholder="Contact Person" id="contactPerson" name="contactPerson" value={this.state.formField.contactPerson} onChange={this.changeHandler}  />
+                    <Input type="text" placeholder="Contact Person" id="contactPerson" name="contactPerson" value={this.state.formField.contactPerson} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="phoneNumber">Phone Number *</Label>            
-                    <Input type="text" placeholder="Phone Number" id="phoneNumber" name="phoneNumber" value={this.state.formField.phoneNumber} onChange={this.changeHandler}  />
+                    <Input type="texInputt" placeholder="Phone Number" id="phoneNumber" name="phoneNumber" value={this.state.formField.phoneNumber} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
@@ -352,41 +394,48 @@ class EditFoodTruck extends Component {
                     <Select name="category_id" id="category_id" options={categoryItems} value={selectedCategories} onChange={this.handleCategoryChange} isMulti />
                   </FormGroup>  
                 </Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="address">Address</Label>
+                    <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} truckAdress={ this.state.formField.address } />     
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup>
+                    <Label htmlFor="avl">Availability </Label><br/>
+                    {weekArr.map((week, index) =>  
+                    <FormGroup check inline key={index}>
+                      <Label check>
+                      <Checkbox
+                        label={week}
+                        isSelected={ this.state.checkboxes[week]}
+                        onCheckboxChange={this.handleAvlChange}
+                        key={week}
+                      />
+                      </Label>
+                    </FormGroup>
+                    )}
+                  </FormGroup>  
+                </Col>
                 <Col md={"12"}>
                   <FormGroup> 
-                    <Label htmlFor="address">Address</Label>            
-                    <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
+                    <Label htmlFor="description">Description</Label>
+                    <Input type="textarea" placeholder="Food truck details" id="description" name="description" value={this.state.formField.description} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="defaultImage">Default Image</Label>            
+                    <Label htmlFor="defaultImage">Food Truck Image</Label>            
                     <Input type="file" id="defaultImage" name="defaultImage" className="form-control"  onChange={this.handleImageChange} />
+                    {defaultImagePreview}
                   </FormGroup>              
-                </Col>
-                <Col md={"6"}>{defaultImagePreview}</Col>
-                <Col md={"6"}>
-                  <FormGroup> 
-                    <Label htmlFor="truckImages">Gallery Images</Label>            
-                    <Input type="file" id="truckImages" name="truckImages" className="form-control" multiple onChange={this.onGalleryImageChange} />
-                  </FormGroup> 
-                </Col>  
-                <Col md={"6"}>
-                  <div className="previewTruckImageArea row">
-                      {truckImages.map((truckImgInfo, index) =>
-                        <Media className="previewTruckImage col-md-2" key={index}>
-                          <img className="img-fluid img-thumbnail" width="80" alt="Truck" src={truckImgInfo} /> <i className="fa fa-times text-danger" onClick={() => {if(window.confirm('Are you sure, you want to delete this image?')){ this.deleteTruckImage(index,'image') };}}></i>
-                        </Media>
-                      )}
-                  </div>             
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="menu">Menu Images</Label>            
                     <Input type="file" id="menu" name="menu" className="form-control" multiple onChange={this.onMenuImageChange} />
                   </FormGroup> 
-                </Col>
-                <Col md={"6"}>
+                
                   <div className="previewMenuImageArea row">
                       {menuImages.map((imagesInfo, index) =>
                         <Media className="previewMenuImage col-md-2" key={index}>
@@ -395,6 +444,24 @@ class EditFoodTruck extends Component {
                       )}
                   </div>             
                 </Col>
+                <Col md={"12"}><hr /></Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="truckImages">Gallery Images</Label>            
+                    <Input type="file" id="truckImages" name="truckImages" className="form-control" multiple onChange={this.onGalleryImageChange} />
+                  </FormGroup> 
+                </Col>  
+                <Col md={"6"}>
+                  <Label>&nbsp;</Label><br />
+                  <div className="previewTruckImageArea row">
+                      {truckImages.map((truckImgInfo, index) =>
+                        <Media className="previewTruckImage col-md-2" key={index}>
+                          <img className="img-fluid img-thumbnail" width="80" alt="Truck" src={truckImgInfo} /> <i className="fa fa-times text-danger" onClick={() => {if(window.confirm('Are you sure, you want to delete this image?')){ this.deleteTruckImage(index,'image') };}}></i>
+                        </Media>
+                      )}
+                  </div>             
+                </Col>
+                <Col md={"12"}><hr /></Col>
                 
               </Row>
               <Button color="primary" disabled={!this.state.formValid || formProccessing} type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>

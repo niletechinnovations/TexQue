@@ -12,6 +12,8 @@ import { FormErrors } from '../../../Formerrors/Formerrors';
 
 import Loader from '../../../Loader/Loader';
 import './FoodTruck.css'
+import Checkbox from "../../../../core/commonComponent/Checkbox";
+const weekArr = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
 
 class EditFoodTruckList extends Component {
@@ -30,6 +32,14 @@ class EditFoodTruckList extends Component {
       menuImages: [],
       selectedCategories: [],
       foodTruckDetail: {},
+      checkboxes: weekArr.reduce(
+        (options, option) => ({
+          ...options,
+          [option]: false
+        }),
+        {}
+      ),
+      schedules: [],
       formField: { organizationId:'', truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', address:'', error: ''},
       formValid: false,
@@ -128,6 +138,12 @@ class EditFoodTruckList extends Component {
         formData.append('categoryId', this.state.selectedCategories[j].value );
       }
       
+      Object.keys(this.state.checkboxes)
+      .filter(checkbox => this.state.checkboxes[checkbox])
+      .forEach(checkbox => {
+        formData.append('schedules', checkbox );
+      });
+      
       commonService.putAPIWithAccessToken('food-truck', formData)
       .then( res => {
         if ( undefined === res.data.data || !res.data.status ) { 
@@ -175,6 +191,16 @@ class EditFoodTruckList extends Component {
     this.setState({
       galleryImages: event.target.files,
     });
+  };
+
+  handleAvlChange = e => {
+    const { name } = e.target;
+    this.setState(prevState => ({
+      checkboxes: {
+        ...prevState.checkboxes,
+        [name]: !prevState.checkboxes[name]
+      }
+    }));
   };
 
   handleCategoryChange = (selectedOptions) => {
@@ -383,6 +409,29 @@ organizationList() {
                     <Label htmlFor="address">Address</Label>            
                     <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
                   </FormGroup>
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="description">Description</Label>
+                    <Input type="textarea" placeholder="Food truck details" id="description" name="description" value={this.state.formField.description} onChange={this.changeHandler} />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup>
+                    <Label htmlFor="avl">Availability </Label><br/>
+                    {weekArr.map((week, index) =>  
+                    <FormGroup check inline key={index}>
+                      <Label check>
+                      <Checkbox
+                        label={week}
+                        isSelected={ this.state.checkboxes[week]}
+                        onCheckboxChange={this.handleAvlChange}
+                        key={week}
+                      />
+                      </Label>
+                    </FormGroup>
+                    )}
+                  </FormGroup>  
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 

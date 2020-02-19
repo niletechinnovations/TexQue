@@ -63,5 +63,6 @@ button.primary-button{
    background-color: #002164;
    border-color: #002164;
 }
+.Submit-form-button:disabled{ background-color: #002164 !important;}
 .errorMsg { width: 100%; font-size: 80%; color: #dc3545; }
 .sucessMsg { width: 100%; font-size: 80%; color: #6B8E23; }

@@ -35,8 +35,8 @@ class FoodTruckData extends Component {
         phoneNumber: Store.phoneNumber || " ",
         address: Store.address || " ",
         status: Store.status ? 'Active' : 'Inactive',   
-        action: <p><Link className="btn-edit" disabled={this.state.buttonProcessing} to={`/admin/organization/edit-truck/${Store.foodTruckId}`}><i className="fa fa-pencil"></i> </Link>
-          <button className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => {if(window.confirm('Are you sure you want to delete this record?')){ this.deleteStoreItem(i) };}} ><i className="fa fa-trash"></i></button></p>,
+        action: <div className="actionBtnGroup"><Link className="btn-edit" disabled={this.state.buttonProcessing} to={`/admin/organization/edit-truck/${Store.foodTruckId}`}><i className="fa fa-pencil"></i> </Link>
+          <button className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => {if(window.confirm('Are you sure you want to delete this record?')){ this.deleteStoreItem(i) };}} ><i className="fa fa-trash"></i></button></div>,
       }      
       rowsItem.push(orgInfo);
     }      
@@ -47,11 +47,11 @@ class FoodTruckData extends Component {
         name: 'featuredImage',
       },     
       {
-        label: 'Truck Name',
+        label: 'Food Truck',
         name: 'truckName',
       },     
       {
-        label: 'Organization Name',
+        label: 'Organization',
         name: 'organizationName',
       },
       
@@ -60,7 +60,7 @@ class FoodTruckData extends Component {
         name: 'address',
       },
       {
-        label: 'Phone Number',
+        label: 'Phone no.',
         name: 'phoneNumber',
       },
       {

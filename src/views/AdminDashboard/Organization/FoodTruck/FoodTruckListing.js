@@ -6,8 +6,7 @@ import commonService from '../../../../core/services/commonService';
 import { FormErrors } from '../../../Formerrors/Formerrors';
 import Loader from '../../../Loader/Loader';
 import Select from 'react-select';
-
-
+import AutoCompletePlaces from '../../../../core/google-map/AutoCompletePlaces';
 import FoodTruckData from './FoodTruckData';
 import './FoodTruck.css'
 
@@ -23,18 +22,22 @@ class FoodTruckList extends Component {
       galleryImages:[],
       menuImages: [],
       selectedCategories: [],
+      address: '',
+      latitude:'',
+      longitude:'',
       loading: true,
       formProccessing: false,
       rowIndex: -1,
       formField: { organizationId: '', truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
       formErrors: { organizationId: '', truckName: '',  address:'', error: ''},
       formValid: false,
-      filterItem: { filter_organization_id: '', country: '', state: '', custom_search: ''},
+      filterItem: { filter_organization_id: '', filter_cat_id: '', filter_truckName: '', filter_address:'', custom_search: ''},
     } 
     this.submitHandler = this.submitHandler.bind(this);
     this.handleDeleteTruck = this.handleDeleteTruck.bind(this);
     this.filterTruckList = this.filterTruckList.bind(this);
-    
+    this.setLatitudeLongitude = this.setLatitudeLongitude.bind(this);
+
   }
   // Fetch the Employee List
   componentDidMount() { 
@@ -55,10 +58,14 @@ class FoodTruckList extends Component {
     let stroreWalkQuery = "";
     if(filterItem.filter_organization_id !== undefined && filterItem.filter_organization_id !== "" ) 
       stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&organizationAuthId="+filterItem.filter_organization_id: "&organizationAuthId="+filterItem.filter_organization_id;
+    if(filterItem.filter_cat_id !== undefined && filterItem.filter_cat_id !== "" ) 
+      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&category_id="+filterItem.filter_cat_id: "&category_id="+filterItem.filter_cat_id;
     if(filterItem.filterFoodTruckName !== undefined && filterItem.filterFoodTruckName !== "" ) 
       stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&foodTruckName="+filterItem.filterFoodTruckName: "&foodTruckName="+filterItem.filterFoodTruckName;
     if(filterItem.filterFoodTruckOwner !== undefined && filterItem.filterFoodTruckOwner !== "" ) 
       stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&foodTruckOwner="+filterItem.filterFoodTruckOwner: "&foodTruckOwner="+filterItem.filterFoodTruckOwner;
+    if(filterItem.filter_address !== undefined && filterItem.filter_address !== "" ) 
+      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&address="+filterItem.filter_address: "&address="+filterItem.filter_address;
     if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
       stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&keyword="+filterItem.custom_search: "&keyword="+filterItem.custom_search;
     this.setState( { loading: true}, () => {
@@ -324,6 +331,11 @@ class FoodTruckList extends Component {
       } )
     })
   }
+
+  // Set address, latitude and longitude
+  setLatitudeLongitude(address, latLng){
+    this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address })
+  }
   
   render() {
 
@@ -360,13 +372,24 @@ class FoodTruckList extends Component {
                 <Row>
                   <Col md={12}>
                     <Row>
-                      <Col md={"3"}>
+                      <Col md={"2"}>
                         <FormGroup> 
                           <Label htmlFor="filter_organization_id">Organization</Label>            
                           <Input type="select" placeholder="Organization *" id="filter_organization_id" name="filter_organization_id" value={this.state.filterItem.filter_organization_id} onChange={this.changeFilterHandler} >
                             <option value="">Select Organization</option>
                             {organizationList.map((organizationInfo, index) =>
                               <SetOrganizationDropDownItem key={index} organizationInfo={organizationInfo} />
+                            )}
+                          </Input>
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"2"}>
+                        <FormGroup> 
+                          <Label htmlFor="filter_cat_id">Cuisine</Label>
+                          <Input type="select" placeholder="Cuisine *" id="filter_cat_id" name="filter_cat_id" value={this.state.filterItem.filter_cat_id} onChange={this.changeFilterHandler} >
+                            <option value="">Select Cuisine</option>
+                            {categoryList.map((catInfo, index) =>
+                              <SetCatDropDownItem key={index} catInfo={catInfo} />
                             )}
                           </Input>
                         </FormGroup>  
@@ -383,15 +406,15 @@ class FoodTruckList extends Component {
                           <Input type="text" placeholder="Search by Owner Name" id="filterFoodTruckOwner" name="filterFoodTruckOwner" value={this.state.formField.filterFoodTruckOwner} onChange={this.changeFilterHandler} />   
                         </FormGroup>  
                       </Col>
-                      <Col md={"3"}>
+                      <Col md={"2"}>
                         <FormGroup> 
-                          <Label htmlFor="filter_organization_id">Search by Location</Label>            
-                          <Input type="text" placeholder="Search by Address/ Location" id="custom_search" name="custom_search" value={this.state.formField.custom_search} onChange={this.changeFilterHandler} />
+                          <Label htmlFor="filter_address">Search by Location</Label>            
+                          <Input type="text" placeholder="Search by Address/ Location" id="filter_address" name="filter_address" value={this.state.formField.filter_address} onChange={this.changeFilterHandler} />
                         </FormGroup>  
                       </Col>
                       <Col md={"2"}>
                         <FormGroup className="filter-button-section"> 
-                          <Label htmlFor="filter_organization_id">&nbsp;</Label>
+                          <Label>&nbsp;</Label>
                           <Button color="success" type="button" onClick={this.filterTruckList}>Search</Button> 
                         </FormGroup>             
                       </Col>
@@ -466,8 +489,8 @@ class FoodTruckList extends Component {
                 </Col>  
                 <Col md={"12"}>
                   <FormGroup> 
-                    <Label htmlFor="address">Address *</Label>            
-                    <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
+                    <Label htmlFor="address">Address *</Label>
+                    <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} />        
                   </FormGroup>
                 </Col>
                 
@@ -488,6 +511,10 @@ class FoodTruckList extends Component {
 function SetOrganizationDropDownItem (props) {
   const organizationInfo = props.organizationInfo;
   return (<option value={organizationInfo.authId} >{organizationInfo.organizationName}</option>)
+}
+function SetCatDropDownItem (props) {
+  const catInfo = props.catInfo;
+  return (<option value={catInfo.categoryId} >{catInfo.categoryName}</option>)
 }
 
 export default FoodTruckList;

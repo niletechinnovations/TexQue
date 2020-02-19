@@ -192,7 +192,7 @@ class LoginPage extends Component {
                     </Row>
                     <FormGroup>
                       <div className="footer-text text-center pt-3">
-                      Don’t have an account? <Link className="sign-up-link" to="/register">Sign up</Link>
+                      Don’t have an account? <Link className="sign-up-link" to="/register">Sign up as a Member</Link> OR <Link className="sign-up-link" to="/advertiser/signup">Sign up as an Advertiser</Link>
                       </div>
                     </FormGroup>
                     

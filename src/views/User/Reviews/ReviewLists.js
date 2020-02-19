@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { 
-  Card, CardBody, CardHeader, Col, Row, Button, Form, Input, FormGroup, Label,
+  Card, CardBody, Col, Row, Button, Form, Input, FormGroup, Label,
   Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 
@@ -8,36 +8,33 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 
-import EnquiryData from './EnquiryData';
+import ReviewData from './ReviewData';
 import Loader from '../../Loader/Loader';
 
 
-class EnquiryLists extends Component {
+class ReviewLists extends Component {
   constructor(props){
     super(props);
     this.state = {
       modal: false,
-      enquiryLists: [],
+      dataLists: [],
+      formProccessing: false,
       loading: true,
       rowIndex: -1,
-      formField: { enquiryId: '', truckName: '', contactPerson: '', phoneNumber:'', comment:'' },
-     
+      formField: { reviewId: '', truckName: '', reviewedBY: '', rating:'', statusLabel:'', comment:'' },
     } 
     this.submitHandler = this.submitHandler.bind(this);
-    this.handleEditEnquiry = this.handleEditEnquiry.bind(this);
-    this.acceptEnquiry = this.acceptEnquiry.bind(this);
-    this.rejectEnquiry = this.rejectEnquiry.bind(this);
+    this.handleEditData = this.handleEditData.bind(this);
   }
 
-  // Fetch the Enquiry List
   componentDidMount() {     
-    this.enquiryLists({});   
+    this.reviewLists({});   
   }
 
-  /* Enquiry List API */
-  enquiryLists() {
+  /* Review List API */
+  reviewLists() {
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('food-truck/enquiry?pageSize=10000')
+      commonService.getAPIWithAccessToken('food-truck/reviews?pageSize=10000')
         .then( res => {
            
           if ( undefined === res.data.data || !res.data.status ) {
@@ -46,13 +43,13 @@ class EnquiryLists extends Component {
             return;
           }   
 
-          this.setState({loading:false, enquiryLists: res.data.data.enquiryList});     
+          this.setState({loading:false, dataLists: res.data.data.reviewList});     
          
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
-            //this.props.history.push('/login');
+            this.props.history.push('/login');
           }
           else {
             this.setState( { loading: false } );
@@ -69,14 +66,13 @@ class EnquiryLists extends Component {
     this.setState( { formProccessing: true}, () => {
       const formInputField = this.state.formField;
       const formData = {
-        "enquiryId": formInputField.enquiryId,
-        "status": formInputField.status, 
+        "reviewId": formInputField.reviewId,
         "comments": formInputField.comment
       };
     
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
-        commonService.putAPIWithAccessToken('food-truck/enquiry/status/', formData)
+        commonService.putAPIWithAccessToken('food-truck/reviews/status/', formData)
         .then( res => {
           if ( undefined === res.data.data || !res.data.status ) {           
             this.setState( { formProccessing: false} );
@@ -86,7 +82,7 @@ class EnquiryLists extends Component {
           
           this.setState({ modal: false, formProccessing: false});
           toast.success(res.data.message);
-          this.enquiryLists();
+          this.reviewLists();
          
         } )
         .catch( err => {         
@@ -111,7 +107,7 @@ class EnquiryLists extends Component {
           
           this.setState({ modal: false});
           toast.success(res.data.message);
-          this.enquiryLists();
+          this.reviewLists();
          
         } )
         .catch( err => {         
@@ -144,15 +140,14 @@ class EnquiryLists extends Component {
     });
   }
 
-  /* To edit enquiry details/ change status */
-  handleEditEnquiry(rowIndex){
-      const rowData = this.state.enquiryLists[rowIndex];
+  /* To edit review details/ change status */
+  handleEditData(rowIndex){
+      const rowData = this.state.dataLists[rowIndex];
       const formField = {
-          enquiryId: rowData.enquiryId,
+          reviewId: rowData.reviewId,
           truckName: rowData.truckName,
-          contactPerson: rowData.contactPerson,
-          contactNo: rowData.contactNo,
-          numberofPerson: rowData.numberofPerson,
+          reviewedBY: rowData.reviewedBY,
+          rating: rowData.rating,
           eventDate: rowData.eventDate,
           message: rowData.message,
           comment: rowData.comment,
@@ -162,72 +157,11 @@ class EnquiryLists extends Component {
       this.setState({rowIndex: rowIndex, formField: formField, modal: true });
   }
 
-  acceptEnquiry(){
-    this.setState( { loading: true}, () => {
-      const formInputField = this.state.formField;
-      const formData = {
-        "enquiryId": formInputField.enquiryId,
-        "status": 1, 
-        "comments": formInputField.comment
-      };
-      commonService.putAPIWithAccessToken('food-truck/enquiry/status/', formData)
-        .then( res => {
-          if ( undefined === res.data.data || !res.data.status ) {           
-            this.setState( { loading: false} );
-            toast.error(res.data.message);
-            return;
-          } 
-          this.setState({ modal: false, loading: false});
-          toast.success(res.data.message);
-          this.enquiryLists();        
-        } )
-        .catch( err => {         
-          if(err.response !== undefined && err.response.status === 401) {
-            localStorage.clear();
-            this.props.history.push('/login');
-          }
-          else
-            this.setState( { loading: false } );
-            toast.error(err.message);
-        } )
-    } );  
-  }
-
-  // Reject enquiry
-  rejectEnquiry(){
-    this.setState( { loading: true}, () => {
-      const formInputField = this.state.formField;
-      const formData = {
-        "enquiryId": formInputField.enquiryId,
-        "status": 2, 
-        "comments": formInputField.comment
-      };
-      commonService.putAPIWithAccessToken('food-truck/enquiry/status/', formData)
-        .then( res => {
-          if ( undefined === res.data.data || !res.data.status ) {           
-            this.setState( { loading: false} );
-            toast.error(res.data.message);
-            return;
-          } 
-          this.setState({ modal: false, loading: false});
-          toast.success(res.data.message);
-          this.enquiryLists();        
-        } )
-        .catch( err => {         
-          if(err.response !== undefined && err.response.status === 401) {
-            localStorage.clear();
-            this.props.history.push('/login');
-          }
-          else
-            this.setState( { loading: false } );
-            toast.error(err.message);
-        } )
-    } );  
-  }
-
+  
   render() {
-    const { enquiryLists, loading, modal, formField } = this.state;
+    const { dataLists, loading, modal, formField, formProccessing } = this.state;
         
+    const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
     let loaderElement = '';
     if(loading)        
       loaderElement = <Loader />
@@ -236,22 +170,19 @@ class EnquiryLists extends Component {
       <div className="user-dashboard">
         {loaderElement}
         <Card>
-          <CardHeader className="mainHeading">
-            <strong>Enquiry Lists</strong>
-          </CardHeader>
           <CardBody>
             
             <Row>
               
               <Col md={12}>
-                <EnquiryData data={enquiryLists} editEnquiryAction={this.handleEditEnquiry} dataTableLoadingStatus = {this.state.loading} />
+                <ReviewData data={dataLists} editDataAction={this.handleEditData} dataTableLoadingStatus = {this.state.loading} />
               </Col>
             </Row> 
           </CardBody>
         </Card>
 
         <Modal isOpen={modal} toggle={this.toggle} size="lg" className="full-width-modal-section equiry-modal">
-          <ModalHeader toggle={this.toggle}>Enquiry Message</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Review Details</ModalHeader>
           <Form onSubmit={this.submitHandler} noValidate className="texQueForm">
             <ModalBody>
               
@@ -264,20 +195,20 @@ class EnquiryLists extends Component {
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="contactPerson">Contact Person</Label>            
-                    <Input type="text" placeholder="Contact Person" id="contactPerson" value={formField.contactPerson} disabled />
+                    <Label htmlFor="reviewedBY">Reviewed BY</Label>            
+                    <Input type="text" placeholder="Contact Person" id="reviewedBY" value={formField.reviewedBY} disabled />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="phoneNumber">Phone Number</Label>            
-                    <Input type="text" placeholder="Phone Number" id="phoneNumber" value={formField.contactNo} disabled />
+                    <Label htmlFor="rating">Rating</Label>            
+                    <Input type="text" id="rating" name="rating" value={formField.rating} disabled />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="numberofPerson">No. of Person</Label>            
-                    <Input type="text" placeholder="Phone Number" id="numberofPerson" name="numberofPerson" value={formField.numberofPerson} disabled />
+                    <Label htmlFor="statusLabel">Status</Label>            
+                    <Input type="text" id="statusLabel" value={formField.statusLabel} disabled />
                   </FormGroup>
                 </Col>
                 <Col md={"12"}>
@@ -286,19 +217,6 @@ class EnquiryLists extends Component {
                     <Input type="textarea" id="message" name="message" value={formField.message} disabled />
                   </FormGroup>
                 </Col>
-                <Col md={"6"}>
-                  <FormGroup> 
-                    <Label htmlFor="eventDate">Event Date</Label>            
-                    <Input type="text" placeholder="Date of Event" id="eventDate" name="eventDate" value={formField.eventDate} disabled />
-                  </FormGroup>
-                </Col>
-                <Col md={"6"}>
-                  <FormGroup> 
-                    <Label htmlFor="status">Status</Label>
-                    <Input type="text" name="status" id="status" value={formField.statusLabel} disabled  />
-                  </FormGroup>
-                </Col>
-                
                 <Col md={"12"}>
                   <FormGroup> 
                     <Label htmlFor="comment">Comment</Label>            
@@ -308,9 +226,7 @@ class EnquiryLists extends Component {
               </Row>
             </ModalBody>
             <ModalFooter>
-                <Button className="btn-success" type="button" onClick={this.acceptEnquiry}> <i className="fa fa-check"></i> Accept</Button>
-                <Button className="btn-danger" type="button" onClick={this.rejectEnquiry}> <i className="fa fa-times"></i> Reject</Button>
-                {/* <Button color="primary" type="submit">{formProccessing ? processingBtnText : 'Update Details' }</Button> */}
+                <Button color="primary" type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
                 <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
           </Form>
@@ -323,4 +239,4 @@ class EnquiryLists extends Component {
   }
 }
 
-export default EnquiryLists;
+export default ReviewLists;

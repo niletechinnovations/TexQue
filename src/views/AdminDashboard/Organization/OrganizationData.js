@@ -43,20 +43,24 @@ class OrganizationData extends Component {
     }      
     const columns = [      
       {
-        label: 'Organization Name',
+        label: 'Organization',
         name: 'organizationName',
       },
       {
-        label: 'Contact Person',
+        label: 'Owner',
         name: 'firstName',
       },
       {
-        label: 'Email',
+        label: 'Email ID',
         name: 'email',
       },
       {
-        label: 'Phone Number',
+        label: 'Phone no.',
         name: 'phoneNumber',
+      },
+      {
+        label: 'Address',
+        name: 'address',
       },
       {
         label: 'Status',

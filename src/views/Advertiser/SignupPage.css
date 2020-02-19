@@ -1,0 +1,41 @@
+.account-section {background: #ffffff; }
+.account-form h3 {font-size: 24px;color: #4e4a3c; text-align: left; font-weight: bold; }
+.account-form p { font-size: 14px; cursor: pointer; color: #4e4a3c; } 
+.account-form {padding: 20px;border-radius: 10px;border: 1px solid #eff1fe; margin-bottom: 30px;} 
+.login, .image {min-height: 100vh; }
+.advertiser-bg-image {background-image: url('/images/account-bg.jpg');background-size: cover;background-position: center;position: relative;background-attachment: fixed;}
+.advertiser-bg-image:after {content: '';position: absolute;background: rgba(255, 255, 255, 0.78);top: 0;bottom: 0;right: 0;left: 0;}
+.account-form .form-group label {font-size: 13px;font-weight: 600;margin-bottom: 0;color: #414b50;} 
+.account-form .text-danger.form-group label{ color: #dc3545;} 
+.account-form .text-danger .form-control{ border: 1px solid #dc3545;} 
+.account-form .text-danger .form-control:focus {box-shadow: none; border: 1px solid #dc3545; }
+
+.account-form .form-control { border: 1px solid #cfd2de; border-radius: 3px;padding: 10px 16px;height: auto;outline: none;background-color: #ffffff;color: #434b4e;font-size: 13px;}
+.account-form .form-control:focus {box-shadow: none; border: 1px solid #002164; }
+.account-form .form-control:-internal-autofill-selected {box-shadow: none; /*border: 2px solid #928c79;*/background-color: #b7b3a6 !important;}
+button.Submit-form-button {background: #002164;border: none;font-size: 13px;font-weight: bold;color: #fff;width: 100%;padding: 10px 15px;border-radius: 4px;display: inline-block;outline: none;cursor: pointer;}
+.forgot-text a { font-size: 14px; cursor: pointer; color: #4e4a3c; }
+.footer-text { font-size: 14px; cursor: pointer; color: #4e4a3c; }
+.footer-text a {color: #4e4a3c; text-decoration: underline; font-weight: bold; }
+.eq-account-menu {display: flex;width: 100%;position: relative;z-index: 9;}
+.logo {position: relative; padding: 5px; overflow: hidden; display: inline-block; width: 130px; height: 115px; vertical-align: top; border-radius: 5px; }
+
+
+.account-nav {text-align: right; width: 100%;}
+.account-nav ul{margin: 0; padding: 0; list-style: none;}
+.account-nav ul li { display: inline-block; position: relative; padding: 30px 20px; } 
+.account-nav ul li a {font-size: 14px;cursor: pointer;text-transform: uppercase;color: #002164;text-decoration: none;font-weight: bold;}
+
+
+.location-group{position: relative;}
+.location-group input.form-control {padding-right: 8rem; }
+span.location-btn {position: absolute;top: 50%;right: 10px;background: #002164;padding: 0px 10px;border-radius: 2px;color: #fff;font-size: 11px;z-index: 9;cursor: pointer;}
+
+.form-control.is-invalid, .was-validated .form-control:invalid {
+    border-color: #dc3545 !important;
+    padding-right: calc(1.5em + .75rem) !important;
+    background-image: url('/images/download.svg') !important;
+    background-repeat: no-repeat !important;
+    background-position: right calc(.375em + .1875rem) center !important;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem) !important;
+}

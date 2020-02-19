@@ -42,8 +42,8 @@ class NewUserData extends Component{
                     <td>{user.userName}</td>
                     <td>{user.userEmail}</td>
                     <td>{user.phoneNumber}</td>
-                    <td>{user.status}</td>
                     <td>{user.address}</td>
+                    <td>{user.status}</td>
                     <td className="text-center">
                         <Link className="btn-edit" to={`/admin/user/${user.profileId}`} ><i className="fa fa-eye"></i> </Link>
                     </td>
@@ -62,8 +62,8 @@ class NewUserData extends Component{
                             <th>User</th>
                             <th>Email</th>
                             <th>Phone Number</th>
-                            <th>Status</th>
                             <th>Address</th>
+                            <th>Status</th>
                             <th className="text-center">#</th>
                         </tr>
                     </thead>

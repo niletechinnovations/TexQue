@@ -1,16 +1,15 @@
 import React from "react";
-import  { Link } from 'react-router-dom';
+import  { Redirect, Link } from 'react-router-dom';
 import { Col, Row, Button, Form, FormGroup,FormFeedback, Label, Input } from 'reactstrap';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import commenService from '../../../core/services/commonService';
-import Loader from '../../../views/Loader/Loader';
-import AutoCompletePlaces from '../../../core/google-map/AutoCompletePlaces';
+import commenService from '../../core/services/commonService';
+import Loader from '../../views/Loader/Loader';
 
-import "../Login/loginPage.css";
+import "./SignupPage.css";
 
-class RegisterPage extends React.Component {
+class AdvertiserSignup extends React.Component {
   constructor( props ){
     super( props );
 
@@ -21,24 +20,19 @@ class RegisterPage extends React.Component {
       phoneNumber:'',
       password: '',
       confirmPassword: '',
-      organizationName: '',
-      address: '',
-      latitude:'',
-      longitude:'',
       loading: false,
       errors: {}
     };
 
     this.changeHandler = this.changeHandler.bind(this);
-    this.submituserRegistrationForm = this.submituserRegistrationForm.bind(this);
-    this.setLatitudeLongitude = this.setLatitudeLongitude.bind(this);
+    this.submitUserRegistrationForm = this.submitUserRegistrationForm.bind(this);
   }
 
   componentDidMount() {
     window.scrollTo(0, 0)
   }
   
-  submituserRegistrationForm(e) {
+  submitUserRegistrationForm(e) {
     e.preventDefault();
     e.target.className += " was-validated";
       if (this.validateForm()) {
@@ -48,18 +42,13 @@ class RegisterPage extends React.Component {
           email: this.state.email,
           phoneNumber: this.state.phoneNumber,
           password: this.state.password,
-          organizationName: this.state.organizationName,
-          address: this.state.address,
-          latitude: this.state.latitude,
-          longitude: this.state.longitude,
-          role: 'organization'
+          role: 'advertiser'
         };
-        console.log(signupData);
+        //console.log(signupData);
         this.setState( { loading: true }, () => {
           commenService.postAPI( `auth/sign-up`, signupData )
             .then( res => {
-            
-              console.log(res);
+              //console.log(res);
               if ( undefined === res.data || !res.data.status ) {
                 this.setState( { loading: false } );
                 toast.error(res.data.message);
@@ -144,20 +133,20 @@ class RegisterPage extends React.Component {
       loading: false,
       errors: errors
     });
-    //console.error(errors);
     return formIsValid;
   }
 
-  // Set address, latitude and longitude
-  setLatitudeLongitude(address, latLng){
-    this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address })
-  }
-
   render() {
-    const { loading, firstName, lastName, email, password,confirmPassword,phoneNumber,organizationName,errors} = this.state;
-    
+    const { loading, firstName, lastName, email, password,confirmPassword,phoneNumber,errors} = this.state;
     let loaderElement = '';
-    if(loading)
+    if ( localStorage.getItem( 'accessToken' ) ) {
+      if(localStorage.getItem( 'role' ).toLowerCase() === "admin")
+			  return ( <Redirect to={`/admin/dashboard`} noThrow /> )
+      else
+        return ( <Redirect to={`/advertiser/plan`} noThrow /> )
+
+		} else {
+     if(loading)
       loaderElement = <Loader />
 
       return (
@@ -166,16 +155,16 @@ class RegisterPage extends React.Component {
         <div className="login" id="loginPage">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-6 col-lg-6 bg-image">
+              <div className="col-md-6 col-lg-6 advertiser-bg-image">
 
               </div>
               <div className="col-md-6 col-lg-6 col-sm-12 mx-auto">
                 <ToastContainer /> 
                 {loaderElement} 
                 <div className="account-form">
-                  <h3 className="login-heading mb-4">Become a Member</h3>
+                  <h3 className="login-heading mb-4">Become an Advertiser</h3>
                   <p>The Food Truck app that Pros use! The app will be simple and effective for the everyday seller and buyer of delicious meals on wheels.</p>
-                  <Form onSubmit={this.submituserRegistrationForm} noValidate>
+                  <Form onSubmit={this.submitUserRegistrationForm} noValidate>
                     <Row form>
                       <Col md={6}>
                         <FormGroup>
@@ -220,16 +209,6 @@ class RegisterPage extends React.Component {
                         </FormGroup>
                       </Col>
                     </Row>
-                    <FormGroup>
-                      <Label for="organizationName">Organization</Label>
-                      <Input type="text" name="organizationName" id="organizationName" value={organizationName} invalid={errors['organizationName'] !== undefined && errors['organizationName'] !== ""} onChange={this.changeHandler} placeholder="Organization Name" required/>
-                      <FormFeedback>{errors['organizationName']}</FormFeedback>
-                    </FormGroup>
-                    <FormGroup>
-                      <Label for="address">Address</Label>
-                      <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} />
-                      <FormFeedback>{errors['address']}</FormFeedback>
-                    </FormGroup>
                     <Row>
                       <Col md={6}>
                         <FormGroup>
@@ -251,7 +230,8 @@ class RegisterPage extends React.Component {
         </div>
         </>
       );
+    }
   }
 }
 
-export default RegisterPage;
+export default AdvertiserSignup;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import MUIDataTable from "mui-datatables";
 
-class EnquiryListData extends Component {
+class ReviewData extends Component {
   
   constructor(props){
     super(props);   
@@ -16,8 +16,8 @@ class EnquiryListData extends Component {
   componentDidMount() {   
   }
   /* Edit Enquiry Info */
-  editEnquiryItem(rowIndex){    
-    this.props.editEnquiryAction(rowIndex);
+  editDataItem(rowIndex){    
+    this.props.editDataAction(rowIndex);
   }
  
 
@@ -26,22 +26,17 @@ class EnquiryListData extends Component {
     let rowsItem = []; 
    
     for(const [i, enquiry] of this.props.data.entries()){
-      //console.log(i);
       let resInfo = {
-        organizationName: enquiry.organizationName,  
-        contactPerson: enquiry.contactPerson,
+        reviewedBY: enquiry.reviewedBY,
         truckName: enquiry.truckName,
-        phoneNumber: enquiry.contactNo || " ",
+        rating: enquiry.rating || " ",
         message: enquiry.message || " ",
         status: enquiry.statusLabel ? enquiry.statusLabel : "Pending",   
         createdAt: (new Date(enquiry.createdAt)).toLocaleDateString("en-US"),
         indexVal: i,
-        enquiryId: enquiry.enquiryId,
-        action: <>
-        <div className="actionBtnGroup"><Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-          this.editEnquiryItem(i)}><i className="fa fa-pencil"></i> </Button><Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-            this.editEnquiryItem(i)}><i className="fa fa-trash"></i> </Button></div>
-          </>
+        reviewId: enquiry.reviewId,
+        action: <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
+          this.editDataItem(i)}><i className="fa fa-pencil"></i> </Button>
       }      
       rowsItem.push(resInfo);
     }
@@ -49,27 +44,22 @@ class EnquiryListData extends Component {
     const columns = [ 
         {
             label: 'User',
-            name: 'contactPerson',
+            name: 'reviewedBY',
         },
         {
             label: 'Message',
             name: 'message',
         },
-        {
-            label: 'Truck Name',
-            name: 'truckName',
-        }, 
+        { label: 'Truck Name', name: 'truckName' },
+        { label: 'Rating', name: 'rating' },
         {
             label: 'Date',
             name: 'createdAt',
         },
-        {
-            label: 'Status',
-            name: 'status',
-        },
+        { label: 'Status', name: 'status' },
         {
             name: "action",
-            label: " Action ",
+            label: "Action",
             options: {
                 filter: false,
                 sort: false,
@@ -99,7 +89,7 @@ class EnquiryListData extends Component {
     
     return (
       <MUIDataTable
-        title={"Food Truck Enquiries"}
+        title={"Reviews"}
         data={rowsItem}
         columns={columns}
         options={options}
@@ -108,4 +98,4 @@ class EnquiryListData extends Component {
   }
 }
 
-export default EnquiryListData;
+export default ReviewData;

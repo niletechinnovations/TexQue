@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { 
-  Card, CardBody, CardHeader, Col, Row, Button, Form, Input, FormGroup, Label,
+  Card, CardBody, Col, Row, Button, Form, Input, FormGroup, Label,
   Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 
@@ -165,8 +165,8 @@ class EnquiryListing extends Component {
     
     let statusLists = [
         {status:0, statusLabel:'Pending' },
-        {status:1, statusLabel:'Accept' },
-        {status:2, statusLabel:'Reject' },
+        {status:1, statusLabel:'Approved' },
+        {status:2, statusLabel:'Rejected' },
     ]; 
     
     const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
@@ -178,13 +178,8 @@ class EnquiryListing extends Component {
       <div className="user-dashboard">
         {loaderElement}
         <Card>
-          <CardHeader className="mainHeading">
-            <strong>Enquiry Lists</strong>
-          </CardHeader>
           <CardBody>
-            
             <Row>
-              
               <Col md={12}>
                 <EnquiryData data={enquiryLists} editEnquiryAction={this.handleEditEnquiry} dataTableLoadingStatus = {this.state.loading} />
               </Col>

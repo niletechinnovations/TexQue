@@ -4,5 +4,5 @@
 .employee-modal .modal-title{ padding-bottom: 0px;}
 .texQueForm{ font-size: 13px;}
 .texQueForm .form-control{ font-size: 13px;}
-.texQueForm label{ font-size: 12px;} 
-.texQueForm .form-check-label{ margin-right: 10px; font-size: 14px;}
+.texQueForm label{ font-size: 12px; font-weight: 500;} 
+.texQueForm .form-check-label{ margin-right: 10px; font-size: 14px; width: 70px; font-weight: 400;}

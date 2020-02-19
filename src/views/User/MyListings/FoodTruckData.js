@@ -16,26 +16,20 @@ class FoodTruckData extends Component {
   }
   componentDidMount() {   
   }
-  /* Edit Store Info */
-  editStoreItem(value, tableMeta, updateValue){
-    alert( JSON.stringify(tableMeta.rowIndex) );
-    //this.props.editStoreAction(rowIndex);
-  }
-
- 
+  
 
   render() {
     
     let rowsItem = []; 
    
     for(const [i, orgnization] of this.props.data.entries()){
-      //console.log(i);
       let orgInfo = {
         organizationName: orgnization.organizationName,  
         contactPerson: orgnization.contactPerson,
         truckName: orgnization.truckName,
         phoneNumber: orgnization.phoneNumber || " ",
         address: orgnization.address || " ",
+        rating: orgnization.rating,
         status: orgnization.status ? "Active" : "Inactive",   
         createdAt: (new Date(orgnization.createdAt)).toLocaleDateString("en-US"),
         indexVal: i,
@@ -62,6 +56,10 @@ class FoodTruckData extends Component {
         name: 'address',
       },
       {
+        label: 'Rating',
+        name: 'rating',
+      },
+      {
         label: 'Date',
         name: 'createdAt',
       },
@@ -83,7 +81,7 @@ class FoodTruckData extends Component {
              &nbsp;
               <Button color="danger" size="sm" disabled={this.state.buttonProcessing} onClick={() => {
             if (window.confirm('Are you sure you wish to delete this food truck?')) this.props.deleteFoodTruckAction(tableMeta.rowIndex) }} ><i className="fa fa-trash"></i></Button>&nbsp;
-              <Link to={`/user/listing-details/${value.foodTruckId}`} className="btn btn-primary btn-sm"><i className="fa fa-eye"></i></Link>
+              
               </>     
             );
           }

@@ -4,7 +4,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
-
+import './AutoCompletePlaces.css';
 
 
 class AutoCompletePlaces extends React.Component {
@@ -12,18 +12,19 @@ class AutoCompletePlaces extends React.Component {
     super(props);
     this.state = { address: '', latitude:'', longitude:'', scriptLoading: false };
   }
+  
   componentDidMount() {
-    
-  }
-  componentWillMount() {
     var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.src = `https://maps.google.com/maps/api/js?key=AIzaSyBaq7mc_lts3Xensjk7JvnUU1q8dNG0avo&libraries=places`;
-        var x = document.getElementsByTagName('script')[0];
-        x.parentNode.insertBefore(s, x);
-        s.addEventListener('load', e => {
-            this.setState({scriptLoading: true});
-        })
+    s.type = 'text/javascript';
+    s.src = `https://maps.google.com/maps/api/js?key=AIzaSyBaq7mc_lts3Xensjk7JvnUU1q8dNG0avo&libraries=places`;
+    var x = document.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s, x);
+    s.addEventListener('load', e => {
+        this.setState({scriptLoading: true});
+    })
+
+    //this.setState({ address:this.props.setAddress });
+
   }
   handleChange = address => {
     this.setState({ address });
@@ -47,7 +48,9 @@ class AutoCompletePlaces extends React.Component {
   };
  
   render() {
-   
+    let address = ( (this.state.address==='' && this.props.truckAdress) ? this.props.truckAdress : this.state.address );
+    console.log(address);
+    
     if(!this.state.scriptLoading)
       return (<></>);
     
@@ -56,7 +59,7 @@ class AutoCompletePlaces extends React.Component {
       
       
       <PlacesAutocomplete
-        value={this.state.address}
+        value={address}
         onChange={this.handleChange}
         onSelect={this.handleSelect}
       >
@@ -86,7 +89,12 @@ class AutoCompletePlaces extends React.Component {
                       style,
                     })}
                   >
-                    <span>{suggestion.description}</span>
+                    <strong>
+                      {suggestion.formattedSuggestion.mainText}
+                    </strong>{' '}
+                    <small>
+                      {suggestion.formattedSuggestion.secondaryText}
+                    </small>
                   </div>
                 );
               })}
