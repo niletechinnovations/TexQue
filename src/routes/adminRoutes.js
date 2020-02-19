@@ -7,11 +7,10 @@ import foodTruckList from '../views/AdminDashboard/Organization/FoodTruck/FoodTr
 import EditFoodTruck from '../views/AdminDashboard/Organization/FoodTruck/EditFoodTruckList';
 import OrgFoodTruckList from '../views/AdminDashboard/Organization/FoodTruck/FoodTruckListing';
 import EnquiryListing from '../views/AdminDashboard/Organization/Enquiry/EnquiryListing';
+import AdvertiserPlans from '../views/AdminDashboard/Subscription/AdvertiserSubscription';
+import FoodTruckSubscription from '../views/AdminDashboard/Subscription/FoodTruckSubscription';
+import ChangePassword from '../views/AdminDashboard/ChangePassword/ChangePassword';
 
-
-/*
-import ChangePassword from '../views/User/MyProfile/ChangePassword';
-*/
 const adminRoutes = [
   { path: '/admin/', exact: true, name: 'Admin' },
   { path: '/admin/dashboard', exact: true, name: 'Dashboard', component: Dashboard },  
@@ -23,8 +22,10 @@ const adminRoutes = [
   { path: '/admin/organization/truck-listing/:organizationId', exact: true, name: 'Organization Food Truck Listings', component: OrgFoodTruckList },
   { path: '/admin/organization/edit-truck/:foodTruckId', exact: true,  name: 'Edit Food Truck', component: EditFoodTruck },
   { path: '/admin/enquiries', exact: true, name: 'Manage Enquiries', component: EnquiryListing },
-  /* { path: '/user/change-password', exact: true,  name: 'Change Password', component: ChangePassword },
-  */
+  { path: '/admin/subscription/advertiser', exact: true, name: 'Manage Advertiser Subscription', component: AdvertiserPlans },
+  { path: '/admin/subscription/food-truck', exact: true, name: 'Manage Food Truck Subscription', component: FoodTruckSubscription },
+  { path: '/admin/change-password', exact: true,  name: 'Change Password', component: ChangePassword },
+  
 ];
 
 export default adminRoutes;

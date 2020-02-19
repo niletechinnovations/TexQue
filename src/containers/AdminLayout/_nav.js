@@ -32,10 +32,21 @@ export default {
       url: '/admin/enquiries',
     },
     {
-      name: 'Manage Plans',
-      url: '/admin/pricing-plans',
-      icon: 'fa fa-money',
-    },  
+      name: 'Manage Subscription',
+      url: '/admin/subscription/advertiser',
+      icon: 'fa fa-credit-card-alt',
+      children: [{
+          name: 'Advertiser Plan',
+          url: '/admin/subscription/advertiser',
+          icon: 'fa fa-credit-card',
+        },
+        {
+          name: 'Food Truck Plan',
+          url: '/admin/subscription/food-truck',
+          icon: 'fa fa-credit-card',
+        },
+      ]    
+    },
     {
       name: 'Manage Cuisine',
       url: '/admin/cuisine',

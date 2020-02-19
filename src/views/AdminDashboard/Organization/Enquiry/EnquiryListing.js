@@ -25,6 +25,8 @@ class EnquiryListing extends Component {
     } 
     this.submitHandler = this.submitHandler.bind(this);
     this.handleEditEnquiry = this.handleEditEnquiry.bind(this);
+    this.handleDeleteEnquiry = this.handleDeleteEnquiry.bind(this);
+
   }
 
   // Fetch the Enquiry List
@@ -97,31 +99,6 @@ class EnquiryListing extends Component {
             toast.error(err.message);
         } )
       }
-      else{
-        commonService.postAPIWithAccessToken('food-truck', formData)
-        .then( res => {
-         
-          if ( undefined === res.data.data || !res.data.status ) { 
-            this.setState( { formProccessing: false} );
-            toast.error(res.data.message);
-            return;
-          } 
-          
-          this.setState({ modal: false});
-          toast.success(res.data.message);
-          this.enquiryLists();
-         
-        } )
-        .catch( err => {         
-          if(err.response !== undefined && err.response.status === 401) {
-            localStorage.clear();
-            this.props.history.push('/login');
-          }
-          else
-            this.setState( { formProccessing: false } );
-            toast.error(err.message);
-        } )
-      }
     } );
     
   };
@@ -158,7 +135,34 @@ class EnquiryListing extends Component {
       }
       this.setState({rowIndex: rowIndex, formField: formField, modal: true });
   }
-    
+  
+  handleDeleteEnquiry(rowIndex){
+    const rowInfo = this.state.enquiryLists[rowIndex];
+    this.setState( { loading: true}, () => {
+      commonService.deleteAPIWithAccessToken( `food-truck/enquiry/`+rowInfo.enquiryId)
+        .then( res => {
+          this.setState({loading: false});
+          if ( undefined === res.data || !res.data.status ) {            
+             toast.error(res.data.message);      
+            return;
+          }         
+          
+          toast.success(res.data.message);
+          this.enquiryLists();
+        } )
+        .catch( err => {       
+            
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else{
+            this.setState( { loading: false } );
+            toast.error(err.message);
+          }
+      } )
+    })
+  }  
 
   render() {
     const { enquiryLists, loading, modal, formField, formProccessing } = this.state;
@@ -181,7 +185,7 @@ class EnquiryListing extends Component {
           <CardBody>
             <Row>
               <Col md={12}>
-                <EnquiryData data={enquiryLists} editEnquiryAction={this.handleEditEnquiry} dataTableLoadingStatus = {this.state.loading} />
+                <EnquiryData data={enquiryLists} editEnquiryAction={this.handleEditEnquiry} deleteEnquiryAction={this.handleDeleteEnquiry} dataTableLoadingStatus = {this.state.loading} />
               </Col>
             </Row> 
           </CardBody>

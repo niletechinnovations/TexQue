@@ -19,6 +19,11 @@ class EnquiryListData extends Component {
   editEnquiryItem(rowIndex){    
     this.props.editEnquiryAction(rowIndex);
   }
+
+  /* Delete Enquiry Info */
+  deleteEnquiryItem(rowIndex){    
+    this.props.deleteEnquiryAction(rowIndex);
+  }
  
 
   render() {
@@ -39,8 +44,7 @@ class EnquiryListData extends Component {
         enquiryId: enquiry.enquiryId,
         action: <>
         <div className="actionBtnGroup"><Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-          this.editEnquiryItem(i)}><i className="fa fa-pencil"></i> </Button><Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-            this.editEnquiryItem(i)}><i className="fa fa-trash"></i> </Button></div>
+          this.editEnquiryItem(i)}><i className="fa fa-pencil"></i> </Button><Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteEnquiryItem(i) };}} ><i className="fa fa-trash"></i> </Button></div>
           </>
       }      
       rowsItem.push(resInfo);
