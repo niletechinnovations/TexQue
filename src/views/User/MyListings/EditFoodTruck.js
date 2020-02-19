@@ -98,11 +98,20 @@ class EditFoodTruck extends Component {
           }
           
           const listItems = foodTruckDetail.schedules;
+          let checkboxes = this.state.checkboxes;
+          let availabilityItem = {}
+          Object.keys(checkboxes).forEach((key, value) => { 
+            if(listItems.indexOf(key) > -1 )
+              availabilityItem[key] = true;
+            else
+              availabilityItem[key] = false;
+          });
+
           //const listItems = foodTruckDetail.schedules.map();
-          this.setState({ schedules: listItems });
+          this.setState({ schedules: listItems, checkboxes: availabilityItem });
           
 
-          this.setState({ loading: false, foodTruckDetail: foodTruckDetail, formValid: true, formField: formField});
+          this.setState({ loading: false, foodTruckDetail: foodTruckDetail, address: foodTruckDetail.address, latitude: foodTruckDetail.latitude,  longitude: foodTruckDetail.longitude,  formValid: true, formField: formField});
         } )
         .catch( err => {               
           if(err.response !== undefined && err.response.status === 401) {
@@ -191,6 +200,7 @@ class EditFoodTruck extends Component {
   };
   handleAvlChange = e => {
     const { name } = e.target;
+    
     this.setState(prevState => ({
       checkboxes: {
         ...prevState.checkboxes,
@@ -323,7 +333,9 @@ class EditFoodTruck extends Component {
 
   // Set address, latitude and longitude
   setLatitudeLongitude(address, latLng){
-    this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address })
+    let formField = this.state.formField;
+    formField.address = address;
+    this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address, formField: formField })
   }
 
 

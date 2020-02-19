@@ -13,21 +13,26 @@ class AutoCompletePlaces extends React.Component {
     this.state = { address: '', latitude:'', longitude:'', scriptLoading: false };
   }
   
-  componentDidMount() {
-    var s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.src = `https://maps.google.com/maps/api/js?key=AIzaSyBaq7mc_lts3Xensjk7JvnUU1q8dNG0avo&libraries=places`;
-    var x = document.getElementsByTagName('script')[0];
-    x.parentNode.insertBefore(s, x);
-    s.addEventListener('load', e => {
+  componentDidMount() { 
+      if(typeof google === "undefined") {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = `https://maps.google.com/maps/api/js?key=AIzaSyBaq7mc_lts3Xensjk7JvnUU1q8dNG0avo&libraries=places`;
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+        s.addEventListener('load', e => {
+            this.setState({scriptLoading: true});
+        })
+      }
+      else
         this.setState({scriptLoading: true});
-    })
-
     //this.setState({ address:this.props.setAddress });
 
   }
   handleChange = address => {
     this.setState({ address });
+    if(address === "")
+      this.props.setLatitudeLongitude(address,{lat:"", lng:""});
   };
  
   handleSelect = address => {
