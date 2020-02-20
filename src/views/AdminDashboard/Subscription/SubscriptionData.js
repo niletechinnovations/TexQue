@@ -46,9 +46,7 @@ class SubscriptionData extends Component {
         description: plan.description || " ",
         status: plan.status ? 'Active' : 'Inactive',   
         action: <p><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
-          this.editSubscriptionItem(i)}><i className="fa fa-pencil"></i> </button>
-          <button className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => 
-          this.deleteSubscriptionItem(i)}><i className="fa fa-trash"></i></button></p>,       
+          this.editSubscriptionItem(i)}><i className="fa fa-pencil"></i> </button></p>,       
       }      
       rowsItem.push(orgInfo);
     }      
@@ -82,6 +80,10 @@ class SubscriptionData extends Component {
       {
         label: 'Action',
         name: 'action',
+        options: {
+          filter: false,
+          sort: false,
+        }
       },
     ];
     const options = {

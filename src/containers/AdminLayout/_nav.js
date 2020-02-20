@@ -32,12 +32,17 @@ export default {
       url: '/admin/enquiries',
     },
     {
+      name: 'Manage Reviews',      
+      icon: 'fa fa-star',
+      url: '/admin/reviews',
+    },
+    {
       name: 'Manage Subscription',
-      url: '/admin/subscription/advertiser',
+      url: '/admin/subscription',
       icon: 'fa fa-credit-card-alt',
       children: [{
           name: 'Advertiser Plan',
-          url: '/admin/subscription/advertiser',
+          url: '/admin/subscription',
           icon: 'fa fa-credit-card',
         },
         {

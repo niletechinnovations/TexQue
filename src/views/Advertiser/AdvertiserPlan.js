@@ -1,5 +1,4 @@
 import React from "react";
-//import  { Link } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 
 import { toast } from 'react-toastify';
@@ -7,6 +6,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../core/services/commonService';
 import Loader from '../../views/Loader/Loader';
 import "./AdvertiserPlan.css";
+
+const getPlanType = (planType) => {
+    if(planType === 1)
+      return 'Month';
+    else if(planType === 2)
+      return 'Quater';
+    if(planType === 3)
+      return 'Half Year';
+    if(planType === 4)
+      return 'Year';
+}
 
 class AdvertiserPlan extends React.Component {
   constructor( props ){
@@ -24,7 +34,7 @@ class AdvertiserPlan extends React.Component {
   /*Plan List API*/
   planList() {
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('subscription')
+      commonService.getAPIWithAccessToken('subscription?planType=0')
         .then( res => {
            
           if ( undefined === res.data.data || !res.data.status ) {
@@ -45,6 +55,35 @@ class AdvertiserPlan extends React.Component {
         } )
     } )
   }
+  choosePlan(planId){
+    if(planId!==''){
+      const formData = {
+        "planId": planId
+      }
+      this.setState( { loading:true }, () =>{
+        commonService.postAPIWithAccessToken('subscription/buy', formData)
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {           
+            this.setState( { loading: false} );
+            toast.error(res.data.message);
+            return;
+          }
+          if (typeof window !== 'undefined') {
+            window.location.href = res.data.data.redirectUrl;
+          }
+        })
+        .catch( err => {
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }else{
+            this.setState( { loading: false } );
+            toast.error(err.message);
+          }
+        })
+      } );
+    }
+  }
 
   render() {
     const { loading, planList } = this.state;
@@ -62,23 +101,20 @@ class AdvertiserPlan extends React.Component {
                 <hr className="divider" />
                 <Row>
                   { planList.map( (planInfo, index) =>
-                    <Col lg={6} className="mb-2">
+                    <Col lg={6} className="mb-2" key={index}>
                         <div className="card mb-5 mb-lg-0">
                         <div className="card-body">
-                            <h5 className="card-title text-muted text-uppercase text-center">Free</h5>
-                            <h6 className="card-price text-center">$2.9<span className="period">/month</span></h6>
+                            <h5 className="card-title text-muted text-uppercase text-center">{planInfo.planName}</h5>
+                            <h6 className="card-price text-center">${planInfo.amount}<span className="period">/{getPlanType(planInfo.duration)}</span></h6>
                             <hr />
-                            <ul className="fa-ul">
-                                <li><span className="fa-li"><i className="fa fa-check"></i></span><strong>Upto 2 Ads</strong></li>
-                                <li><span className="fa-li"><i className="fa fa-check"></i></span>Unlimited Views</li>
-                            </ul>
-                            <button className="btn btn-block btn-primary text-uppercase">Upgrade</button>
+                            <div className="plan-description">
+                                {planInfo.description}
+                            </div>
+                            <button className="btn btn-block btn-primary text-uppercase" onClick={() => this.choosePlan(planInfo.planId) }>Choose Plan</button>
                         </div>
                         </div>
                     </Col>
                   )}
-                    
-                
                     
                 </Row>
             </div>

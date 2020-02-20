@@ -74,3 +74,4 @@ h6.MuiTypography-root{ font-size: 16px; font-weight: 600;}
 table th.th-user-img{ padding-left: 25px;}
 .statusDrodownBtn .btn-sm{ padding: 0.25rem 0.5rem; font-size: 13px;}
 .actionBtnGroup{ width: 100px;}
+.changeStatusBtn{ position: absolute; left: 12px; }

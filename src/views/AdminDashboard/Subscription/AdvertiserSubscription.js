@@ -17,13 +17,13 @@ class AdvertiserSubscription extends Component {
       loading: true,
       formProccessing: false,
       rowIndex: -1,
+      changeStatusBtn:'',
       formField: { plan_name: '', amount: '', period: '', duration: '', plan_type:'', advertisementAccess: '', description: '', isTrail: false, trail_days: 0},
       formErrors: { plan_name: '', amount: '', period: '', duration: '', plan_type:'', advertisementAccess: '', description: '', error: ''},
       formValid: true,     
     } 
     this.handleEditSubscription = this.handleEditSubscription.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
-    this.handleDeleteSubscription = this.handleDeleteSubscription.bind(this);
     
   }
   // Fetch the Plan List
@@ -35,7 +35,7 @@ class AdvertiserSubscription extends Component {
   planList(filterItem = {}) {
     
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('subscription')
+      commonService.getAPIWithAccessToken('subscription?planType=0')
         .then( res => {
           
            
@@ -183,11 +183,12 @@ class AdvertiserSubscription extends Component {
       modal: !this.state.modal,
       rowIndex: -1,
       formValid: true,
+      changeStatusBtn: '',
       formField: { plan_name: '', amount: '', period: '', duration: '', plan_type:'', advertisementAccess: '', description: '', isTrail: false, trail_days: 0},
       formErrors: { plan_name: '', amount: '', period: '', duration: '', plan_type:'', advertisementAccess: '', description: '', error: ''},
     });
   }
-  /* Edit Employee*/
+  /* Edit Subscription*/
   handleEditSubscription(rowIndex){
       const planInfo = this.state.planList[rowIndex];
       const formField = {
@@ -197,19 +198,45 @@ class AdvertiserSubscription extends Component {
         plan_type: planInfo.duration, 
         advertisementAccess: planInfo.advertisementAccess, 
         description: planInfo.description };
-      this.setState({rowIndex: rowIndex, formField: formField, modal: true, formValid: true});
+      const statusBtn = <Button type="button" size="sm" className={`changeStatusBtn `+( planInfo.status ? 'btn-danger' : 'btn-success' )} onClick={() => 
+        this.changeSubscriptionStatus(planInfo.planId, planInfo.status )} >{ ( planInfo.status ? 'Change to Inactive' : 'Change to Active' )}</Button>
+
+      this.setState({rowIndex: rowIndex, formField: formField, modal: true, changeStatusBtn:statusBtn, formValid: true});
   }
-  /* Delete Employee*/
-  handleDeleteSubscription(rowIndex){
-   
+  /* Change Subscription status*/
+  changeSubscriptionStatus(planId,status){
     
-   
+    this.setState( { loading: true}, () => {
+      const formData = {
+        "status": (status ? false : true ),
+      };
+      commonService.putAPIWithAccessToken('subscription/update-status/'+planId, formData)
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {           
+            this.setState( { loading: false} );
+            toast.error(res.data.message);
+            return;
+          } 
+          this.setState({ modal: false, loading: false});
+          toast.success(res.data.message);
+          this.planList();        
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }else{
+            this.setState( { loading: false } );
+            toast.error(err.message);
+          }
+        } )
+    } );
     
   }
   
   render() {
 
-    const { planList, loading, modal, formProccessing, formErrors } = this.state;     
+    const { planList, loading, modal, formProccessing, formErrors, changeStatusBtn } = this.state;     
     let loaderElement = '';
     if(loading)        
       loaderElement = <Loader />
@@ -286,6 +313,7 @@ class AdvertiserSubscription extends Component {
               </Row>
             </ModalBody>
             <ModalFooter>
+              {changeStatusBtn}
               <Button color="primary" disabled={!this.state.formValid || formProccessing} type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>

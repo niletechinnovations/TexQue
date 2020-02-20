@@ -24,15 +24,19 @@ hr.divider{ margin: 1rem 0 1.5rem; }
     font-weight: bold;
 }
   
-.pricing .card-price {
-    font-size: 3rem;
-    margin: 0;
-}
-  
+  .pricing .card-price {
+      font-size: 3rem;
+      margin: 0;
+  }
   .pricing .card-price .period {
     font-size: 0.8rem;
   }
-  
+  .pricing .plan-description{
+    text-align: center;
+    line-height: 2em;
+    margin-bottom: 10px;
+    white-space: pre-line;
+  }
   .pricing ul li {
     margin-bottom: 1rem;
   }

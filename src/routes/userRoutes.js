@@ -7,8 +7,10 @@ import EditFoodTruck from '../views/User/MyListings/EditFoodTruck';
 import EnquiryLists from '../views/User/Enquiries/EnquiryLists';
 import FoodTruckSubscription from '../views/User/FoodTruckSubscription/FoodTruckSubscription';
 import AdvertiserPlan from '../views/Advertiser/AdvertiserPlan';
+import AdvertiserPaymentStatus from '../views/Advertiser/Payment/AdvertiserPaymentStatus';
 import AdvertiserProfile from '../views/Advertiser/Profile/Profile';
 import ReviewLists from '../views/User/Reviews/ReviewLists';
+import SubscriptionPaymentStatus from '../views/User/FoodTruckSubscription/SubscriptionPaymentStatus';
 
 const userRoutes = [
   { path: '/user/', exact: true, name: 'Home' },
@@ -21,7 +23,9 @@ const userRoutes = [
   { path: '/user/enquiries', exact:true, name:'Enquiry Lists', component: EnquiryLists},
   { path: '/user/reviews', exact:true, name:'Review Lists', component: ReviewLists},
   { path: '/user/subscription', exact: true,  name: 'Subscription', component: FoodTruckSubscription },
+  { path: '/user/payment/:status', exact: true,  name: 'Payment Status', component: SubscriptionPaymentStatus },
   { path: '/advertiser/plan', exact: true,  name: 'Advertiser Plan', component: AdvertiserPlan },
+  { path: '/advertiser/payment/:status', exact: true,  name: 'Payment Status', component: AdvertiserPaymentStatus },
   { path: '/advertiser/profile', exact: true,  name: 'Advertiser Profile', component: AdvertiserProfile }
   
 

@@ -138,8 +138,11 @@ class EnquiryListing extends Component {
   
   handleDeleteEnquiry(rowIndex){
     const rowInfo = this.state.enquiryLists[rowIndex];
+    const delFormData = {
+      "enquiryId": rowInfo.enquiryId,
+    };
     this.setState( { loading: true}, () => {
-      commonService.deleteAPIWithAccessToken( `food-truck/enquiry/`+rowInfo.enquiryId)
+      commonService.deleteAPIWithAccessToken( `food-truck/enquiry/`, delFormData)
         .then( res => {
           this.setState({loading: false});
           if ( undefined === res.data || !res.data.status ) {            
