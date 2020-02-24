@@ -10,6 +10,9 @@ import AutoCompletePlaces from '../../../../core/google-map/AutoCompletePlaces';
 import FoodTruckData from './FoodTruckData';
 import './FoodTruck.css'
 
+import Checkbox from "../../../../core/commonComponent/Checkbox";
+const weekArr = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
 class FoodTruckList extends Component {
   constructor(props){
     super(props);
@@ -25,10 +28,17 @@ class FoodTruckList extends Component {
       address: '',
       latitude:'',
       longitude:'',
+      checkboxes: weekArr.reduce(
+        (options, option) => ({
+          ...options,
+          [option]: false
+        }),
+        {}
+      ),
       loading: true,
       formProccessing: false,
       rowIndex: -1,
-      formField: { organizationId: '', truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
+      formField: { organizationId: '', truckName: '', contactPerson: '', phoneNumber:'', address: '', description:'', defaultImage: '',category_id:''},
       formErrors: { organizationId: '', truckName: '',  address:'', error: ''},
       formValid: false,
       filterItem: { filter_organization_id: '', filter_cat_id: '', filter_truckName: '', filter_address:'', custom_search: ''},
@@ -152,9 +162,13 @@ class FoodTruckList extends Component {
       const formData = new FormData();
       formData.append('organizationId', formInputField.organizationId);
       formData.append('truckName', formInputField.truckName);
-      formData.append('address', formInputField.address);
       formData.append('contactPerson', formInputField.contactPerson);
       formData.append('phoneNumber', formInputField.phoneNumber);
+      formData.append('description', formInputField.description);
+      formData.append('address', this.state.address);
+      formData.append('latitude', this.state.latitude);
+      formData.append('longitude', this.state.longitude);
+      
       formData.append('featuredImage', this.state.featuredImage);
       for(let i =0; i < this.state.menuImages.length; i++){
         formData.append('menuImages', this.state.menuImages[i]);
@@ -165,6 +179,12 @@ class FoodTruckList extends Component {
       for(let j =0; j < this.state.selectedCategories.length; j++){
         formData.append('categoryId', this.state.selectedCategories[j].value );
       }
+
+      Object.keys(this.state.checkboxes)
+      .filter(checkbox => this.state.checkboxes[checkbox])
+      .forEach(checkbox => {
+        formData.append('schedules', checkbox );
+      });
 
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
@@ -254,6 +274,16 @@ class FoodTruckList extends Component {
     this.setState({ selectedCategories: selectedOptions });
   }
   
+  handleAvlChange = e => {
+    const { name } = e.target;
+    this.setState(prevState => ({
+      checkboxes: {
+        ...prevState.checkboxes,
+        [name]: !prevState.checkboxes[name]
+      }
+    }));
+  };
+
   /* Validate Form Field */
   validateField(fieldName, value) {
     let fieldValidationErrors = this.state.formErrors;
@@ -487,13 +517,35 @@ class FoodTruckList extends Component {
                     <Input type="file" id="truckImages" name="truckImages" className="form-control" multiple onChange={this.onGalleryImageChange} />
                   </FormGroup> 
                 </Col>  
-                <Col md={"12"}>
+                <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="address">Address *</Label>
                     <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} />        
                   </FormGroup>
                 </Col>
-                
+                <Col md={"6"}>
+                  <FormGroup>
+                    <Label htmlFor="avl">Availability </Label><br/>
+                    {weekArr.map((week, index) =>  
+                    <FormGroup check inline key={index}>
+                      <Label check>
+                      <Checkbox
+                        label={week}
+                        isSelected={ this.state.checkboxes[week]}
+                        onCheckboxChange={this.handleAvlChange}
+                        key={week}
+                      />
+                      </Label>
+                    </FormGroup>
+                    )}
+                  </FormGroup>  
+                </Col>
+                <Col md={"12"}>
+                  <FormGroup> 
+                    <Label htmlFor="description">Description</Label>
+                    <Input type="textarea" placeholder="Food truck details" id="description" name="description" value={this.state.formField.description} onChange={this.changeHandler} />
+                  </FormGroup>
+                </Col>
               </Row>
             </ModalBody>
             <ModalFooter>

@@ -46,6 +46,7 @@ class CategoryData extends Component {
     for(const [i, cat] of this.props.data.entries()){
       let catInfo = {
         name: cat.categoryName,
+        image: (cat.imagUrl!=='' ? <img src={cat.imagUrl} width="100" alt="" /> : '' ),
         status: cat.status ? "Active" : "Inactive" ,       
         action: <p><a href="#!" className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
           this.editCategoryItem(i)}><i className="fa fa-pencil"></i> </a>

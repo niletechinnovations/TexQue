@@ -32,6 +32,9 @@ class EditFoodTruckList extends Component {
       menuImages: [],
       selectedCategories: [],
       foodTruckDetail: {},
+      address: '',
+      latitude:'',
+      longitude:'',
       checkboxes: weekArr.reduce(
         (options, option) => ({
           ...options,
@@ -40,7 +43,7 @@ class EditFoodTruckList extends Component {
         {}
       ),
       schedules: [],
-      formField: { organizationId:'', truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
+      formField: { organizationId:'', truckName: '', contactPerson: '', phoneNumber:'', address: '',description:'', defaultImage: '',category_id:''},
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', address:'', error: ''},
       formValid: false,
     };
@@ -78,6 +81,7 @@ class EditFoodTruckList extends Component {
           formField.contactPerson = foodTruckDetail.contactPerson;
           formField.phoneNumber = foodTruckDetail.phoneNumber;
           formField.address = foodTruckDetail.address;
+          formField.description = foodTruckDetail.description;
           formField.category_id = foodTruckDetail.categories.length > 0 ? foodTruckDetail.categories : "";
 
           let selectedOption = [];
@@ -94,7 +98,18 @@ class EditFoodTruckList extends Component {
             this.setState({ selectedCategories: selectedOption });
           }
 
-          this.setState({ loading: false, foodTruckDetail: foodTruckDetail, formValid: true, formField: formField});
+          const listItems = foodTruckDetail.schedules;
+          let checkboxes = this.state.checkboxes;
+          let availabilityItem = {}
+          Object.keys(checkboxes).forEach((key, value) => { 
+            if(listItems.indexOf(key) > -1 )
+              availabilityItem[key] = true;
+            else
+              availabilityItem[key] = false;
+          });
+          this.setState({ schedules: listItems, checkboxes: availabilityItem });
+
+          this.setState({ loading: false, foodTruckDetail: foodTruckDetail, address: foodTruckDetail.address, latitude: foodTruckDetail.latitude,  longitude: foodTruckDetail.longitude, formValid: true, formField: formField});
         } )
         .catch( err => {               
           if(err.response !== undefined && err.response.status === 401) {
@@ -119,10 +134,13 @@ class EditFoodTruckList extends Component {
       formData.append('organizationId', formInputField.organizationId);
       formData.append('foodTruckId', this.state.foodTruckId);
       formData.append('truckName', formInputField.truckName);
-      formData.append('address', formInputField.address);
       formData.append('contactPerson', formInputField.contactPerson);
       formData.append('phoneNumber', formInputField.phoneNumber);
-      
+      formData.append('description', formInputField.description);
+      formData.append('address', this.state.address);
+      formData.append('latitude', this.state.latitude);
+      formData.append('longitude', this.state.longitude);
+
       if(this.state.featuredImage !== "")
         formData.append('featuredImage', this.state.featuredImage);
       
@@ -195,6 +213,7 @@ class EditFoodTruckList extends Component {
 
   handleAvlChange = e => {
     const { name } = e.target;
+    
     this.setState(prevState => ({
       checkboxes: {
         ...prevState.checkboxes,
@@ -435,7 +454,7 @@ organizationList() {
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="defaultImage">Default Image</Label>            
+                    <Label htmlFor="defaultImage">Banner Image</Label>            
                     <Input type="file" id="defaultImage" name="defaultImage" className="form-control"  onChange={this.handleImageChange} />
                   </FormGroup>              
                 </Col>

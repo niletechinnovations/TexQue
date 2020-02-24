@@ -45,7 +45,7 @@ class FoodTruckLists extends Component {
         }),
         {}
       ),
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',defaultImage: '',category_id:''},
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',description:'', defaultImage: '',category_id:''},
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', error: ''},
       formValid: false,
     } 
@@ -97,6 +97,7 @@ class FoodTruckLists extends Component {
       formData.append('truckName', formInputField.truckName);
       formData.append('contactPerson', formInputField.contactPerson);
       formData.append('phoneNumber', formInputField.phoneNumber);
+      formData.append('description', formInputField.description);
       formData.append('address', this.state.address);
       formData.append('latitude', this.state.latitude);
       formData.append('longitude', this.state.longitude);
@@ -412,9 +413,15 @@ class FoodTruckLists extends Component {
                     <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} />
                   </FormGroup>
                 </Col>
-                <Col md={"12"}>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="description">Description</Label>
+                    <Input type="textarea" placeholder="Food truck details" id="description" name="description" value={this.state.formField.description} onChange={this.changeHandler} />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>
                   <FormGroup>
-                    <Label htmlFor="avl">Availability </Label>
+                    <Label htmlFor="avl">Availability </Label><br/>
                     {weekArr.map((week, index) =>  
                     <FormGroup check inline key={index}>
                       <Label check>

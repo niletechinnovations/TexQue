@@ -44,7 +44,6 @@ class EditFoodTruck extends Component {
         {}
       ),
       schedules: [],
-      selectedDays: [],
       formField: { truckName: '', contactPerson: '', phoneNumber:'', address:'', description:'', defaultImage: '',category_id:''},
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', error: ''},
       formValid: false,
@@ -371,7 +370,6 @@ class EditFoodTruck extends Component {
         <Card>
           <CardHeader className="mainHeading">
             <strong className="mr-5">Food Truck</strong>
-            <Link to={`/user/comments/`+ this.state.foodTruckId} className="ml-5 btn btn-sm btn btn-outline-info">Comments: {foodTruckDetail.totalComments}</Link> &nbsp;
             <Link to={`/user/reviews/`+ this.state.foodTruckId} className="btn btn-sm btn btn-outline-info">Reviews: {foodTruckDetail.totalReviews}</Link>
             
             <Link to="/user/my-listings" className="btn btn-sm btn-secondary addListing pull-right"><i className="fa fa-arrow-left"></i> Back</Link>

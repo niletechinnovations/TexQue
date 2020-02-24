@@ -6,35 +6,56 @@ export default {
       icon: 'icon-speedometer',
     },
     {
-      name: 'Manage Food Truck',
+      name: 'Food Truck',
       url: '/admin/organization',
       icon: 'fa fa-truck',
       children: [{
-          name: 'Manage Truck Owner',
+          name: 'Food Truck Owners',
           url: '/admin/organization',
           icon: 'icon-people',
         },
         {
-          name: 'Manage Truck Listing',
+          name: 'Food Truck Listings',
           url: '/admin/organization/truck-listing',
           icon: 'fa fa-truck',
         },
       ]    
     },
     {
-      name: 'Manage Users',
+      name: 'Users',
       url: '/admin/users',
       icon: 'icon-user',
     },
     {
-      name: 'Manage Enquiries',      
+      name: 'Enquiries',      
       icon: 'icon-envelope',
       url: '/admin/enquiries',
     },
     {
-      name: 'Manage Reviews',      
+      name: 'Reviews',      
       icon: 'fa fa-star',
       url: '/admin/reviews',
+    },
+    {
+      name: 'Advertisements',      
+      icon: 'fa fa-picture-o',
+      url: '/admin/advertisement',
+    },
+    {
+      name: 'Subscribed Users',
+      url: '/admin/subscribed',
+      icon: 'fa fa-list',
+      children: [{
+          name: 'Subscribed Owners',
+          url: '/admin/subscribed',
+          icon: 'fa fa-user',
+        },
+        {
+          name: 'Subscribed Advertiser',
+          url: '/admin/subscribed/advertisers',
+          icon: 'fa fa-user',
+        },
+      ]    
     },
     {
       name: 'Manage Subscription',
@@ -53,7 +74,7 @@ export default {
       ]    
     },
     {
-      name: 'Manage Cuisine',
+      name: 'Cuisine',
       url: '/admin/cuisine',
       icon: 'fa fa-cutlery',
     },  
