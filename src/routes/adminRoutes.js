@@ -24,6 +24,7 @@ const adminRoutes = [
   { path: '/admin/organization/edit-truck/:foodTruckId', exact: true,  name: 'Edit Food Truck', component: EditFoodTruck },
   { path: '/admin/enquiries', exact: true, name: 'Manage Enquiries', component: EnquiryListing },
   { path: '/admin/reviews', exact: true, name: 'Manage Reviews', component: FoodTruckReviewList },
+  { path: '/admin/reviews/:foodtruckId', exact: true, name: 'Food Truck Reviews', component: FoodTruckReviewList },
   { path: '/admin/subscription', exact: true, name: 'Manage Advertiser Subscription', component: AdvertiserPlans },
   { path: '/admin/subscription/food-truck', exact: true, name: 'Manage Food Truck Subscription', component: FoodTruckSubscription },
   { path: '/admin/change-password', exact: true,  name: 'Change Password', component: ChangePassword },

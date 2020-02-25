@@ -23,6 +23,7 @@ const userRoutes = [
   { path: '/user/listing-details', exact: true, name: 'My Listings', component: ListingDetails },
   { path: '/user/enquiries', exact:true, name:'Enquiry Lists', component: EnquiryLists},
   { path: '/user/reviews', exact:true, name:'Review Lists', component: ReviewLists},
+  { path: '/user/reviews/:foodtruckId', exact:true, name:'Food Truck Review', component: ReviewLists},
   { path: '/user/subscription', exact: true,  name: 'Subscription', component: FoodTruckSubscription },
   { path: '/user/payment/:status', exact: true,  name: 'Payment Status', component: SubscriptionPaymentStatus },
   { path: '/advertiser/plan', exact: true,  name: 'Advertiser Plan', component: AdvertiserPlan },

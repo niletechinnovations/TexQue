@@ -28,13 +28,22 @@ class ReviewLists extends Component {
   }
 
   componentDidMount() {     
-    this.reviewLists({});   
+    const { match : { params } } = this.props;
+    let foodtruckId = '';
+    if(params.foodtruckId!== undefined){
+      foodtruckId = params.foodtruckId;
+    }
+    this.reviewLists({filter_foodTruckId: foodtruckId});
   }
 
   /* Review List API */
-  reviewLists() {
-    this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('food-truck/reviews?pageSize=10000')
+  reviewLists(filterItem = {}) {
+    let strWalkQuery = "";
+    if(filterItem.filter_foodTruckId !== undefined && filterItem.filter_foodTruckId !== "" ) 
+      strWalkQuery += (strWalkQuery !=="" ) ? "/"+filterItem.filter_foodTruckId : "/"+filterItem.filter_foodTruckId;
+    
+      this.setState( { loading: true}, () => {
+      commonService.getAPIWithAccessToken('food-truck/reviews'+strWalkQuery)
         .then( res => {
            
           if ( undefined === res.data.data || !res.data.status ) {

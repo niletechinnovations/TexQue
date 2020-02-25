@@ -1,23 +1,70 @@
 import React, { Component } from 'react';
-import {
- // Badge,
- Card,
-  CardBody,
-  Col,
-  Row,
-} from 'reactstrap';
+import { Line } from 'react-chartjs-2';
+
+import { Card, CardBody, Col, Row } from 'reactstrap';
+import { PeopleAlt, LocalShipping, MailOutline, SupervisorAccount } from '@material-ui/icons';
+import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 
-import {
-  PeopleAlt,
-  LocalShipping,
-  MailOutline,
-  SupervisorAccount
-} from '@material-ui/icons';
-
 import NewUserData from './NewUsersData';
+
+const line = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  datasets: [
+    {
+      label: 'Food Truck Listings',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(213,4,43,0.4)',
+      borderColor: 'rgba(213,4,43,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(213,4,43,1)',
+      pointBackgroundColor: '#D5042B',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(213,4,43,1)',
+      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [60, 55, 50, 21, 56, 55, 40, 10, 45, 35, 25, 15],
+    },
+    {
+      label: 'Food Truck Enquiries',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(0,33,100,0.4)',
+      borderColor: 'rgba(0,33,100,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(0,33,100,1)',
+      pointBackgroundColor: '#002164',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(0,33,100,1)',
+      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [20, 45, 30, 25, 46, 35, 10, 18, 25, 25, 45, 65],
+    }
+  ],
+};
+const options = {
+  tooltips: {
+    enabled: false,
+    custom: CustomTooltips
+  },
+  maintainAspectRatio: false
+}
 
 class Dashboard extends Component {
   constructor(props) {
@@ -107,6 +154,17 @@ class Dashboard extends Component {
                 </div>
                 <div className="text-value">8,230</div>
                 <div>Total Enquiries</div>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Card>
+              <CardBody>
+                <div className="chart-wrapper">
+                  <Line data={line} options={options} height={85} />
+                </div>
               </CardBody>
             </Card>
           </Col>

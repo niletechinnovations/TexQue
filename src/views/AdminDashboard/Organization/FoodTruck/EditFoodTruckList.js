@@ -379,7 +379,9 @@ organizationList() {
         {loaderElement}
         <Card>
           <CardHeader className="mainHeading">
-            <strong>Food Truck</strong>
+            <strong className="mr-5">Food Truck</strong>
+            <Link to={`/admin/reviews/`+ this.state.foodTruckId} className="btn btn-sm btn btn-outline-info">Reviews: {foodTruckDetail.totalReviews}</Link>
+            
             <Link to="/admin/organization/truck-listing" className="btn btn-sm btn-secondary backButtonRight pull-right"><i className="fa fa-arrow-left"></i> Back</Link>
           </CardHeader>
           <CardBody>
