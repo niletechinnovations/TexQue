@@ -85,6 +85,39 @@ class AdvertiserPlan extends React.Component {
     }
   }
 
+  //Cancel subscription
+  cancelSubscription(subscriberId){
+    if(subscriberId!==''){
+      if (window.confirm('Are you sure you wish to delete this food truck?')) {
+        const formData = {
+          "subscriberId": subscriberId
+        }
+        this.setState( { loading:true }, () =>{
+          commonService.postAPIWithAccessToken('subscription/cancel', formData)
+          .then( res => {
+            if ( undefined === res.data.data || !res.data.status ) {           
+              this.setState( { loading: false} );
+              toast.error(res.data.message);
+              return;
+            }
+            toast.success(res.data.message);
+            this.planList();
+          })
+          .catch( err => {
+            if(err.response !== undefined && err.response.status === 401) {
+              localStorage.clear();
+              this.props.history.push('/login');
+            }else{
+              this.setState( { loading: false } );
+              toast.error(err.message);
+            }
+          })
+        } );
+      }
+    }
+  }
+
+
   render() {
     const { loading, planList } = this.state;
     
@@ -102,15 +135,17 @@ class AdvertiserPlan extends React.Component {
                 <Row>
                   { planList.map( (planInfo, index) =>
                     <Col lg={6} className="mb-2" key={index}>
-                        <div className="card mb-5 mb-lg-0">
+                        <div className={'card mb-5 mb-lg-0 '+(planInfo.isPlanActive ? 'active' :'' ) }>
                         <div className="card-body">
                             <h5 className="card-title text-muted text-uppercase text-center">{planInfo.planName}</h5>
                             <h6 className="card-price text-center">${planInfo.amount}<span className="period">/{getPlanType(planInfo.duration)}</span></h6>
                             <hr />
                             <div className="plan-description">
-                                {planInfo.description}
+                              Upto {planInfo.advertisementAccess} Ads<br />
+                              {planInfo.description}
                             </div>
-                            <button className="btn btn-block btn-primary text-uppercase" onClick={() => this.choosePlan(planInfo.planId) }>Choose Plan</button>
+                            <button className="btn btn-block btn-primary text-uppercase" onClick={ () =>  ( planInfo.isPlanActive ? '' : this.choosePlan(planInfo.planId) ) } disabled={ (planInfo.isPlanActive ? 'disabled' : '' ) }>{ (planInfo.isPlanActive ? 'Active Plan' : 'Upgrade' ) }</button>
+                            { ( planInfo.isPlanActive ? <p className="text-center mb-0"><button className="btn-sm btn-danger mt-3" onClick={ () => this.cancelSubscription(planInfo.subscriberId) }>Cancel Subscription</button></p> : '' ) }
                         </div>
                         </div>
                     </Col>

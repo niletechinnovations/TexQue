@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 
 import NewUserData from './NewUsersData';
+import NewEnquiriesData from './NewEnquiriesData';
 
 const line = {
   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -73,35 +74,37 @@ class Dashboard extends Component {
      loading: false,
       dashBoardStats: {organizationCount: 0, usersCount: 0},
       userList: [],
+      enquiryList:[],
       organizationData: []
     };
   }
 
   componentDidMount() { 
     this.setState( { loading: true}, () => {
+
       commonService.getAPIWithAccessToken('profile/list?pageNo=1&pageSize=10')
         .then( res => {
-          console.log(res);
-           
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( {  loading: false } );
             toast.error(res.data.message);    
             return;
           }  
           const responseData = res.data.data;
-          this.setState({loading:false, userList: responseData.profileList});     
-         
+          this.setState({loading:false, userList: responseData.profileList});
         } )
-        .catch( err => {         
-          if(err.response !== undefined && err.response.status === 401) {
-            localStorage.clear();
-            this.props.history.push('/login');
+        
+      commonService.getAPIWithAccessToken('food-truck/enquiry?pageNo=1&pageSize=10')
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {
+            this.setState( {  loading: false } );
+            toast.error(res.data.message);    
+            return;
           }
-          else {
-            this.setState( { loading: false } );
-            toast.error(err.message);    
-          }
-        } )
+          console.log(res.data.data);
+          this.setState({loading:false, enquiryList: res.data.data.enquiryList});
+      } )
+       
+
     } )
   }
  
@@ -169,18 +172,31 @@ class Dashboard extends Component {
             </Card>
           </Col>
         </Row>
+
+        {/* New Enquiries Data */}
         <Row>
           <Col>
             <Card>
-              <CardBody>
-                <NewUserData data={this.state.userList} />
+              <CardBody className="dashboard-card-body">
+                <NewEnquiriesData data={this.state.enquiryList} />
 
               </CardBody>              
             </Card>
           </Col>
         </Row>
         
-        
+        {/* New Users Data */}
+        <Row>
+          <Col>
+            <Card>
+              <CardBody className="dashboard-card-body">
+                <NewUserData data={this.state.userList} />
+
+              </CardBody>              
+            </Card>
+          </Col>
+        </Row>
+
       
       </div>
     );

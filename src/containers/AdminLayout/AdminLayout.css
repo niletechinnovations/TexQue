@@ -75,3 +75,12 @@ table th.th-user-img{ padding-left: 25px;}
 .statusDrodownBtn .btn-sm{ padding: 0.25rem 0.5rem; font-size: 13px;}
 .actionBtnGroup{ width: 100px;}
 .changeStatusBtn{ position: absolute; left: 12px; }
+.view-all-btn {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 12px;
+    box-shadow: none;
+}
+.dashboard-card-body{ padding-top: 10px;}
+.dashboard-card-body h5{ margin-bottom: 0px;}

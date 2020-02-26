@@ -56,6 +56,7 @@ class FoodTruckSubscription extends React.Component {
     } )
   }
 
+  // Buy subscription plan
   choosePlan(planId){
     if(planId!==''){
       const formData = {
@@ -87,6 +88,38 @@ class FoodTruckSubscription extends React.Component {
     }
   }
 
+  //Cancel subscription
+  cancelSubscription(subscriberId){
+    if(subscriberId!==''){
+      if (window.confirm('Are you sure you wish to delete this food truck?')) {
+        const formData = {
+          "subscriberId": subscriberId
+        }
+        this.setState( { loading:true }, () =>{
+          commonService.postAPIWithAccessToken('subscription/cancel', formData)
+          .then( res => {
+            if ( undefined === res.data.data || !res.data.status ) {           
+              this.setState( { loading: false} );
+              toast.error(res.data.message);
+              return;
+            }
+            toast.success(res.data.message);
+            this.planList();
+          })
+          .catch( err => {
+            if(err.response !== undefined && err.response.status === 401) {
+              localStorage.clear();
+              this.props.history.push('/login');
+            }else{
+              this.setState( { loading: false } );
+              toast.error(err.message);
+            }
+          })
+        } );
+      }
+    }
+  }
+
   render() {
     const { loading, planList } = this.state;
     
@@ -102,34 +135,20 @@ class FoodTruckSubscription extends React.Component {
                 <h2 className="pageHeading">Upgrade Plan</h2>
                 <hr className="divider" />
                 <Row>
-                    <Col lg="4">
-                        <div className="card active mb-5 mb-lg-0">
-                        <div className="card-body">
-                            <h5 className="card-title text-muted text-uppercase text-center">Free</h5>
-                            <h6 className="card-price text-center">$0<span className="period">/month</span></h6>
-                            <hr />
-                            <div className="plan-description">
-                                Upto 5 Listings<br />
-                                Unlimited Enquiries<br />
-                                Unlimited Rating<br />
-                                Unlimited Comments
-                            </div>
-                            <button className="btn btn-block btn-primary text-uppercase">Current Plan</button>
-                        </div>
-                        </div>
-                    </Col>
                     { planList.map( (planInfo, index) =>
-                        <Col lg={4} className="mb-2" key={index}>
-                            <div className="card mb-5 mb-lg-0">
-                            <div className="card-body">
+                        <Col lg={6} className="mb-2" key={index}>
+                            <div className={'card mb-5 mb-lg-0 '+(planInfo.isPlanActive ? 'active' :'' ) }>
+                              <div className="card-body">
                                 <h5 className="card-title text-muted text-uppercase text-center">{planInfo.planName}</h5>
                                 <h6 className="card-price text-center">${planInfo.amount}<span className="period">/{getPlanType(planInfo.duration)}</span></h6>
                                 <hr />
                                 <div className="plan-description">
-                                    {planInfo.description}
+                                  Upto {planInfo.advertisementAccess} Listings<br />
+                                  {planInfo.description}
                                 </div>
-                                <button className="btn btn-block btn-primary text-uppercase" onClick={() => this.choosePlan(planInfo.planId) }>Upgrade</button>
-                            </div>
+                                <button className="btn btn-block btn-primary text-uppercase" onClick={ () =>  ( planInfo.isPlanActive ? '' : this.choosePlan(planInfo.planId) ) } disabled={ (planInfo.isPlanActive ? 'disabled' : '' ) }>{ (planInfo.isPlanActive ? 'Active Plan' : 'Upgrade' ) }</button>
+                                { ( planInfo.isPlanActive ? <p className="text-center mb-0"><button className="btn-sm btn-danger mt-3" onClick={ () =>  this.cancelSubscription(planInfo.subscriberId) }>Cancel Subscription</button></p> : '' ) }
+                              </div>
                             </div>
                         </Col>
                     )}

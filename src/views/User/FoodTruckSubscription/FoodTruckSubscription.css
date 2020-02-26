@@ -50,7 +50,13 @@ hr.divider{ margin: 1rem 0 1.5rem; }
     opacity: 0.9;
     transition: all 0.2s;
   }
-  
+  .pricing .btn-primary.disabled, .pricing .btn-primary:disabled{
+    cursor: no-drop;
+    background-color: rgba(0,33,100,.9);
+    border-color: rgba(0,33,100,.9);
+    border-color: rgba(0,33,100,.9);
+  }
+
   /* Hover Effects on Card */
   
   @media (min-width: 992px) {

@@ -37,6 +37,11 @@ export default {
       url: '/admin/reviews',
     },
     {
+      name: 'Transactions',      
+      icon: 'fa fa-money',
+      url: '/admin/transactions',
+    },
+    {
       name: 'Advertisements',      
       icon: 'fa fa-picture-o',
       url: '/admin/advertisement',

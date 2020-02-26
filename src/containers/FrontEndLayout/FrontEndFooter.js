@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const frontEndFooter = () => {
     return (
@@ -10,7 +11,7 @@ const frontEndFooter = () => {
                 <div className="col-md-3 col-12 col-sm-12">
                   <div className="app">
                     <h2>DOWNLOAD APP</h2>
-                    <p>The Food Truck app that Pros use! The app will be simple and effective for the everyday seller and buyer of delicious meals on wheels. Coming soon to a smart phone near you!</p>
+                    <p className="about-text">The Food Truck app that Pros use! The app will be simple and effective for the everyday seller and buyer of delicious meals on wheels. Coming soon to a smart phone near you!</p>
                     <a href="/">
                       <img className="img-fluid" src="/images/google.png" alt="Google Play Store" />
                       </a>
@@ -23,9 +24,9 @@ const frontEndFooter = () => {
                   <div className="footer-link">
                     <h2>About Texque</h2>
                     <ul>
-                        <li><a href="/">About Us</a></li>
-                        <li><a href="/">Blog</a></li>
-                        <li><a href="/">Contact</a></li>
+                        <li><Link to="/about-us">About Us</Link></li>
+                        <li><Link to="/blog">Blog</Link></li>
+                        <li><Link to="/contact-us">Contact</Link></li>
                     </ul>
                   </div>
                 </div>
@@ -33,9 +34,9 @@ const frontEndFooter = () => {
                   <div className="footer-link">
                     <h2>For Food Truck</h2>
                     <ul>
-                        <li><a href="/"> Privacy Policy</a></li>
-                        <li><a href="/"> Terms & Conditions</a></li>
-                        <li><a href="/">Faq's</a></li>
+                        <li><Link to="/privacy-policy"> Privacy Policy</Link></li>
+                        <li><Link to="/terms-of-service"> Terms of Service</Link></li>
+                        <li><Link to="/faq">Faq's</Link></li>
                     </ul>
                   </div>
                 </div>
@@ -51,7 +52,7 @@ const frontEndFooter = () => {
             </div>
           </div>
 
-          <div className="footer-tag">
+          {/* <div className="footer-tag">
             <div className="container">
               <div className="footer-tag-content">
                 <h2>POPULAR FOOD</h2>
@@ -60,10 +61,10 @@ const frontEndFooter = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="footer-copyright">
             <div className="container">
-              <p>&copy; Copyright 2019 TexQue. All Rights Reserved</p>
+              <p>&copy; Copyright 2020 TexQue. All Rights Reserved.</p>
             </div>
           </div>
         </section>

@@ -114,6 +114,11 @@
 	opacity: 1;
 	transform: translate3d(0,0,0);
 }
+.grey-text, .main-content p{ color: #666666; font-size: 14px; line-height: 1.5em; margin-bottom: 15px;}
+.main-content{ background: #f7f7f7; }
+.main-content h4{ font-size: 1rem; margin-bottom: 0;}
+.main-content ul{ margin-left: 2.7em; color: #666666; font-size: 14px; }
+.main-content ol{ margin-left: 1em; color: #666666; font-size: 14px; }
 
 
 /* Mobile Fixes for User Menu */
@@ -163,11 +168,13 @@
 .footer-tag-content{padding: 2rem 0}
 .footer-tag-content h2 {font-size: 18px; font-weight: bold; color: #536382; padding: 0; }
 .footer-tag-links a {color: #717b8e; font-size: 14px; }
-.footer-copyright{background: #EDF1F4; position: relative;padding:1rem 0 }
+.footer-copyright{background: #dde4e9; position: relative;padding:1rem 0 }
 .footer-copyright p {color: #6c757d; font-size: 12px; font-weight: 300; padding: 0; margin-bottom: 0; text-align: center !important; }
 .footer-link h2,
 .app h2{font-size: 18px; font-weight: bold; color: #536382; padding: 0; }
 .footer ul li a {color: #717b8e; font-size: 14px; }
+.footer .about-text{ color: #717b8e; font-size: 14px;}
+
 .footer-contact-info{
   padding-left: 17px;
   list-style-type: none;

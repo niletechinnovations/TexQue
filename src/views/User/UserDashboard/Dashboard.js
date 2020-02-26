@@ -6,6 +6,7 @@ import {
 import commonService from '../../../core/services/commonService';
 import Loader from '../../Loader/Loader';
 import './Dashboard.css';
+import { Link } from 'react-router-dom';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -79,7 +80,7 @@ class Dashboard extends Component {
               </CardBody>
               <CardFooter>
                 <hr />
-                <div className="stats"><i className="fa fa-eye"></i> Browse All Listings</div>
+                <div className="stats"><Link className="btn btn-sm btn-outline-secondary" to="/user/my-listings"><i className="fa fa-eye"></i> Browse All Listings</Link></div>
               </CardFooter>
             </Card>
           </Col>
@@ -89,12 +90,12 @@ class Dashboard extends Component {
                 <Row>
                   <Col md="4" lg="5">
                     <div className="icon-big text-center icon-warning">
-                      <img src="/images/message-icon.png" alt="Message" width="64" />
+                      <img src="/images/message-icon.png" alt="Enquiries" width="64" />
                     </div>
                   </Col>
                   <Col md="84" lg="7">
                     <div className="numbers">
-                      <p className="card-category">Messages</p>
+                      <p className="card-category">Enquiries</p>
                       <p className="card-title">5,000</p>
                     </div>
                   </Col>
@@ -102,7 +103,7 @@ class Dashboard extends Component {
               </CardBody>
               <CardFooter>
                 <hr />
-                <div className="stats"><i className="fa fa-eye"></i> Browse All Messages</div>
+                <div className="stats"><Link className="btn btn-sm btn-outline-secondary" to="/user/enquiries"><i className="fa fa-eye"></i> Browse All Enquiries</Link></div>
               </CardFooter>
             </Card>
           </Col>
@@ -125,7 +126,7 @@ class Dashboard extends Component {
               </CardBody>
               <CardFooter>
                 <hr />
-                <div className="stats"><i className="fa fa-eye"></i> Browse All Reviews</div>
+                <div className="stats"><Link className="btn btn-sm btn-outline-secondary" to="/user/reviews"><i className="fa fa-eye"></i> Browse All Reviews</Link></div>
               </CardFooter>
             </Card>
           </Col>

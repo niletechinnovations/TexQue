@@ -108,6 +108,12 @@ class UserAside extends Component {
               </Link>
             </NavItem>
             <NavItem>
+              <Link to="/user/transactions">
+                <span className="icon-orders"><img src="/images/money-transfer.png" height="20" alt="Transactions" /></span>
+                <span className="value-orders">Transactions</span>
+              </Link>
+            </NavItem>
+            <NavItem>
               <Link to="/user/change-password">
                 <span className="icon-orders"><img src="/images/lock-icon.png" height="20" alt="Change Password" /></span>
                 <span className="value-orders">Change Password</span>

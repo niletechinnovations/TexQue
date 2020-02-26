@@ -72,7 +72,7 @@ class AdvertiserSubscription extends Component {
       const formInputField = this.state.formField;
       
       const formData = {       
-        "planType": 0,
+        "planType": 1,
         "planName": formInputField.plan_name, 
         "amount": Number(formInputField.amount), 
         "duration": Number(formInputField.plan_type),

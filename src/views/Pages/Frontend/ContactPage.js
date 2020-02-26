@@ -18,7 +18,7 @@ class ContactPage extends React.Component {
           </div>
           <div className="contact-info-content">
             <h2>Address</h2>
-            <p>Tower No-b2 Flat No- 002 Plot No-11 Golf City Sector-75 Noida-201301</p>
+            <p>5716 Jacks St., Edinburg, TX 78542, US</p>
           </div>
         </div>
       </Col>
@@ -42,7 +42,7 @@ class ContactPage extends React.Component {
           </div>
           <div className="contact-info-content">
             <h2>Phone</h2>
-            <a href="tel:+1 9325468">+1 9325468</a>
+            <a href="tel:+1 9566015773">+1 9566015773</a>
           </div>
         </div>
       </Col>
