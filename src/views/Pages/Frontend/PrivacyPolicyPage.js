@@ -55,7 +55,7 @@ class PrivacyPolicyPage extends React.Component {
                 <p><strong>DISCLOSURE OF YOUR PERSONAL DATA</strong></p>
                 <p>TEXQUE discloses your personal data as described below and as described elsewhere in this Privacy Policy.</p>
                 <p>(a) At the Direction of the Branded Company. TEXQUE may share your information with the Branded Company or with third parties at the direction of the Branded Company. For example, when you use the Services to place orders, TEXQUE will transmit your information to the Branded Company location you designate, or to the Branded Company&rsquo;s third-party services providers or partners, as directed by the Branded Company, to facilitate your order. Other than as described in this Privacy Policy in connection with the Services, this Privacy Policy does not apply to the processing of your information by the Branded Company or third parties with whom TEXQUE shares information at the Branded Company&rsquo;s direction.</p>
-                <p>BECAUSE OLO DOES NOT CONTROL THE PRIVACY PRACTICES OF THE BRANDED COMPANY, YOU SHOULD READ AND UNDERSTAND THE BRANDED COMPANY&rsquo;S PRIVACY POLICIES.</p>
+                <p>BECAUSE TEXQUE DOES NOT CONTROL THE PRIVACY PRACTICES OF THE BRANDED COMPANY, YOU SHOULD READ AND UNDERSTAND THE BRANDED COMPANY&rsquo;S PRIVACY POLICIES.</p>
                 <p>(b) Third Party Service Providers. TEXQUE may share your personal information with third party service providers that perform services for or on behalf of TEXQUE, for the purposes described in this Privacy Policy, including: to provide you with the Services; to conduct quality assurance testing; to facilitate the creation of Accounts; to optimize the performance of the Services; to provide technical support; and/or to provide other services to TEXQUE.</p>
                 <p>(c) Affiliates. TEXQUE may share some or all of your personal information with its parent company, subsidiaries, joint ventures, or other companies under common control ("Affiliates"), in which case TEXQUE will require its Affiliates to honor this Privacy Policy.</p>
                 <p>(d) Corporate Restructuring. TEXQUE may share some or all of your personal information in connection with or during negotiation of any merger, financing, acquisition or dissolution transaction involving the sale, transfer, divestiture, or disclosure of all or a portion of TEXQUE business or assets. In the event of an insolvency, bankruptcy, or receivership, personal information may also be transferred as a business asset. If TEXQUE company, business or assets is acquired by another company, that company will possess the personal information collected by TEXQUE and the company will assume the rights and obligations regarding your personal information as described in this Privacy Policy.</p>
@@ -106,7 +106,7 @@ class PrivacyPolicyPage extends React.Component {
                   <li><strong>Identity verification</strong>. CCPA requires verification of the identity of the individual submitting the request. For identity verification requirements, visit the Branded Company&rsquo;s website.&nbsp;</li>
                   <li><strong>Authorized agents</strong>. California residents can empower an "authorized agent" to submit requests on their behalf.&nbsp;</li>
                 </ul>
-              
+                <p>&nbsp;</p>
               </div>
             </div>  
           </div>

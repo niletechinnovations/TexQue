@@ -13,15 +13,29 @@ class Dashboard extends Component {
     super( props );
 
     this.state = {
-      data: '',
-      enquiryLists: [],
-      loading: false
+      loading: false,
+      dashBoardStats: { foodTruckCount: 0, enquiryCount:0, reviewsCount:0 },
+      enquiryLists: []
     };
   }
 
-  // Fetch the Enquiry List
   componentDidMount() {     
+    this.dashboardData({});
     this.enquiryLists({});   
+  }
+
+  /* Get Dashboard data from API */
+  dashboardData() {
+    commonService.getAPIWithAccessToken('dashboard')
+    .then( res => {
+      if( undefined === res.data.data || !res.data.status ){
+        this.setState( {loading: false });
+        return;
+      }
+      const dashData = res.data.data;
+      this.setState({ loading:false, dashBoardStats:dashData  })
+    }
+    )
   }
 
   /* Enquiry List API */
@@ -52,7 +66,7 @@ class Dashboard extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   render() {
-    const { loading, enquiryLists }  = this.state;
+    const { loading, enquiryLists,dashBoardStats }  = this.state;
     let loaderElement = '';
     if(loading)        
       loaderElement = <Loader />
@@ -73,7 +87,7 @@ class Dashboard extends Component {
                   <Col md="84" lg="7">
                     <div className="numbers">
                       <p className="card-category">Total Listing</p>
-                      <p className="card-title">1,000</p>
+                      <p className="card-title">{dashBoardStats.foodTruckCount}</p>
                     </div>
                   </Col>
                 </Row>
@@ -96,7 +110,7 @@ class Dashboard extends Component {
                   <Col md="84" lg="7">
                     <div className="numbers">
                       <p className="card-category">Enquiries</p>
-                      <p className="card-title">5,000</p>
+                      <p className="card-title">{dashBoardStats.foodTruckCount}</p>
                     </div>
                   </Col>
                 </Row>
@@ -119,7 +133,7 @@ class Dashboard extends Component {
                   <Col md="84" lg="7">
                     <div className="numbers">
                       <p className="card-category">Total Reviews</p>
-                      <p className="card-title">700</p>
+                      <p className="card-title">{dashBoardStats.reviewsCount}</p>
                     </div>
                   </Col>
                 </Row>

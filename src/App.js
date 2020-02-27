@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import commonService from './core/services/commonService';
 
 import './App.css';
-
 import Loader from './views/Loader/Loader';
+import PageNotFound from './views/Pages/404/PageNotFound';
 
 // Containers
 const FrontEndLayout = React.lazy(() => import('./containers/FrontEndLayout/FrontEndLayout'));
@@ -22,10 +22,10 @@ class App extends Component {
             <Switch>
               <PrivateRoute path="/admin" name="Admin" component={AdminLayout} /> */}
               <Route path="/common" name="Common" component={CommonLayout} />
-              <Route path="/user" name="User" component={UserLayout} />
+              <ProtectedRoute path="/user" name="User" component={UserLayout} />
               <Route path="/advertiser" name="Advertiser" component={UserLayout} />
               <Route path="/" name="Home" component={FrontEndLayout} />
-              
+              <Route name="Page not found" component={PageNotFound} />
             </Switch>
           </React.Suspense>
       </Router>
@@ -37,6 +37,21 @@ const PrivateRoute = ({ component, ...rest }) => {
   return (
     <Route {...rest} render={routeProps => {
       return commonService.getAuth() && localStorage.getItem("role") === "admin" ? (
+        renderMergedProps(component, routeProps, rest)
+      ) : (
+        <Redirect to={{
+          pathname: '/login',
+          state: { from: routeProps.location }
+        }}/>
+      );
+    }}/>
+  );
+};
+
+const ProtectedRoute = ({ component, ...rest }) => {
+  return (
+    <Route {...rest} render={routeProps => {
+      return commonService.getAuth() && localStorage.getItem("role") !== "" ? (
         renderMergedProps(component, routeProps, rest)
       ) : (
         <Redirect to={{

@@ -12,53 +12,56 @@ import commonService from '../../../core/services/commonService';
 import NewUserData from './NewUsersData';
 import NewEnquiriesData from './NewEnquiriesData';
 
-const line = {
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-  datasets: [
-    {
-      label: 'Food Truck Listings',
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: 'rgba(213,4,43,0.4)',
-      borderColor: 'rgba(213,4,43,1)',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(213,4,43,1)',
-      pointBackgroundColor: '#D5042B',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(213,4,43,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [60, 55, 50, 21, 56, 55, 40, 10, 45, 35, 25, 15],
-    },
-    {
-      label: 'Food Truck Enquiries',
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: 'rgba(0,33,100,0.4)',
-      borderColor: 'rgba(0,33,100,1)',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(0,33,100,1)',
-      pointBackgroundColor: '#002164',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(0,33,100,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [20, 45, 30, 25, 46, 35, 10, 18, 25, 25, 45, 65],
-    }
-  ],
+const lineChartData = (labels = [], foodTruckData = [], enquiryData = [] ) =>  {
+  return {
+    labels: labels,
+    datasets: [
+      {
+        label: 'Food Truck Listings',
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(213,4,43,0.4)',
+        borderColor: 'rgba(213,4,43,1)',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba(213,4,43,1)',
+        pointBackgroundColor: '#D5042B',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(213,4,43,1)',
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: foodTruckData,
+      },
+      {
+        label: 'Food Truck Enquiries',
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(0,33,100,0.4)',
+        borderColor: 'rgba(0,33,100,1)',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba(0,33,100,1)',
+        pointBackgroundColor: '#002164',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(0,33,100,1)',
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: enquiryData,
+      }
+    ],
+  }
 };
+
 const options = {
   tooltips: {
     enabled: false,
@@ -72,15 +75,29 @@ class Dashboard extends Component {
     super(props);
     this.state = {
      loading: false,
-      dashBoardStats: {organizationCount: 0, usersCount: 0},
+      dashBoardStats: {organizationCount: 0, usersCount: 0, foodTruckCount: 0, enquiryCount:0 },
       userList: [],
       enquiryList:[],
-      organizationData: []
+      lineGraphLabels: [],
+      foodTruckData: [],
+      enquiryData: []
     };
   }
 
   componentDidMount() { 
     this.setState( { loading: true}, () => {
+
+      commonService.getAPIWithAccessToken('dashboard')
+        .then( res => {
+          if( undefined === res.data.data || !res.data.status ){
+            this.setState( {loading: false });
+            toast.error(res.data.message);
+            return;
+          }
+          const dashData = res.data.data;
+          this.setState({ loading:false, dashBoardStats:dashData, lineGraphLabels:dashData.foodTruckGraph.labels, foodTruckData:dashData.foodTruckGraph.data, enquiryData:dashData.enquiryGraph.data  })
+        }
+        )
 
       commonService.getAPIWithAccessToken('profile/list?pageNo=1&pageSize=10')
         .then( res => {
@@ -122,7 +139,7 @@ class Dashboard extends Component {
                 <div className="float-right">
                   <PeopleAlt />
                 </div>
-                <div className="text-value">4,000</div>
+                <div className="text-value">{this.state.dashBoardStats.userCount}</div>
                 <div>Total Users</div>
               </CardBody>
             </Card>
@@ -133,7 +150,7 @@ class Dashboard extends Component {
                 <div className="float-right">
                   <SupervisorAccount />
                 </div>
-                <div className="text-value">150</div>
+                <div className="text-value">{this.state.dashBoardStats.organizationCount}</div>
                 <div>Total Food Truck Owners</div>
               </CardBody>
             </Card>
@@ -144,7 +161,7 @@ class Dashboard extends Component {
                 <div className="float-right">
                   <LocalShipping />
                 </div>
-                <div className="text-value">850</div>
+                <div className="text-value">{this.state.dashBoardStats.foodTruckCount}</div>
                 <div>Total Food Truck Listings</div>
               </CardBody>              
             </Card>
@@ -155,7 +172,7 @@ class Dashboard extends Component {
                 <div className="float-right">
                   <MailOutline />
                 </div>
-                <div className="text-value">8,230</div>
+                <div className="text-value">{this.state.dashBoardStats.enquiryCount}</div>
                 <div>Total Enquiries</div>
               </CardBody>
             </Card>
@@ -166,7 +183,8 @@ class Dashboard extends Component {
             <Card>
               <CardBody>
                 <div className="chart-wrapper">
-                  <Line data={line} options={options} height={85} />
+                  {/* <Line data={line} options={options} height={85} /> */}
+                  <Line data={ lineChartData( this.state.lineGraphLabels, this.state.foodTruckData, this.state.enquiryData )} options={options} height={70} />
                 </div>
               </CardBody>
             </Card>

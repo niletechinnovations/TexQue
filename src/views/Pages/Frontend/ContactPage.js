@@ -18,7 +18,7 @@ class ContactPage extends React.Component {
           </div>
           <div className="contact-info-content">
             <h2>Address</h2>
-            <p>5716 Jacks St., Edinburg, TX 78542, US</p>
+            <p>5716 Jacks St., Edinburg, Texas. 78542, US</p>
           </div>
         </div>
       </Col>
