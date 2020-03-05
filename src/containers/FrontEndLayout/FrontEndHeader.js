@@ -48,11 +48,15 @@ class FrontEndHeader extends React.Component {
           { (localStorage.getItem( 'role' ).toLowerCase() === "organization" || localStorage.getItem( 'role' ).toLowerCase() === "admin" ) && 
           <DropdownItem><Link to={ (localStorage.getItem( 'role' ).toLowerCase() === "admin") ? `/admin/dashboard` : `/user/dashboard` } ><i className="fa fa-dashboard"></i> Dashboard</Link></DropdownItem>
           }
-          <DropdownItem><Link to={ (localStorage.getItem( 'role' ).toLowerCase() === "organization") ? `/user/my-profile` : `/advertiser/profile` } ><i className="fa fa-user"></i> My Profile</Link></DropdownItem>
+          { (localStorage.getItem( 'role' ).toLowerCase() === "organization" || localStorage.getItem( 'role' ).toLowerCase() !== "admin" ) && 
+            <DropdownItem><Link to={ (localStorage.getItem( 'role' ).toLowerCase() === "organization") ? `/user/my-profile` : `/advertiser/profile` } ><i className="fa fa-user"></i> My Profile</Link></DropdownItem>
+          }
           { localStorage.getItem( 'role' ).toLowerCase() === "organization" && 
             <DropdownItem><Link to="/user/my-listings"><i className="fa fa-list-ul"></i> My Listings</Link></DropdownItem>
           }
-          <DropdownItem><Link to="/user/change-password"><i className="fa fa-key"></i> Change Password</Link></DropdownItem>
+          { (localStorage.getItem( 'role' ).toLowerCase() === "organization" || localStorage.getItem( 'role' ).toLowerCase() !== "admin" ) && 
+            <DropdownItem><Link to="/user/change-password"><i className="fa fa-key"></i> Change Password</Link></DropdownItem>
+          }
           <DropdownItem><Link to= "/" onClick={() => this.logoutUser()}><i className="fa fa-sign-out"></i> Log Out</Link></DropdownItem>
         </DropdownMenu>
       </Dropdown>
