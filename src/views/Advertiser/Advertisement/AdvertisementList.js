@@ -17,25 +17,58 @@ class AdvertisementList extends Component {
     super(props);
     this.state = {
       modal: false,
+      formProccessing: false,
       enquiryLists: [],
       loading: true,
       rowIndex: -1,
-      formField: { enquiryId: '', truckName: '', contactPerson: '', phoneNumber:'', comment:'' },
-     
+      formField: { advertisementId: '', adFile: '', adLink:'', status:'' },
     } 
     this.submitHandler = this.submitHandler.bind(this);
     this.handleEditEnquiry = this.handleEditEnquiry.bind(this);
+    this.handleDeleteData = this.handleDeleteData.bind(this);
   }
 
   // Fetch the Enquiry List
-  componentDidMount() {     
+  componentDidMount() {
+    this.checkAdvertiserSubscription();
     this.enquiryLists({});   
+  }
+
+  //Check Advertiser Subscription
+  checkAdvertiserSubscription(){
+    this.setState( { loading: true}, () => {
+      commonService.getAPIWithAccessToken('profile/advertisement-subscription')
+        .then( res => {
+          console.log(res);
+          if ( undefined === res.data.data || !res.data.status ) {
+            this.setState( {  loading: false } );
+            toast.error(res.data.message);  
+            this.props.history.push('/admin/users');  
+            return;
+          }
+          if(!res.data.data.isActive){
+            this.setState({loading:false, profileInfo: res.data.data});     
+            this.props.history.push('/advertiser/plan');
+            toast.error('Please choose an advertising plan to continue as an Advertiser.');
+          }
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else {
+            this.setState( { loading: false } );
+            toast.error(err.message);    
+          }
+        } )
+    } )
   }
 
   /* Enquiry List API */
   enquiryLists() {
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('food-truck/enquiry?pageSize=10000')
+      commonService.getAPIWithAccessToken('advertisement?pageSize=1000')
         .then( res => {
            
           if ( undefined === res.data.data || !res.data.status ) {
@@ -44,7 +77,7 @@ class AdvertisementList extends Component {
             return;
           }   
 
-          this.setState({loading:false, enquiryLists: res.data.data.enquiryList});     
+          this.setState({loading:false, enquiryLists: res.data.data});     
          
         } )
         .catch( err => {         
@@ -66,15 +99,16 @@ class AdvertisementList extends Component {
     event.target.className += " was-validated";
     this.setState( { formProccessing: true}, () => {
       const formInputField = this.state.formField;
-      const formData = {
-        "enquiryId": formInputField.enquiryId,
-        "status": formInputField.status, 
-        "comments": formInputField.comment
-      };
-    
+      const formData = new FormData();
+      formData.append('adLink', formInputField.adLink);
+      if(this.state.adFile)
+        formData.append('adFile', this.state.adFile);
+
+      formData.append('status', formInputField.status);
+
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
-        commonService.putAPIWithAccessToken('food-truck/enquiry/status/', formData)
+        commonService.putAPIWithAccessToken('advertisement/update-advertisement/'+formInputField.advertisementId, formData)
         .then( res => {
           if ( undefined === res.data.data || !res.data.status ) {           
             this.setState( { formProccessing: false} );
@@ -98,16 +132,16 @@ class AdvertisementList extends Component {
         } )
       }
       else{
-        commonService.postAPIWithAccessToken('food-truck', formData)
+        commonService.postAPIWithAccessToken('advertisement', formData)
         .then( res => {
          
           if ( undefined === res.data.data || !res.data.status ) { 
-            this.setState( { formProccessing: false} );
+            this.setState( { modal: false, formProccessing: false} );
             toast.error(res.data.message);
             return;
           } 
           
-          this.setState({ modal: false});
+          this.setState({ modal: false, formProccessing: false});
           toast.success(res.data.message);
           this.enquiryLists();
          
@@ -118,7 +152,7 @@ class AdvertisementList extends Component {
             this.props.history.push('/login');
           }
           else
-            this.setState( { formProccessing: false } );
+            this.setState( { modal: false, formProccessing: false } );
             toast.error(err.message);
         } )
       }
@@ -133,12 +167,18 @@ class AdvertisementList extends Component {
     formField[name] = value;
     this.setState({ formField: formField });
   };
+
+  handleImageChange = (e) => {
+    this.setState({
+      adFile: e.target.files[0]
+    })
+  };
   
   toggle = () => {
     this.setState({
       modal: !this.state.modal,
       rowIndex: -1,
-      formField: { truckName: '', contactPerson: '', contactNo:'', numberofPerson:'', eventDate:'', message:'', comment:'', status: '', },
+      formField: { advertisementId:'', adFile: '', adLink: '', status: '', },
     });
   }
 
@@ -146,19 +186,38 @@ class AdvertisementList extends Component {
   handleEditEnquiry(rowIndex){
       const rowData = this.state.enquiryLists[rowIndex];
       const formField = {
-          enquiryId: rowData.enquiryId,
-          truckName: rowData.truckName,
-          contactPerson: rowData.contactPerson,
-          contactNo: rowData.contactNo,
-          numberofPerson: rowData.numberofPerson,
-          eventDate: rowData.eventDate,
-          message: rowData.message,
-          comment: rowData.comment,
-          statusLabel: rowData.statusLabel,
-          status: rowData.status,
+          advertisementId: rowData.advertisementId,
+          adLink: rowData.adLink,
+          status: rowData.adStatus,
       }
       this.setState({rowIndex: rowIndex, formField: formField, modal: true });
   }
+  handleDeleteData(rowIndex){
+    const rowInfo = this.state.enquiryLists[rowIndex];
+    this.setState( { loading: true}, () => {
+      commonService.deleteAPIWithAccessToken( `advertisement/delete-adevertise/`+rowInfo.advertisementId)
+        .then( res => {
+          this.setState({loading: false});
+          if ( undefined === res.data || !res.data.status ) {            
+             toast.error(res.data.message);      
+            return;
+          }         
+          
+          toast.success(res.data.message);
+          this.enquiryLists();
+        } )
+        .catch( err => {       
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else{
+            this.setState( { loading: false } );
+            toast.error(err.message);
+          }
+      } )
+    })
+  } 
 
   
   render() {
@@ -183,7 +242,7 @@ class AdvertisementList extends Component {
             <Row>
               
               <Col md={12}>
-                <EnquiryData data={enquiryLists} editEnquiryAction={this.handleEditEnquiry} dataTableLoadingStatus = {this.state.loading} />
+                <EnquiryData data={enquiryLists} editEnquiryAction={this.handleEditEnquiry} deleteRowAction={this.handleDeleteData}  dataTableLoadingStatus = {this.state.loading} />
               </Col>
             </Row> 
           </CardBody>
@@ -195,23 +254,31 @@ class AdvertisementList extends Component {
             <ModalBody>
               
               <Row>
-                <Col md={"6"}>
-                  <FormGroup> 
-                    <Label htmlFor="truckName">Truck Name</Label>            
-                    <Input type="text" placeholder="Truck Name" id="truckName" name="truckName" value={formField.truckName} disabled />
-                  </FormGroup>  
-                </Col>
-                
                 <Col md={"12"}>
                   <FormGroup> 
-                    <Label htmlFor="comment">Comment</Label>            
-                    <Input type="textarea" placeholder="Put your comments here" id="comment" name="comment" value={formField.comment} onChange={this.changeHandler} />
+                    <Label htmlFor="adFile">Ad File *</Label>            
+                    <Input type="file" id="adFile" name="adFile" className="form-control" onChange={this.handleImageChange} required />
+                  </FormGroup>  
+                </Col>
+                <Col md={"12"}>
+                  <FormGroup> 
+                    <Label htmlFor="adLink">Ad Link (optional)</Label>            
+                    <Input type="text" placeholder="" id="adLink" name="adLink" value={formField.adLink} onChange={this.changeHandler} />
+                  </FormGroup>
+                </Col>
+                <Col md={"12"}>
+                  <FormGroup> 
+                    <Label htmlFor="status">Status</Label>            
+                    <Input type="select" name="status" id="status" value={ formField.status } onChange={this.changeHandler} required >
+                      <option value="1">Active</option>
+                      <option value="3">Inactive</option>
+                    </Input>
                   </FormGroup>
                 </Col>
               </Row>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" type="submit">{formProccessing ? processingBtnText : 'Update Details' }</Button>
+              <Button color="primary" type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
           </Form>

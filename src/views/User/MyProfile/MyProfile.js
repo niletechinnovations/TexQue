@@ -165,8 +165,7 @@ class MyProfile extends Component {
    this.setState({
      orgDocument: event.target.files,
    });
- 
-   if( event.target.files>0){
+   if( event.target.files.length>0){
      const formData = new FormData();
      for(let i =0; i < event.target.files.length; i++){
        formData.append('documents', event.target.files[i]);
@@ -250,7 +249,7 @@ class MyProfile extends Component {
                      </FormGroup>
                   </Col>
                   <Col md={"2"}>
-                     <Label htmlFor="downloadOrgDoc">&nbsp;</Label>   
+                     <Label htmlFor="downloadOrgDoc" className="downloadOrgDocLabel">&nbsp;</Label>   
                      {organizationDocuments.map((doc, index) =>
                      <div className="docBtnArea" key={index}>
                         <a className="btn btn-primary btn-sm" href={doc} target="_blank" rel="noopener noreferrer" > <i className="fa fa-file-o"></i></a>

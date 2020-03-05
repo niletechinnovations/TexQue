@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import  { Redirect, Link } from 'react-router-dom';
-import { Col, Row, Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, Label, Input, FormFeedback, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,7 +18,8 @@ class LoginPage extends Component {
       password: '',
       modal: false,
       loggedIn: false,
-      loading: false
+      loading: false,
+      errors: {}
     };
     
   }
@@ -28,11 +29,15 @@ class LoginPage extends Component {
   submitHandler = event => {
     event.preventDefault();
     event.target.className += " was-validated";
+    const formErrors = this.state.errors;
     const loginData = {
-      email: this.state.email,
+      email: this.state.email.toLowerCase(),
       password: this.state.password
     };
     if(this.state.email === '' && this.state.password === '' ) {
+      formErrors["email"] = 'Please enter your email id.';
+      formErrors["password"] = 'Please enter your password.';
+      this.setState({   errors: formErrors });
       toast.error("Please enter your email and password!");
       return;
     }
@@ -43,7 +48,34 @@ class LoginPage extends Component {
           console.log(res);
           if ( undefined === res.data || !res.data.status ) {
             this.setState( { loading: false } );
-            toast.error(res.data.message);
+            if(res.data.errors){
+              if(res.data.errors.email){
+                formErrors["email"] = res.data.errors.email;
+                this.setState({   errors: formErrors });
+                toast.error('Error: '+res.data.errors.email);
+              }
+              else if(res.data.errors.password){
+                formErrors["password"] = res.data.errors.password;
+                this.setState({   errors: formErrors });
+                toast.error('Error: '+res.data.errors.password);
+              }else{
+                toast.error(res.data.message);
+              }
+                
+            }else{
+              if(res.data.message === 'Invalid password!'){
+                formErrors["password"] = res.data.message;
+                this.setState({ formErrors: formErrors });
+                toast.error(res.data.message);
+              }else if(res.data.message === 'Email address not registered with us!'){
+                formErrors["email"] = res.data.message;
+                this.setState({ formErrors: formErrors });
+                toast.error(res.data.message);
+              }else{
+                toast.error(res.data.message);
+              }
+              
+            }
             return;
           }
   
@@ -128,7 +160,7 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { email, password, loggedIn, loading, forgotPasswordEmail} = this.state;
+    const { email, password, loggedIn, loading, forgotPasswordEmail, errors} = this.state;
     
     if ( loggedIn || localStorage.getItem( 'accessToken' ) ) {
       if(localStorage.getItem( 'role' ).toLowerCase() === "admin")
@@ -161,13 +193,15 @@ class LoginPage extends Component {
                       <Col md={12}>
                         <FormGroup>
                           <Label for="email">Email</Label>
-                          <Input type="email" name="email" id="email" placeholder="Email *" value={email} onChange={this.changeHandler} required />
+                          <Input type="email" name="email" id="email" placeholder="Email *" value={email} onChange={this.changeHandler} invalid={errors['email'] !== undefined && errors['email'] !== ""} required />
+                          <FormFeedback>{errors['email']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={12}>
                         <FormGroup>
                           <Label for="password">Password</Label>
-                          <Input type="password" name="password" id="password" value={password} placeholder="Enter Password"  onChange={this.changeHandler}  required />
+                          <Input type="password" name="password" id="password" value={password} placeholder="Enter Password"  onChange={this.changeHandler} invalid={errors['password'] !== undefined && errors['password'] !== ""} required />
+                          <FormFeedback>{errors['password']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={6}>
@@ -192,7 +226,7 @@ class LoginPage extends Component {
                     </Row>
                     <FormGroup>
                       <div className="footer-text text-center pt-3">
-                      Don’t have an account? <Link className="sign-up-link" to="/register">Sign up as a Member</Link> OR <Link className="sign-up-link" to="/advertiser/signup">Sign up as an Advertiser</Link>
+                      Don’t have an account? <Link className="sign-up-link" to="/register">Sign up as a Member</Link> OR <Link className="sign-up-link" to="/become-an-advertiser">Sign up as an Advertiser</Link>
                       </div>
                     </FormGroup>
                     

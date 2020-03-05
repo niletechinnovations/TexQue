@@ -8,6 +8,7 @@
 .bio {margin: 0 0 15px 0; line-height: 24px; text-align: center; word-wrap: break-word; font-size: 14px; color: #000; }
 ul.user-widget-list{margin: 0; padding: 0; list-style: none;}
 ul.user-widget-list li {padding:10px 0px;border-top: 1px solid #f7f7f7; cursor: pointer; display: -webkit-box; display: -ms-flexbox; display: flex; position: relative; }
+ul.user-widget-list li a{ width: 100%;}
 .value-orders{color: #282c3f; font-weight: 600; margin-left: 18px; font-size: 16px;}
 
 .user-dashboard .card {border: none; }

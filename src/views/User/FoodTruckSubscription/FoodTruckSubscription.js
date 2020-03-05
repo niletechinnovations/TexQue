@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row } from 'reactstrap';
-
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
@@ -132,11 +132,14 @@ class FoodTruckSubscription extends React.Component {
         <section className="pricing py-3 px-2">
             <div className="container">
                 {loaderElement}
-                <h2 className="pageHeading">Upgrade Plan</h2>
+                <h2 className="pageHeading">
+                  Business Plan
+                  <Link to="/advertiser/plan" className="addListing btn-success btn-sm pull-right"> Advertisement Plan</Link>
+                </h2>
                 <hr className="divider" />
                 <Row>
                     { planList.map( (planInfo, index) =>
-                        <Col lg={6} className="mb-2" key={index}>
+                        <Col lg={6} className="mb-4" key={index}>
                             <div className={'card mb-5 mb-lg-0 '+(planInfo.isPlanActive ? 'active' :'' ) }>
                               <div className="card-body">
                                 <h5 className="card-title text-muted text-uppercase text-center">{planInfo.planName}</h5>
@@ -146,7 +149,7 @@ class FoodTruckSubscription extends React.Component {
                                   Upto {planInfo.advertisementAccess} Listings<br />
                                   {planInfo.description}
                                 </div>
-                                <button className="btn btn-block btn-primary text-uppercase" onClick={ () =>  ( planInfo.isPlanActive ? '' : this.choosePlan(planInfo.planId) ) } disabled={ (planInfo.isPlanActive ? 'disabled' : '' ) }>{ (planInfo.isPlanActive ? 'Active Plan' : 'Upgrade' ) }</button>
+                                <button className="btn btn-block btn-primary text-uppercase" onClick={ () =>  ( planInfo.isPlanActive ? '' : this.choosePlan(planInfo.planId) ) } disabled={ (planInfo.isPlanActive ? 'disabled' : '' ) }>{ (planInfo.isPlanActive ? 'Current Plan' : 'Buy Now' ) }</button>
                                 { ( planInfo.isPlanActive ? <p className="text-center mb-0"><button className="btn-sm btn-danger mt-3" onClick={ () =>  this.cancelSubscription(planInfo.subscriberId) }>Cancel Subscription</button></p> : '' ) }
                               </div>
                             </div>

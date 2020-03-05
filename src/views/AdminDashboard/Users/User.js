@@ -62,7 +62,7 @@ class User extends Component {
             <Card>
               <CardHeader>
                 <strong><i className="icon-info pr-1"></i>User Profile</strong>
-                <Link to="/admin/users" className="btn btn-sm btn-secondary pull-right"><i className="fa fa-arrow-left"></i> Back</Link>
+                <Link to="/admin/dashboard" className="btn btn-sm btn-secondary pull-right"><i className="fa fa-arrow-left"></i> Back</Link>
               </CardHeader>
               <CardBody className="profileInfo">
                   {loaderElement}

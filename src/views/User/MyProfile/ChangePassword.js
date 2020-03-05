@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Row, Col, Form, Input } from 'reactstrap';
+import { Row, Col, Form, Input, FormFeedback, FormText } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
-import { FormErrors } from '../../Formerrors/Formerrors';
+//import { FormErrors } from '../../Formerrors/Formerrors';
 import Loader from '../../Loader/Loader';
 
 import "./ChangePassword.css";
@@ -15,6 +15,7 @@ class ChangePassword extends Component {
         formField: { oldPassword: '', newPassword: '', confirmPassword:'' },
         formErrors: { oldPassword: '', newPassword: '', confirmPassword:'', error: ''},
         formValid: false,
+        errors: {},
         loading: false
     };
     this.submitHandler = this.submitHandler.bind(this);
@@ -25,7 +26,7 @@ class ChangePassword extends Component {
   /* Submit Form Handler */
   submitHandler (event) {
     event.preventDefault();
-    //event.target.className += " was-validated";
+    event.target.className += " was-validated";
     if (this.validateForm()) {
       this.setState( { loading: true}, () => {
         const formInputField = this.state.formField;
@@ -36,15 +37,19 @@ class ChangePassword extends Component {
         commonService.postAPIWithAccessToken('auth/change-password', formData)
           .then( res => {
             if ( undefined === res.data.data || !res.data.status ) {
-              
               this.setState( { loading: false} );
+              if(res.data.message === 'Old password is incorrect!'){
+                const formErrors = this.state.formErrors;
+                formErrors["oldPassword"] = res.data.message;
+                this.setState({ formErrors: formErrors });
+              }
               toast.error(res.data.message);
               return;
             }
-            this.props.history.push('/login');
-            this.setState({ loading: false});
-            toast.success(res.data.message);
             localStorage.clear();
+            this.props.history.push('/login');
+            toast.success(res.data.message);
+            
           } )
           .catch( err => {         
             if(err.response !== undefined && err.response.status === 401) {
@@ -67,8 +72,6 @@ class ChangePassword extends Component {
     formField[name] = value;
     this.setState({ formField: formField },
                   () => { this.validateField(name, value) });
-
-    console.log(this.state.formValid);
   };
 
   /* Validate Form Field */
@@ -78,28 +81,70 @@ class ChangePassword extends Component {
  
     switch(fieldName) {         
       case 'oldPassword':        
-        fieldValidationErrors.oldPassword = (value !== '') ? '' : ' is required';
+        fieldValidationErrors.oldPassword = (value !== '') ? '' : ' This field is required';
         break;
-      case 'newPassword':        
-        fieldValidationErrors.newPassword = (value !== '') ? '' : ' is required';
+      case 'newPassword':
+        fieldValidationErrors.newPassword = (value !== '') ? '' : ' This field is required';
+        if (!value.match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
+          fieldValidationErrors.newPassword = "*Please enter secure and strong password.";
+        }
         break;               
       case 'confirmPassword':        
-        fieldValidationErrors.confirmPassword = (value !== '') ? '' : ' is required';
+        fieldValidationErrors.confirmPassword = (value !== '') ? '' : ' This field is required';
+        if (value !== this.state.formField.newPassword) {
+          fieldValidationErrors.confirmPassword = "*Passwords and confirm-password do not match.";
+        }
         break;               
       default:
         break;
     }
     this.setState({formErrors: fieldValidationErrors,       
-    }, this.validateForm);
+    }, this.validateFeildError);
   }
-  /* Validate Form */
-  validateForm() {
+
+  /* Validate Feilds Error */
+  validateFeildError() {
     const formErrors = this.state.formErrors;
     const formField = this.state.formField;
     this.setState({formValid: 
-    ( formErrors.oldPassword === "" && formErrors.newPassword === "" && formErrors.confirmPassword === "" && formField.oldPassword !== ""  && formField.newPassword !== "" && formField.confirmPassword !== "" && (formField.newPassword === formField.confirmPassword)  ) 
+    ( formErrors.oldPassword === "" && formErrors.newPassword === "" && formErrors.confirmPassword === "" && formField.oldPassword !== ""  && formField.newPassword !== "" && formField.confirmPassword !== ""  ) 
     ? true : false});
     return true;
+  }
+
+  /* Validate Form */
+  validateForm() {
+    const formErrors = this.state.formErrors;
+    let formValid = true;
+    const formField = this.state.formField;
+    if (!formField.oldPassword) {
+      formValid = false;
+      formErrors["oldPassword"] = "*Please enter your old password.";
+    }
+    if (!formField.newPassword) {
+      formValid = false;
+      formErrors["newPassword"] = "*Please enter your password.";
+    }
+    if (typeof formField.newPassword !== "undefined") {
+      if (!formField.newPassword.match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
+        formValid = false;
+        formErrors["newPassword"] = "*Please enter secure and strong password.";
+      }
+    }
+    if (!formField.confirmPassword) {
+      formValid = false;
+      formErrors["confirmPassword"] = "*Please re-enter your password.";
+    }
+    if (formField.confirmPassword !== formField.newPassword) {
+      formValid = false;
+      formErrors["confirmPassword"] = "*Passwords and confirm-password do not match.";
+    }
+    this.setState({
+      loading: false,
+      formErrors: formErrors
+    });
+    console.log(formErrors);
+    return formValid;
   }
  /* Set Error Class*/
   errorClass(error) {
@@ -109,7 +154,7 @@ class ChangePassword extends Component {
     
 
   render() {
-    const { loading } = this.state;
+    const { loading, formErrors } = this.state;
     let loaderElement = '';
     if(loading)
       loaderElement = <Loader />
@@ -120,13 +165,14 @@ class ChangePassword extends Component {
         {loaderElement}
         <div className="ChangeChange-form">
             <h3>Change Password</h3>
-            <FormErrors formErrors={this.state.formErrors} />
+            {/* <FormErrors formErrors={this.state.formErrors} /> */}
             <Form onSubmit={this.submitHandler} noValidate>
               <Row>
                 <Col md="6">
                    <div className="form-group">
                       <label htmlFor="oldPassword">Old Password</label>
-                      <Input type="password" name="oldPassword" id="oldPassword" className="form-control" placeholder="Old Password" value={this.state.formField.oldPassword} onChange={this.changeHandler} required />
+                      <Input type="password" name="oldPassword" id="oldPassword" placeholder="Old Password" value={this.state.formField.oldPassword} onChange={this.changeHandler} invalid={formErrors['oldPassword'] !== undefined && formErrors['oldPassword'] !== ""} required />
+                      <FormFeedback>{formErrors['oldPassword']}</FormFeedback>
                    </div>
                 </Col>
               </Row>
@@ -134,16 +180,19 @@ class ChangePassword extends Component {
                 <Col md="6">
                    <div className="form-group">
                       <label htmlFor="newPassword">New Password</label>
-                      <input type="password" name="newPassword" className="form-control" id="newPassword" placeholder="New Password" value={this.state.formField.newPassword} onChange={this.changeHandler} required />
+                      <Input type="password" name="newPassword" id="newPassword" placeholder="New Password" value={this.state.formField.newPassword} onChange={this.changeHandler} invalid={formErrors['newPassword'] !== undefined && formErrors['newPassword'] !== ""} required />
+                      <FormText>Be at least 8 characters, Uppercase, lowercase letters, numbers & special characters</FormText>
+                      <FormFeedback>{formErrors['newPassword']}</FormFeedback>
                    </div>
                 </Col>
               </Row>
               <Row>
                 <Col md="6">
-                   <div className="form-group">
-                      <label htmlFor="confirmPassword">Confirm Password</label>
-                      <input type="password" name="confirmPassword" className="form-control" placeholder="Confirm Password" value={this.state.formField.confirmPassword} onChange={this.changeHandler} required />
-                   </div>
+                  <div className="form-group">
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <Input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" value={this.state.formField.confirmPassword} onChange={this.changeHandler} invalid={formErrors['confirmPassword'] !== undefined && formErrors['confirmPassword'] !== ""} required />
+                    <FormFeedback>{formErrors['confirmPassword']}</FormFeedback>
+                  </div>
                 </Col>                
               </Row>
               <Row>  

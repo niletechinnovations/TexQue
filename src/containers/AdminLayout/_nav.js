@@ -82,16 +82,6 @@ export default {
       name: 'Cuisine',
       url: '/admin/cuisine',
       icon: 'fa fa-cutlery',
-    },  
-    {
-      name: 'Reports',
-      url: 'admin/reports',
-      icon: 'icon-pie-chart',     
-    },
-    {
-      name: 'Logout',
-      url: '#!',
-      icon: 'icon-logout',
     }
   ],
 };

@@ -409,7 +409,7 @@ class FoodTruckLists extends Component {
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="address">Address</Label>            
+                    <Label htmlFor="address">Address *</Label>            
                     <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} />
                   </FormGroup>
                 </Col>

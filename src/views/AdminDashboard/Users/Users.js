@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Card, CardBody, Col, Row} from 'reactstrap';
+import { Card, CardBody, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 
+import { FormErrors } from '../../Formerrors/Formerrors';
 import Loader from '../../Loader/Loader';
 import UsersData from './UsersData';
 import './Users.css'
@@ -13,8 +14,18 @@ class Users extends Component {
     super(props);
     this.state = {
       loading: true,
-      userList: []
-    } 
+      userList: [],
+      rowIndex: -1,
+      changeStatusBtn:'',
+      formProccessing: false,
+      formField: {profileId:'', email: '', first_name: '', last_name: '', phoneNumber: '', address: '', profilePic:'' },
+      formErrors: { email: '', first_name: '', last_name: '', error: ''},
+      formValid: false,
+      profileImage:'',
+      filterItem: { user_name: '', location: '', custom_search: ''},
+    }
+
+    this.handleEditUser = this.handleEditUser.bind(this);
     
   }
   componentDidMount() { 
@@ -27,16 +38,12 @@ class Users extends Component {
     this.setState( { loading: true}, () => {
       commonService.getAPIWithAccessToken(`profile/list`)
         .then( res => {
-          console.log(res);
-           
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( {  loading: false } );
             toast.error(res.data.message);    
             return;
-          }   
-
-          this.setState({loading:false, userList: res.data.data.profileList});     
-         
+          }
+          this.setState({loading:false, userList: res.data.data.profileList});
         } )
         .catch( err => {   
                
@@ -52,12 +59,86 @@ class Users extends Component {
     } )
   }
 
+   /* Input Field On changes*/
+   changeHandler = event => {
+    const name = event.target.name;
+    const value = event.target.value;
+    const formField = this.state.formField
+    formField[name] = value;
+    this.setState({ formField: formField });
+  };
+
+  /* Edit User*/
+  handleEditUser(rowIndex){
+    const userInfo = this.state.userList[rowIndex];
+    const formField = {
+      profileId:userInfo.profileId,
+      email: userInfo.email, 
+      first_name: userInfo.firstName, 
+      last_name: userInfo.lastName, 
+      phoneNumber: userInfo.phoneNumber, 
+      address: userInfo.address,
+      profilePic: userInfo.profilePic
+    };
+    const statusBtn = <Button type="button" size="sm" className={`changeStatusBtn `+( userInfo.status ? 'btn-danger' : 'btn-success' )} onClick={() => 
+      this.changeProfileStatus(userInfo.profileId, userInfo.status )} >{ ( userInfo.status ? 'De-Activate Account' : 'Activate Account' )}</Button>
+    
+    this.setState({rowIndex: rowIndex, formField: formField, modal: true, changeStatusBtn:statusBtn, formValid: true});
+  }
+
+  //Set profile picture on change
+  onProfileImgChange = event => {   
+    this.setState({
+      profileImage: event.target.files[0],
+    });
+    console.log(this.state.profileImage);
+    if(this.state.profileImage !== ""){
+      const formData = new FormData();
+      formData.append('profileImage', this.state.profileImage);
+      formData.append('profileId', this.state.formField.profileId);
+      
+       commonService.putAPIWithAccessToken('profile/picture', formData)
+       .then( res => {
+         if ( undefined === res.data.data || !res.data.status ) {
+           this.setState( { loading: false} );
+           toast.error(res.data.message);
+           return;
+         }
+         this.setState({ loading: false});
+         this.userList();
+         toast.success(res.data.message);
+       } )
+       .catch( err => {         
+         if(err.response !== undefined && err.response.status === 401) {
+           localStorage.clear();
+           this.props.history.push('/login');
+         }
+         else
+           this.setState( { loading: false } );
+           toast.error(err.message);
+       } )
+    }
+  }
+ 
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal,
+      rowIndex: -1,
+      changeStatusBtn: '',
+      formValid: false,
+      formField: { profileId:'', email: '', first_name: '', last_name: '', phoneNumber: '', address: '', profilePic: '' },
+      formErrors: { email: '', first_name: '', last_name: '', error: ''}
+    });
+  }
+
   render() {
 
-    const { userList, loading } = this.state;     
+    const { userList, loading, modal, changeStatusBtn, formProccessing } = this.state;     
     let loaderElement = '';
     if(loading) 
       loaderElement = <Loader />
+
+      const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
 
     return (
       <div className="animated fadeIn">
@@ -72,6 +153,61 @@ class Users extends Component {
             </Card>
           </Col>
         </Row>
+
+        <Modal isOpen={modal} toggle={this.toggle} className="full-width-modal-section organization-modal">
+          <ModalHeader toggle={this.toggle}>User Info</ModalHeader>
+          <Form onSubmit={this.submitHandler} noValidate>
+            <ModalBody>
+              <FormErrors formErrors={this.state.formErrors} />
+              <Row>
+                <Col md={"6"}>  
+                  <FormGroup> 
+                    <Label htmlFor="first_name">First Name</Label>            
+                    <Input type="text" placeholder="First Person *" id="first_name" name="first_name" value={this.state.formField.first_name} onChange={this.changeHandler} required />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>  
+                  <FormGroup> 
+                    <Label htmlFor="last_name">Last Name</Label>            
+                    <Input type="text" placeholder="Last Person *" id="last_name" name="last_name" value={this.state.formField.last_name} onChange={this.changeHandler} />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>  
+                  <FormGroup> 
+                    <Label htmlFor="email">Email</Label>            
+                    <Input type="text" placeholder="Email *" id="email" name="email" value={this.state.formField.email} onChange={this.changeHandler} required />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>  
+                  <FormGroup> 
+                    <Label htmlFor="phoneNumber">Contact Number</Label>            
+                    <Input type="text" placeholder="Contact Number " id="phoneNumber" name="phoneNumber" value={this.state.formField.phoneNumber} onChange={this.changeHandler}  />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>  
+                  <FormGroup> 
+                    <Label htmlFor="address">Address</Label>            
+                    <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
+                  </FormGroup>
+                </Col>
+                <Col md={"4"}>  
+                  <FormGroup> 
+                    <Label htmlFor="profileImage">Profile Image</Label>            
+                    <Input type="file" id="profileImage" name="profileImage" onChange={this.onProfileImgChange} />
+                  </FormGroup>
+                </Col>
+                <Col md={"2"}>
+                { this.state.formField.profilePic ? <img src={this.state.formField.profilePic} alt={this.state.formField.first_name} width="100" /> : '' }
+                </Col>
+              </Row>           
+            </ModalBody>
+            <ModalFooter>
+              {changeStatusBtn}
+              <Button color="primary" disabled={!this.state.formValid || formProccessing} type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
+              <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+            </ModalFooter>
+          </Form>
+        </Modal>
        
       </div>
 

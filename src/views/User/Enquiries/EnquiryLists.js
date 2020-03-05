@@ -155,7 +155,7 @@ class EnquiryLists extends Component {
           numberofPerson: rowData.numberofPerson,
           eventDate: rowData.eventDate,
           message: rowData.message,
-          comment: rowData.comment,
+          comment: rowData.ownerComments,
           statusLabel: rowData.statusLabel,
           status: rowData.status,
       }

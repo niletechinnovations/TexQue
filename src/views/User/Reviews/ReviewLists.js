@@ -38,7 +38,7 @@ class ReviewLists extends Component {
 
   /* Review List API */
   reviewLists(filterItem = {}) {
-    let strWalkQuery = "";
+    let strWalkQuery = "?pageSize=10000";
     if(filterItem.filter_foodTruckId !== undefined && filterItem.filter_foodTruckId !== "" ) 
       strWalkQuery += (strWalkQuery !=="" ) ? "/"+filterItem.filter_foodTruckId : "/"+filterItem.filter_foodTruckId;
     
@@ -192,9 +192,10 @@ class ReviewLists extends Component {
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="status">Status</Label>            
-                    <Input type="select" name="status" id="status" value={(formField.status ? 1 : 0 ) } onChange={this.changeHandler} required >
-                      <option value="1">Active</option>
-                      <option value="0">Inactive</option>
+                    <Input type="select" name="status" id="status" value={ formField.status } onChange={this.changeHandler} required >
+                      { formField.status===2 ? <option value="2">Pending</option> : '' }
+                      <option value="1">Approved</option>
+                      <option value="3">Rejected</option>
                     </Input>
                   </FormGroup>
                 </Col>

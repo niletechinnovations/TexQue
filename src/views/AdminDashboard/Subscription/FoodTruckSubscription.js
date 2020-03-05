@@ -200,7 +200,7 @@ class AdvertiserSubscription extends Component {
         description: planInfo.description };
       const statusBtn = <Button type="button" size="sm" className={`changeStatusBtn `+( planInfo.status ? 'btn-danger' : 'btn-success' )} onClick={() => 
         this.changeSubscriptionStatus(planInfo.planId, planInfo.status )} >{ ( planInfo.status ? 'Change to Inactive' : 'Change to Active' )}</Button>
-
+        
       this.setState({rowIndex: rowIndex, formField: formField, modal: true, changeStatusBtn:statusBtn, formValid: true});
   }
   /* Change Subscription status*/

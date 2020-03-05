@@ -43,6 +43,7 @@ class EditFoodTruckList extends Component {
         {}
       ),
       schedules: [],
+      changeStatusBtn: '',
       formField: { organizationId:'', truckName: '', contactPerson: '', phoneNumber:'', address: '',description:'', defaultImage: '',category_id:''},
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', address:'', error: ''},
       formValid: false,
@@ -109,7 +110,10 @@ class EditFoodTruckList extends Component {
           });
           this.setState({ schedules: listItems, checkboxes: availabilityItem });
 
-          this.setState({ loading: false, foodTruckDetail: foodTruckDetail, address: foodTruckDetail.address, latitude: foodTruckDetail.latitude,  longitude: foodTruckDetail.longitude, formValid: true, formField: formField});
+          const statusBtn = <Button type="button" size="sm" className={ ( foodTruckDetail.status ? 'btn-danger' : 'btn-success' )} onClick={() => 
+            this.changeFoodTruckStatus(foodTruckDetail.foodTruckId, foodTruckDetail.status )} >{ ( foodTruckDetail.status ? 'Un-Approve Listing' : 'Approve Listing' )}</Button>
+          
+          this.setState({ loading: false, foodTruckDetail: foodTruckDetail, address: foodTruckDetail.address, latitude: foodTruckDetail.latitude,  longitude: foodTruckDetail.longitude, changeStatusBtn:statusBtn, formValid: true, formField: formField});
         } )
         .catch( err => {               
           if(err.response !== undefined && err.response.status === 401) {
@@ -123,6 +127,34 @@ class EditFoodTruckList extends Component {
     } );
   }
  
+  /* Change Food Truck status*/
+  changeFoodTruckStatus(foodTruckId,status){
+    this.setState( { loading: true}, () => {
+      const formData = {
+        "foodTruckId": foodTruckId,
+        "status": (status ? false : true ),
+      };
+      commonService.putAPIWithAccessToken('food-truck/status', formData)
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {           
+            this.setState( { loading: false} );
+            toast.error(res.data.message);
+            return;
+          } 
+          this.props.history.push('/admin/organization/truck-listing');
+          toast.success(res.data.message);   
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else
+            this.setState( { loading: false } );
+            toast.error(err.message);
+        } )
+    } );
+  }
 
   /* Submit Form Handler*/
   submitHandler (event) {
@@ -169,9 +201,8 @@ class EditFoodTruckList extends Component {
           toast.error(res.data.message);
           return;
         } 
-        
-        toast.success(res.data.message);
         this.props.history.push('/admin/organization/truck-listing');
+        toast.success(res.data.message);
       } )
       .catch( err => { 
         if(err.response !== undefined && err.response.status === 401) {
@@ -349,7 +380,7 @@ organizationList() {
 
 
   render() {
-    const { loading, formProccessing, organizationList, categoryList, foodTruckDetail,selectedCategories } = this.state;
+    const { loading, formProccessing, organizationList, categoryList, foodTruckDetail,selectedCategories, changeStatusBtn } = this.state;
     const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
     let loaderElement = '';
     let defaultImagePreview = '';  
@@ -492,8 +523,11 @@ organizationList() {
                   </div>             
                 </Col>
               </Row>
+
               <Button color="primary" disabled={!this.state.formValid || formProccessing} type="submit">{formProccessing ? processingBtnText : 'Update Details' }</Button>
               &nbsp; 
+              {changeStatusBtn}
+              &nbsp;
               <Link className="btn btn-secondary" to='/admin/organization/truck-listing'>Cancel</Link>
             
             </Form> 

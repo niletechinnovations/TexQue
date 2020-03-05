@@ -15,47 +15,44 @@ class AdvertisementData extends Component {
   }
   componentDidMount() {   
   }
-  /* Edit Enquiry Info */
-  editEnquiryItem(rowIndex){    
+  /* Edit Ads Info */
+  editRowItem(rowIndex){    
     this.props.editEnquiryAction(rowIndex);
   }
- 
+  /* Delete Ads Info */
+  deleteRowItem(rowIndex){    
+    this.props.deleteRowAction(rowIndex);
+  }
 
   render() {
     
     let rowsItem = []; 
    
-    for(const [i, enquiry] of this.props.data.entries()){
+    for(const [i, rowData] of this.props.data.entries()){
       //console.log(i);
       let resInfo = {
-        organizationName: enquiry.organizationName,  
-        contactPerson: enquiry.contactPerson,
-        truckName: enquiry.truckName,
-        phoneNumber: enquiry.contactNo || " ",
-        message: enquiry.message || " ",
-        status: enquiry.statusLabel ? enquiry.statusLabel : "Pending",   
-        createdAt: (new Date(enquiry.createdAt)).toLocaleDateString("en-US"),
+        adImage: <img src={rowData.adImage} width="100" className="img-thumbnail" alt="Ad" />,
+        adView: rowData.adView,
+        adClick: rowData.adClick,
+        status: ( rowData.adStatus===1 ? 'Active' : rowData.adStatus===2 ? 'Approval Pending' : "Inactive" ),
+        createdAt: (new Date(rowData.createdAt)).toLocaleDateString("en-US"),
         indexVal: i,
-        enquiryId: enquiry.enquiryId,
-        action: <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-          this.editEnquiryItem(i)}><i className="fa fa-pencil"></i> </Button>
+        enquiryId: rowData.enquiryId,
+        action: 
+          <>
+          <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
+          this.editRowItem(i)}><i className="fa fa-pencil"></i> </Button> &nbsp;
+          <Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteRowItem(i) };}}><i className="fa fa-trash"></i> </Button>
+          </>  
       }      
       rowsItem.push(resInfo);
     }
 
     const columns = [ 
         {
-            label: 'User',
-            name: 'contactPerson',
+            label: 'Ad Image',
+            name: 'adImage',
         },
-        {
-            label: 'Message',
-            name: 'message',
-        },
-        {
-            label: 'Truck Name',
-            name: 'truckName',
-        }, 
         {
             label: 'Date',
             name: 'createdAt',
@@ -85,7 +82,7 @@ class AdvertisementData extends Component {
       selectableRows: 'none',
       textLabels: {
         body: {
-          noMatch: this.props.dataTableLoadingStatus ? "Proccessing........" : "Sorry, no matching records found",
+          noMatch: this.props.dataTableLoadingStatus ? "Processing........" : "Sorry, no matching records found",
           toolTip: "Sort",
           columnHeaderTooltip: column => `Sort for ${column.label}`
         },

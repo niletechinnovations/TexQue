@@ -9,7 +9,7 @@ class ContactPage extends React.Component {
       <>        
      
 <section className="contact-section">
-  <Container>
+  {/* <Container>
     <Row>
       <Col md="4" lg="4">
         <div className="contact-info-card">
@@ -47,12 +47,12 @@ class ContactPage extends React.Component {
         </div>
       </Col>
     </Row>
-  </Container>
+  </Container> */}
 
   <Container>
     <div className="heading-title">
-      <h2>Drop us Message for any Query</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <h2>We would love to hear from you!</h2>
+      <p>Please fill out the form below to inquire about our services.</p>
     </div>
     <Row className="align-items-center">
         <Col md="4" lg="4">

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import MUIDataTable from "mui-datatables";
 
-class ReviewData extends Component {
+class TransactionData extends Component {
   
   constructor(props){
     super(props);   
@@ -15,7 +15,7 @@ class ReviewData extends Component {
   }
   componentDidMount() {   
   }
-  /* Edit Enquiry Info */
+  /* Edit Row Info */
   editDataItem(rowIndex){    
     this.props.editDataAction(rowIndex);
   }
@@ -27,35 +27,27 @@ class ReviewData extends Component {
    
     for(const [i, enquiry] of this.props.data.entries()){
       let resInfo = {
-        reviewedBY: enquiry.reviewedBY,
-        truckName: enquiry.truckName,
-        rating: enquiry.rating || " ",
-        message: enquiry.message || " ",
+        subscriberId: enquiry.subscriberId,
+        planName: enquiry.planName,
+        amount: '$'+enquiry.amount,
+        startDate: (new Date(enquiry.startDate)).toLocaleDateString("en-US"),
+        endDate: (new Date(enquiry.endDate)).toLocaleDateString("en-US"),
         status: enquiry.statusLabel ? enquiry.statusLabel : "Pending",   
         createdAt: (new Date(enquiry.createdAt)).toLocaleDateString("en-US"),
         indexVal: i,
         reviewId: enquiry.reviewId,
         action: <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-          this.editDataItem(i)}><i className="fa fa-pencil"></i> </Button>
+          this.editDataItem(i)}><i className="fa fa-eye"></i> </Button>
       }      
       rowsItem.push(resInfo);
     }
 
     const columns = [ 
-        {
-            label: 'User',
-            name: 'reviewedBY',
-        },
-        {
-            label: 'Message',
-            name: 'message',
-        },
-        { label: 'Truck Name', name: 'truckName' },
-        { label: 'Rating', name: 'rating' },
-        {
-            label: 'Date',
-            name: 'createdAt',
-        },
+        { label: 'Subscriber ID', name: 'subscriberId' },
+        { label: 'Plan', name: 'planName' },
+        { label: 'Amount', name: 'amount' },
+        { label: 'Start Date', name: 'startDate' },
+        { label: 'End Date', name: 'endDate' },
         { label: 'Status', name: 'status' },
         {
             name: "action",
@@ -89,7 +81,7 @@ class ReviewData extends Component {
     
     return (
       <MUIDataTable
-        title={"Reviews"}
+        title={"My Transactions"}
         data={rowsItem}
         columns={columns}
         options={options}
@@ -98,4 +90,4 @@ class ReviewData extends Component {
   }
 }
 
-export default ReviewData;
+export default TransactionData;

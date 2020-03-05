@@ -48,7 +48,7 @@ class DefaultHeader extends Component {
               <DropdownItem header tag="div" className="text-center"><strong>My Account</strong></DropdownItem>
               <DropdownItem><Link to="/admin/dashboard" className="profileDropDownLink"><i className="fa fa-dashboard"></i> Dashboard</Link></DropdownItem>
               <DropdownItem><Link to="/admin/change-password" className="profileDropDownLink"><i className="fa fa-lock"></i> Change Password</Link></DropdownItem>
-              <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
+              <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-sign-out"></i> Logout</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>

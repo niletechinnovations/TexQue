@@ -9,7 +9,7 @@ const frontEndFooter = () => {
             <div className="container">
               <div className="row">
                 <div className="col-md-3 col-12 col-sm-12">
-                  <div className="app">
+                  <div className="about-app">
                     <h2>DOWNLOAD APP</h2>
                     <p className="about-text">The Food Truck app that Pros use! The app will be simple and effective for the everyday seller and buyer of delicious meals on wheels. Coming soon to a smart phone near you!</p>
                     <a href="/">

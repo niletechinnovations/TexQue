@@ -110,7 +110,7 @@ class Dashboard extends Component {
                   <Col md="84" lg="7">
                     <div className="numbers">
                       <p className="card-category">Enquiries</p>
-                      <p className="card-title">{dashBoardStats.foodTruckCount}</p>
+                      <p className="card-title">{dashBoardStats.enquiryCount}</p>
                     </div>
                   </Col>
                 </Row>

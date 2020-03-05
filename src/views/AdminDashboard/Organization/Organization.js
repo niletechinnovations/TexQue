@@ -19,6 +19,7 @@ class Organization extends Component {
       organizationDocuments: [],
       loading: true,
       rowIndex: -1,
+      changeStatusBtn:'',
       formProccessing: false,
       formField: {organization_name: '', email: '', first_name: '', last_name: '', phoneNumber: '', address: '' },
       formErrors: {organization_name: '', email: '', first_name: '', last_name: '', error: ''},
@@ -195,6 +196,7 @@ class Organization extends Component {
     this.setState({
       modal: !this.state.modal,
       rowIndex: -1,
+      changeStatusBtn: '',
       formValid: false,
       formField: {organization_name: '', email: '', first_name: '', last_name: '', phoneNumber: '', address: '' },
       formErrors: {organization_name: '', email: '', first_name: '', last_name: '', error: ''}
@@ -210,9 +212,43 @@ class Organization extends Component {
         last_name: organizationInfo.lastName, 
         phoneNumber: organizationInfo.phoneNumber, 
         address: organizationInfo.address, 
-       };
-      this.setState({rowIndex: rowIndex, formField: formField, organizationDocuments:organizationInfo.documents, modal: true, formValid: true});
+      };
+      const statusBtn = <Button type="button" size="sm" className={`changeStatusBtn `+( organizationInfo.status ? 'btn-danger' : 'btn-success' )} onClick={() => 
+        this.changeProfileStatus(organizationInfo.profileId, organizationInfo.status )} >{ ( organizationInfo.status ? 'De-Activate Account' : 'Activate Account' )}</Button>
+      
+      this.setState({rowIndex: rowIndex, formField: formField, organizationDocuments:organizationInfo.documents, modal: true, changeStatusBtn:statusBtn, formValid: true});
   }
+
+  /* Change Profile status*/
+  changeProfileStatus(profileId,status){
+    this.setState( { loading: true}, () => {
+      const formData = {
+        "profileId": profileId,
+        "status": (status ? false : true ),
+      };
+      commonService.putAPIWithAccessToken('organization/status', formData)
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {           
+            this.setState( { loading: false} );
+            toast.error(res.data.message);
+            return;
+          } 
+          this.setState({ modal: false, loading: false});
+          toast.success(res.data.message);
+          this.organizationList();        
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else
+            this.setState( { loading: false } );
+            toast.error(err.message);
+        } )
+    } );
+  }
+
   /* Delete organization*/
   handleDeleteOrganization(rowIndex){
 
@@ -304,7 +340,7 @@ class Organization extends Component {
 
   render() {
 
-    const { organizationList,organizationDocuments, loading, modal, formProccessing } = this.state;     
+    const { organizationList,organizationDocuments, loading, modal, formProccessing, changeStatusBtn } = this.state;     
     let loaderElement = '';
     if(loading)        
       loaderElement = <Loader />
@@ -415,6 +451,7 @@ class Organization extends Component {
               </Row>           
             </ModalBody>
             <ModalFooter>
+              {changeStatusBtn}
               <Button color="primary" disabled={!this.state.formValid || formProccessing} type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>

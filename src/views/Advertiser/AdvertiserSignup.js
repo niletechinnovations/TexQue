@@ -1,6 +1,6 @@
 import React from "react";
 import  { Redirect, Link } from 'react-router-dom';
-import { Col, Row, Button, Form, FormGroup,FormFeedback, Label, Input } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, FormFeedback, FormText, Label, Input } from 'reactstrap';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -39,16 +39,14 @@ class AdvertiserSignup extends React.Component {
         const signupData = {
           firstName: this.state.firstName,
           lastName: this.state.lastName,
-          email: this.state.email,
+          email: this.state.email.toLowerCase(),
           phoneNumber: this.state.phoneNumber,
           password: this.state.password,
           role: 'advertiser'
         };
-        //console.log(signupData);
         this.setState( { loading: true }, () => {
           commenService.postAPI( `auth/sign-up`, signupData )
             .then( res => {
-              //console.log(res);
               if ( undefined === res.data || !res.data.status ) {
                 this.setState( { loading: false } );
                 toast.error(res.data.message);
@@ -58,8 +56,8 @@ class AdvertiserSignup extends React.Component {
               this.setState( {
                 loading: false,              
               } )
+              this.props.history.push('/login');
               toast.success(res.data.message);
-              //this.props.history.push('/login');
             } )
             .catch( err => {
               
@@ -128,6 +126,10 @@ class AdvertiserSignup extends React.Component {
     if (!this.state.confirmPassword) {
       formIsValid = false;
       errors["confirmPassword"] = "*Please re-enter your password.";
+    }
+    if (this.state.confirmPassword !== this.state.password) {
+      formIsValid = false;
+      errors["confirmPassword"] = "*Passwords and confirm-password do not match.";
     }
     this.setState({
       loading: false,
@@ -199,6 +201,7 @@ class AdvertiserSignup extends React.Component {
                           <Label for="password">Password</Label>
                           <Input type="password" name="password" invalid={errors['password'] !== undefined && errors['password'] !== ""} id="password" value={password} onChange={this.changeHandler} placeholder="Enter Password" required />
                           <FormFeedback>{errors['password']}</FormFeedback>
+                          <FormText>Be at least 8 characters, Uppercase, lowercase letters, numbers & special characters</FormText>
                         </FormGroup>
                       </Col>
                       <Col md={6}>

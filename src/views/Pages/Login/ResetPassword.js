@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, FormText, FormFeedback, Label, Input } from 'reactstrap';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,63 +16,91 @@ class ResetPassword extends Component {
       newPassword: '',
       confirmPassword: '',
       token: '',
-      loading: false
+      loading: false,
+      errors: {}
     };
   }
 
-    componentDidMount() {
-        const { match: { params } } = this.props;
-        localStorage.clear();
-        this.setState( { token: params.token})
-    }
+  componentDidMount() {
+    const { match: { params } } = this.props;
+    localStorage.clear();
+    this.setState( { token: params.token})
+  }
 
   scrollToTop = () => window.scrollTo(0, 0);
   
   submitHandler = event => {
     event.preventDefault();
     event.target.className += " was-validated";
-    const loginData = {      
-      newPassword: this.state.newPassword,
-      token: this.state.token
-    };
-    if(this.state.newPassword === '' && this.state.confirmPassword === '' ) {
-        toast.error("Please enter your password and confirm password!");
-        return;
-    }
-    if(this.state.newPassword !== this.state.confirmPassword) {
-        toast.error("Password and confirm password does not match!");
-        return;
-    }
-    this.setState( { loading: true }, () => {
-      commenService.postAPI( `auth/setup-new-password`, loginData )
-        .then( res => {
-         
-          console.log(res);
-          if ( undefined === res.data || !res.data.status ) {
-            this.setState( { loading: false } );
-            toast.error(res.data.message);
-            return;
-          }
-          this.setState( {
-            loading: false
+    if (this.validateForm()) {
+      const loginData = {      
+        newPassword: this.state.newPassword,
+        token: this.state.token
+      };
+      if(this.state.newPassword === '' && this.state.confirmPassword === '' ) {
+          toast.error("Please enter your password and confirm password!");
+          return;
+      }
+      if(this.state.newPassword !== this.state.confirmPassword) {
+          toast.error("Password and confirm password does not match!");
+          return;
+      }
+      this.setState( { loading: true }, () => {
+        commenService.postAPI( `auth/setup-new-password`, loginData )
+          .then( res => {
+            if ( undefined === res.data || !res.data.status ) {
+              this.setState( { loading: false } );
+              toast.error(res.data.message);
+              return;
+            }
+            this.setState( {
+              loading: false
+            } )
+            this.props.history.push('/login');
+            toast.success(res.data.message);
           } )
-          toast.success(res.data.message);
-          this.props.history.push('/login');
-        } )
-        .catch( err => {          
-          toast.error(err.message);
-          this.setState( { loading: false} );
-        } )
-    } )
-
+          .catch( err => {          
+            toast.error(err.message);
+            this.setState( { loading: false} );
+          } )
+      } )
+    }
   };
+
+  validateForm() {
+    let errors = {};
+    let formIsValid = true;
+    if (!this.state.newPassword) {
+        formIsValid = false;
+        errors["newPassword"] = "*Please enter your new password.";
+    }
+    if (typeof this.state.newPassword !== "undefined") {
+        if (!this.state.newPassword.match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
+            formIsValid = false;
+            errors["newPassword"] = "*Please enter secure and strong password.";
+        }
+    }
+    if (!this.state.confirmPassword) {
+      formIsValid = false;
+      errors["confirmPassword"] = "*Please re-enter your password.";
+    }
+    if (this.state.confirmPassword !== this.state.newPassword) {
+      formIsValid = false;
+      errors["confirmPassword"] = "*Passwords and confirm-password do not match.";
+    }
+    this.setState({
+      loading: false,
+      errors: errors
+    });
+    return formIsValid;
+  }
 
   changeHandler = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
   
     render() {
-      const { newPassword, confirmPassword, loading } = this.state;
+      const { newPassword, confirmPassword, loading, errors } = this.state;
       let loaderElement = '';
       if(loading)
         loaderElement = <Loader />
@@ -95,13 +123,16 @@ class ResetPassword extends Component {
                       <Col md={12}>
                         <FormGroup>
                           <Label for="newPassword">New password *</Label>
-                          <Input type="password" name="newPassword" id="newPassword" placeholder="New password *" value={newPassword} onChange={this.changeHandler} required />
+                          <Input type="password" name="newPassword" id="newPassword" placeholder="New password *" value={newPassword} onChange={this.changeHandler} invalid={errors['newPassword'] !== undefined && errors['newPassword'] !== ""} required />
+                          <FormFeedback>{errors['newPassword']}</FormFeedback>
+                          <FormText>Be at least 8 characters, Upper and lowercase letter & One number</FormText>
                         </FormGroup>
                       </Col>
                       <Col md={12}>
                         <FormGroup>
                           <Label for="confirmPassword">Confirm password *</Label>
-                          <Input type="password" name="confirmPassword" id="confirmPassword" value={confirmPassword} placeholder="Re-enter Password"  onChange={this.changeHandler}  required />
+                          <Input type="password" name="confirmPassword" id="confirmPassword" value={confirmPassword} placeholder="Re-enter Password"  onChange={this.changeHandler} invalid={errors['confirmPassword'] !== undefined && errors['confirmPassword'] !== ""}  required />
+                          <FormFeedback>{errors['confirmPassword']}</FormFeedback>
                         </FormGroup>
                       </Col>
                     </Row>

@@ -11,6 +11,7 @@ import AdvertisementList from '../views/Advertiser/Advertisement/AdvertisementLi
 import AdvertiserPaymentStatus from '../views/Advertiser/Payment/AdvertiserPaymentStatus';
 import AdvertiserProfile from '../views/Advertiser/Profile/Profile';
 import ReviewLists from '../views/User/Reviews/ReviewLists';
+import TransactionList from '../views/User/Transactions/TransactionLists';
 import SubscriptionPaymentStatus from '../views/User/FoodTruckSubscription/SubscriptionPaymentStatus';
 
 const userRoutes = [
@@ -26,6 +27,7 @@ const userRoutes = [
   { path: '/user/reviews/:foodtruckId', exact:true, name:'Food Truck Review', component: ReviewLists},
   { path: '/user/subscription', exact: true,  name: 'Subscription', component: FoodTruckSubscription },
   { path: '/user/payment/:status', exact: true,  name: 'Payment Status', component: SubscriptionPaymentStatus },
+  { path: '/user/transactions', exact:true, name:'Transaction Lists', component: TransactionList},
   { path: '/advertiser/plan', exact: true,  name: 'Advertiser Plan', component: AdvertiserPlan },
   { path: '/advertiser/ads', exact: true,  name: 'Advertisement List', component: AdvertisementList },
   { path: '/advertiser/payment/:status', exact: true,  name: 'Payment Status', component: AdvertiserPaymentStatus },

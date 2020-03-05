@@ -10,7 +10,11 @@ class AboutPage extends React.Component {
               <div className="container">      
                 <div className="heading-title text-center">
                     <h2>About TexQue</h2>
-                    <p>The Food Truck app that Pros use! The app will be simple and <br />effective for the everyday seller and buyer of delicious meals on wheels.</p>
+                </div>
+                <div className="text-center">    
+                    <p>TexQue is the premier Food Truck app. We make it easy to find your special food truck or the exact food you want. We offer all types of food listed in every location around the country. TexQue gives you the power to list, find it and eat it all on one simple app. This is the Food Truck app the Pros use and the app the foodies love!</p>
+                    <p>Our mission is simple: to help you find your favorite food easier or help people find you. And with millions of downloads in the U.S. and many new listings every day, we're just getting started. Find your Food Truck today!</p>
+                        
                 </div>
                 <div className="heading-title text-center">
                     <h2>How it Work</h2>
