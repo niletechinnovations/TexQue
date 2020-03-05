@@ -11,6 +11,9 @@ import AdvertiserPlans from '../views/AdminDashboard/Subscription/AdvertiserSubs
 import FoodTruckSubscription from '../views/AdminDashboard/Subscription/FoodTruckSubscription';
 import ChangePassword from '../views/AdminDashboard/ChangePassword/ChangePassword';
 import FoodTruckReviewList from '../views/AdminDashboard/Organization/FoodTruckReviews/FoodTruckReviewList';
+import AdvertiserList from '../views/AdminDashboard/Advertisers/AdvertiserList';
+import AdvertisementList from '../views/AdminDashboard/Advertisers/Advertisement/AdvertisementList';
+import UserTransactionList from '../views/AdminDashboard/UserTransactions/UserTransactionList';
 
 const adminRoutes = [
   { path: '/admin/', exact: true, name: 'Admin' },
@@ -28,6 +31,9 @@ const adminRoutes = [
   { path: '/admin/subscription', exact: true, name: 'Manage Advertiser Subscription', component: AdvertiserPlans },
   { path: '/admin/subscription/food-truck', exact: true, name: 'Manage Food Truck Subscription', component: FoodTruckSubscription },
   { path: '/admin/change-password', exact: true,  name: 'Change Password', component: ChangePassword },
+  { path: '/admin/advertisers', exact: true, name: 'Manage Advertisers', component: AdvertiserList },
+  { path: '/admin/advertisement', exact: true, name: 'Manage Advertisers', component: AdvertisementList },
+  { path: '/admin/transactions', exact: true, name: 'Manage Transactions', component: UserTransactionList },
   
 ];
 
