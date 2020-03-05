@@ -33,7 +33,7 @@ class FrontEndHeader extends React.Component {
   toggleUserMenu = () => {
     this.setState({ dropdownOpen: !this.state.dropdownOpen });
   }
-
+  
 
   render(){
    

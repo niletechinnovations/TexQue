@@ -39,9 +39,9 @@ body{ background: none !important;}
 
 .user-menu .dropdown-toggle::after {
 	display: inline-block;
-  right: -5px;
-  position: absolute;
-  top: 13px
+    right: 0;
+    position: absolute;
+    top: 50%;
 }
 
 .user-menu.active .user-name:after,
@@ -223,7 +223,17 @@ body{ background: none !important;}
 }
 
 @media only screen and (max-width : 991px) {
-
+.header-navigation .navbar-nav > li{padding:0px 0;    margin-left: 0;}
+.header-navigation .navbar-nav > li > a {text-align: left; display: block; margin: 0; padding: 0.7rem 0.5rem; color: #495057; font-size: 11px; font-weight: normal; border-bottom: 1px solid #d7ddec;} 
+.header-navigation .navbar-nav li .dropdown-menu{width: 100%;}
+.header-navigation .navbar-nav > li .dropdown-menu {border: 1px solid #dcf5f7; border-radius: 0; padding: 0; position: relative !important; transform: none !important; }
+.header-navigation .navbar-nav > li a.dropdown-item {position: relative; color: #495057; text-align: left; font-size: 12px; }
+.user-name .profileImage{display: none;}
+.user-menu .dropdown-menu .dropdown-item a {color: #6c757d; width: 100%; position: relative; text-align: left; font-size: 12px; }
+.user-menu .dropdown-menu .dropdown-item {background: transparent; outline: none;    }
+.numbers .card-category,
+.numbers .card-title{text-align: center !important;}
+.numbers { margin-top: 10px;}
 }
 
 @media only screen and (max-width : 767px) {
@@ -238,6 +248,11 @@ body{ background: none !important;}
 .user-menu .dropdown-menu .dropdown-item {background: transparent; outline: none; }
 .footer-link{margin-top: 15px; }
 .chooseOrgDoc.form-control-file{width: 100%;}
+.text blockquote .quote-icon{position: relative; border: none;}
+.text blockquote .blockquote-text{    padding-right: 0;    padding-left: 0;}
+.user-dashboard .MuiTableCell-body {font-size: 13px;white-space: normal; height: auto; border: none;}
+
+
 }
 
 @media only screen and (max-width: 576px) {
