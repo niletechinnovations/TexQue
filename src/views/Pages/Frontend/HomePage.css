@@ -65,7 +65,7 @@ button.btn-search {background: #002164; border: none; padding: 10px 20px; border
 .how-it-section  .heading-title h2 {font-weight: 700; padding: 0; color: #000000; margin-bottom: .5rem; font-size: 2.0rem; }
 .how-it-section  .heading-title p {color: #6c757d; font-size: 20px; font-weight: 300; padding: 0; margin-bottom: 20px;}
 
-.howitwork-card{border-radius: 4px; margin-bottom: 45px; display: flex; background: #ffffff; padding: 30px 15px; transition: all 0.5s ease-in-out; transition: all 0.5s ease-in-out; -moz-transition: all 0.5s ease-in-out; -ms-transition: all 0.5s ease-in-out; -o-transition: all 0.5s ease-in-out; -webkit-transition: all 0.5s ease-in-out; border: 1px solid #eff1fe; }
+.howitwork-card{border-radius: 4px; margin-bottom: 20px; display: flex; background: #ffffff; padding: 30px 15px; transition: all 0.5s ease-in-out; transition: all 0.5s ease-in-out; -moz-transition: all 0.5s ease-in-out; -ms-transition: all 0.5s ease-in-out; -o-transition: all 0.5s ease-in-out; -webkit-transition: all 0.5s ease-in-out; border: 1px solid #eff1fe; }
 .howitwork-card:hover {box-shadow: 4.871px 34.659px 30px -24px rgba(0, 0, 0, 0.06); }
 .howitwork-card-content h2 {font-size: 18px; padding: 0; font-weight: bold; }
 .howitwork-card-content p{font-size: 14px; font-weight: 300; text-align: justify; line-height: 22px; color: #607d8b; }

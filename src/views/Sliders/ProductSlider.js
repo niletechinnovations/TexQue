@@ -7,7 +7,7 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 const ProductSlider = (props) => {
   
   return (
-    <OwlCarousel id="products-carousel" className="owl-theme" loop lazyLoad responsive={ {0:{items:3},200:{items:3},1000:{items:3},12000:{items:3}}}>
+    <OwlCarousel id="products-carousel" className="owl-theme" loop lazyLoad  responsive={ {0:{items:1},200:{items:1},1000:{items:2},1200:{items:3}}}>
       <div className="item">
         <div className="products-item-card">
             <div className="products-item-image">
