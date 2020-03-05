@@ -1,6 +1,6 @@
 body{ background: none !important;}
 .header{position: relative;width: 100%;}
-.navbar-toggler{    background-color: #4dc3c6;}
+.navbar-toggler{    background-color: #d5042b !important;}
 .navbar-toggler-icon:before {display: inline-block; font-family: FontAwesome; font-size: inherit; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; content: "\f0c9"; line-height: 30px; color: #fff; }
 
 .header-navigation .navbar {padding: 0; }
@@ -178,6 +178,7 @@ body{ background: none !important;}
 .footer-copyright p {color: #6c757d; font-size: 12px; font-weight: 300; padding: 0; margin-bottom: 0; text-align: center !important; }
 .footer-link h2,
 .app h2{font-size: 18px; font-weight: bold; color: #536382; padding: 0; }
+.about-app{margin-bottom: 15px; }
 .footer ul li a {color: #717b8e; font-size: 14px; }
 .footer .about-text{ color: #717b8e; font-size: 14px;}
 
@@ -194,3 +195,58 @@ body{ background: none !important;}
     color: #607d8b;
 }
 .footer-contact-info li a { color: #607d8b;}
+
+
+
+
+@media only screen and (min-width : 480px) {
+}
+
+@media only screen and (min-width : 768px) {
+
+}
+
+
+@media only screen and (min-width : 992px) {
+
+}
+
+@media only screen and (min-width : 1200px) {
+
+}
+
+
+
+
+@media only screen and (max-width : 1199px) {
+
+}
+
+@media only screen and (max-width : 991px) {
+
+}
+
+@media only screen and (max-width : 767px) {
+
+.header-navigation .navbar-nav > li{padding:0px 0;    margin-left: 0;}
+.header-navigation .navbar-nav > li > a {text-align: left; display: block; margin: 0; padding: 0.7rem 0.5rem; color: #495057; font-size: 11px; font-weight: normal; border-bottom: 1px solid #d7ddec;} 
+.header-navigation .navbar-nav li .dropdown-menu{width: 100%;}
+.header-navigation .navbar-nav > li .dropdown-menu {border: 1px solid #dcf5f7; border-radius: 0; padding: 0; position: relative !important; transform: none !important; }
+.header-navigation .navbar-nav > li a.dropdown-item {position: relative; color: #495057; text-align: left; font-size: 12px; }
+.user-name .profileImage{display: none;}
+.user-menu .dropdown-menu .dropdown-item a {color: #6c757d; width: 100%; position: relative; text-align: left; font-size: 12px; }
+.user-menu .dropdown-menu .dropdown-item {background: transparent; outline: none; }
+.footer-link{margin-top: 15px; }
+.chooseOrgDoc.form-control-file{width: 100%;}
+}
+
+@media only screen and (max-width: 576px) {
+}
+
+@media only screen and (max-width : 480px) {}
+
+
+
+
+
+

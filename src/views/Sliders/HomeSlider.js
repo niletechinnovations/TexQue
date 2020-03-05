@@ -7,7 +7,7 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 const HomeSlider = (props) => {
   
   return (
-    <OwlCarousel  className="owl-theme" loop nav lazyLoad  responsive={ {0:{items:3},200:{items:3},1000:{items:6},12000:{items:6}}}>
+    <OwlCarousel  className="owl-theme" loop nav={false} lazyLoad  responsive={ {0:{items:2},200:{items:3},1000:{items:6},12000:{items:6}}}>
       <div className="home-category-item">
         <a href="/">
           <img src="/images/1.png" alt="Chinese food van"/>
