@@ -47,6 +47,11 @@ export default {
       url: '/admin/advertisement',
     },
     {
+      name: 'Advertisers',
+      url: '/admin/advertisers',
+      icon: 'icon-user',
+    },
+    {
       name: 'Subscribed Users',
       url: '/admin/subscribed',
       icon: 'fa fa-list',

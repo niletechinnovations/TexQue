@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 
-import ReviewData from './TransactionData';
+import ReviewData from './UserTransactionData';
 import Loader from '../../Loader/Loader';
 
 
@@ -42,7 +42,7 @@ class TransactionLists extends Component {
       strWalkQuery += (strWalkQuery !=="" ) ? "/"+filterItem.filter_foodTruckId : "/"+filterItem.filter_foodTruckId;
     
       this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('statistics/subscriber-payment-history/'+strWalkQuery)
+      commonService.getAPIWithAccessToken('statistics/overall-payment-history/'+strWalkQuery)
         .then( res => {
            
           if ( undefined === res.data.data || !res.data.status ) {

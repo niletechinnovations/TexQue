@@ -27,8 +27,10 @@ class TransactionData extends Component {
    
     for(const [i, enquiry] of this.props.data.entries()){
       let resInfo = {
+        userName: enquiry.userName,
         subscriberId: enquiry.transactionProfileId,
         planName: enquiry.planName,
+        planTypeLabel: enquiry.planTypeLabel,
         amount: '$'+enquiry.amount,
         startDate: (new Date(enquiry.startDate)).toLocaleDateString("en-US"),
         endDate: (new Date(enquiry.endDate)).toLocaleDateString("en-US"),
@@ -43,7 +45,9 @@ class TransactionData extends Component {
     }
 
     const columns = [ 
+        { label: 'User', name: 'userName' },
         { label: 'Subscription ID', name: 'subscriberId' },
+        { label: 'Plan Type', name: 'planTypeLabel' },
         { label: 'Plan', name: 'planName' },
         { label: 'Amount', name: 'amount' },
         { label: 'Start Date', name: 'startDate' },
@@ -81,7 +85,7 @@ class TransactionData extends Component {
     
     return (
       <MUIDataTable
-        title={"My Transactions"}
+        title={"Transactions"}
         data={rowsItem}
         columns={columns}
         options={options}

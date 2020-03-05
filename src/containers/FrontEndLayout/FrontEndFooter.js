@@ -25,7 +25,6 @@ const frontEndFooter = () => {
                     <h2>About Texque</h2>
                     <ul>
                         <li><Link to="/about-us">About Us</Link></li>
-                        <li><Link to="/blog">Blog</Link></li>
                         <li><Link to="/contact-us">Contact</Link></li>
                     </ul>
                   </div>
@@ -44,7 +43,7 @@ const frontEndFooter = () => {
                   <div className="footer-link">
                     <h2>Information</h2>
                     <ul className="footer-contact-info">
-                      <li><i className="fa fa-envelope"></i> Email:&nbsp;<a href="mailto:support@texque.com">support@texque.com</a></li>
+                      <li><i className="fa fa-envelope"></i> Email:&nbsp;<a href="mailto:contact@texque.com">support@texque.com</a></li>
                     </ul>
                     </div>
                   </div>
@@ -52,16 +51,6 @@ const frontEndFooter = () => {
             </div>
           </div>
 
-          {/* <div className="footer-tag">
-            <div className="container">
-              <div className="footer-tag-content">
-                <h2>POPULAR FOOD</h2>
-                <div className="footer-tag-links">
-                    <a href="/">Fast Food</a> |  <a href="/">Chinese</a> | <a href="/">Street Food</a> |  <a href="/">Continental</a>  |  <a href="/">Mithai</a> |  <a href="/">Cafe</a>  |  <a href="/">South Indian</a> |  <a href="/">Punjabi Food</a> |  <a href="/">Fast Food</a> |  <a href="/">Chinese</a> | <a href="/">Street Food</a> |  <a href="/">Continental</a>  |  <a href="/">Mithai</a> |  <a href="/">Cafe</a>  |  <a href="/">South Indian</a> |  <a href="/">Punjabi Food</a><a href="/">Fast Food</a> |  <a href="/">Chinese</a> | <a href="/">Street Food</a> |  <a href="/">Continental</a>  |  <a href="/">Mithai</a> |  <a href="/">Cafe</a>  |  <a href="/">South Indian</a> |  <a href="/">Punjabi Food</a> |  <a href="/">Fast Food</a> |  <a href="/">Chinese</a> | <a href="/">Street Food</a> |  <a href="/">Continental</a>  |  <a href="/">Mithai</a> |  <a href="/">Cafe</a>  |  <a href="/">South Indian</a> |  <a href="/">Punjabi Food</a>
-                </div>
-              </div>
-            </div>
-          </div> */}
           <div className="footer-copyright">
             <div className="container">
               <p>&copy; Copyright 2020 TexQue. All Rights Reserved.</p>

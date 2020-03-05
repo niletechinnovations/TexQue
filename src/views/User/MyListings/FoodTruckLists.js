@@ -90,83 +90,89 @@ class FoodTruckLists extends Component {
   /* Submit Form Handler*/
   submitHandler (event) {
     event.preventDefault();
-    event.target.className += " was-validated";
+    //event.target.className += " was-validated";
     this.setState( { formProccessing: true}, () => {
       const formInputField = this.state.formField;
-      const formData = new FormData();
-      formData.append('truckName', formInputField.truckName);
-      formData.append('contactPerson', formInputField.contactPerson);
-      formData.append('phoneNumber', formInputField.phoneNumber);
-      formData.append('description', formInputField.description);
-      formData.append('address', this.state.address);
-      formData.append('latitude', this.state.latitude);
-      formData.append('longitude', this.state.longitude);
-      formData.append('featuredImage', this.state.featuredImage);
-      for(let i =0; i < this.state.galleryImages.length; i++){
-        formData.append('truckImages', this.state.galleryImages[i]);
-      }
-      for(let i =0; i < this.state.menuImages.length; i++){
-        formData.append('menuImages', this.state.menuImages[i]);
-      }
-      for(let j =0; j < this.state.selectedCategories.length; j++){
-        formData.append('categoryId', this.state.selectedCategories[j].value );
-      }
+      if(this.state.address===''){
+        this.setState( { formProccessing: false} );
+        toast.error('Address field should not be empty!');
+        return;
+      }else{
+        const formData = new FormData();
+        formData.append('truckName', formInputField.truckName);
+        formData.append('contactPerson', formInputField.contactPerson);
+        formData.append('phoneNumber', formInputField.phoneNumber);
+        formData.append('description', formInputField.description);
+        formData.append('address', this.state.address);
+        formData.append('latitude', this.state.latitude);
+        formData.append('longitude', this.state.longitude);
+        formData.append('featuredImage', this.state.featuredImage);
+        for(let i =0; i < this.state.galleryImages.length; i++){
+          formData.append('truckImages', this.state.galleryImages[i]);
+        }
+        for(let i =0; i < this.state.menuImages.length; i++){
+          formData.append('menuImages', this.state.menuImages[i]);
+        }
+        for(let j =0; j < this.state.selectedCategories.length; j++){
+          formData.append('categoryId', this.state.selectedCategories[j].value );
+        }
 
-      Object.keys(this.state.checkboxes)
-      .filter(checkbox => this.state.checkboxes[checkbox])
-      .forEach(checkbox => {
-        formData.append('schedules', checkbox );
-      });
-      
-      const rowIndex = this.state.rowIndex;
-      if(rowIndex > -1) {
-        commonService.postAPIWithAccessToken('food-truck/', formData)
-        .then( res => {
-          if ( undefined === res.data.data || !res.data.status ) {           
-            this.setState( { formProccessing: false} );
-            toast.error(res.data.message);
-            return;
-          } 
+        Object.keys(this.state.checkboxes)
+        .filter(checkbox => this.state.checkboxes[checkbox])
+        .forEach(checkbox => {
+          formData.append('schedules', checkbox );
+        });
+        
+        const rowIndex = this.state.rowIndex;
+        if(rowIndex > -1) {
+          commonService.postAPIWithAccessToken('food-truck/', formData)
+          .then( res => {
+            if ( undefined === res.data.data || !res.data.status ) {           
+              this.setState( { formProccessing: false} );
+              toast.error(res.data.message);
+              return;
+            } 
+            
+            this.setState({ modal: false, formProccessing: false});
+            toast.success(res.data.message);
+            this.truckLists();
           
-          this.setState({ modal: false, formProccessing: false});
-          toast.success(res.data.message);
-          this.truckLists();
-         
-        } )
-        .catch( err => {         
-          if(err.response !== undefined && err.response.status === 401) {
-            localStorage.clear();
-            this.props.history.push('/login');
-          }
-          else
-            this.setState( { formProccessing: false } );
-            toast.error(err.message);
-        } )
-      }
-      else{
-        commonService.postAPIWithAccessToken('food-truck', formData)
-        .then( res => {
-         
-          if ( undefined === res.data.data || !res.data.status ) { 
-            this.setState( { formProccessing: false} );
-            toast.error(res.data.message);
-            return;
-          } 
+          } )
+          .catch( err => {         
+            if(err.response !== undefined && err.response.status === 401) {
+              localStorage.clear();
+              this.props.history.push('/login');
+            }
+            else
+              this.setState( { formProccessing: false } );
+              toast.error(err.message);
+          } )
+        }
+        else{
+          commonService.postAPIWithAccessToken('food-truck', formData)
+          .then( res => {
           
-          this.setState({ modal: false});
-          toast.success(res.data.message);
-          this.truckLists();
-         
-        } )
-        .catch( err => {         
-          if(err.response !== undefined && err.response.status === 401) {
-            localStorage.clear();
-            this.props.history.push('/login');
-          }
-          else
-            this.setState( { formProccessing: false } );
-            toast.error(err.message);
-        } )
+            if ( undefined === res.data.data || !res.data.status ) { 
+              this.setState( { formProccessing: false} );
+              toast.error(res.data.message);
+              return;
+            } 
+            
+            this.setState({ modal: false});
+            toast.success(res.data.message);
+            this.truckLists();
+          
+          } )
+          .catch( err => {         
+            if(err.response !== undefined && err.response.status === 401) {
+              localStorage.clear();
+              this.props.history.push('/login');
+            }
+            else
+              this.setState( { formProccessing: false } );
+              toast.error(err.message);
+          } )
+        }
       }
     } );
     
@@ -242,7 +248,7 @@ class FoodTruckLists extends Component {
     const formErrors = this.state.formErrors;
     const formField = this.state.formField;
     this.setState({formValid: 
-      (formErrors.truckName === "" && formField.truckName !== "") 
+      (formErrors.truckName === "" && formField.truckName !== "" ) 
       ? true : false});
   }
   /* Set Error Class*/
@@ -345,7 +351,7 @@ class FoodTruckLists extends Component {
         {loaderElement}
         <Card>
           <CardHeader className="mainHeading">
-            <strong>Food Truck Lists</strong>
+            <strong>Food Truck list</strong>
             <Button size="sm" color="secondary" className="addListing pull-right" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
           </CardHeader>
           <CardBody>
@@ -374,13 +380,13 @@ class FoodTruckLists extends Component {
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="contactPerson">Contact Person *</Label>            
-                    <Input type="text" placeholder="Contact Person" id="contactPerson" name="contactPerson" value={this.state.formField.contactPerson} onChange={this.changeHandler}  />
+                    <Input type="text" placeholder="Contact Person" id="contactPerson" name="contactPerson" value={this.state.formField.contactPerson} onChange={this.changeHandler} required />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="phoneNumber">Phone Number *</Label>            
-                    <Input type="text" placeholder="Phone Number" id="phoneNumber" name="phoneNumber" value={this.state.formField.phoneNumber} onChange={this.changeHandler}  />
+                    <Input type="text" placeholder="Phone Number" id="phoneNumber" name="phoneNumber" value={this.state.formField.phoneNumber} onChange={this.changeHandler} required />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
@@ -392,7 +398,7 @@ class FoodTruckLists extends Component {
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="defaultImage">Main Image *</Label>            
-                    <Input type="file" id="defaultImage" name="defaultImage" className="form-control"  onChange={this.handleImageChange} required />
+                    <Input type="file" id="defaultImage" name="defaultImage" className="form-control"  onChange={this.handleImageChange} />
                   </FormGroup>              
                 </Col>
                 <Col md={"6"}>

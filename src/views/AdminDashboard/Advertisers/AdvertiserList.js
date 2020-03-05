@@ -6,10 +6,9 @@ import commonService from '../../../core/services/commonService';
 
 import { FormErrors } from '../../Formerrors/Formerrors';
 import Loader from '../../Loader/Loader';
-import UsersData from './UsersData';
-import './Users.css'
+import UsersData from './AdvertiserListData';
 
-class Users extends Component {
+class AdvertiserList extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -37,14 +36,14 @@ class Users extends Component {
   userList() {
     
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken(`profile/list`)
+      commonService.getAPIWithAccessToken(`statistics/advertiser-list`)
         .then( res => {
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( {  loading: false } );
             toast.error(res.data.message);    
             return;
           }
-          this.setState({loading:false, userList: res.data.data.profileList});
+          this.setState({loading:false, userList: res.data.data.listItem});
         } )
         .catch( err => {   
                
@@ -158,7 +157,7 @@ class Users extends Component {
         </Row>
 
         <Modal isOpen={modal} toggle={this.toggle} className="full-width-modal-section organization-modal">
-          <ModalHeader toggle={this.toggle}>User Info</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Advertiser Info</ModalHeader>
           <Form onSubmit={this.submitHandler} noValidate>
             <ModalBody>
               <FormErrors formErrors={this.state.formErrors} />
@@ -166,13 +165,13 @@ class Users extends Component {
                 <Col md={"6"}>  
                   <FormGroup> 
                     <Label htmlFor="first_name">First Name</Label>            
-                    <Input type="text" placeholder="First Person *" id="first_name" name="first_name" value={this.state.formField.first_name} onChange={this.changeHandler} required />
+                    <Input type="text" placeholder="First Name *" id="first_name" name="first_name" value={this.state.formField.first_name} onChange={this.changeHandler} required />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>  
                   <FormGroup> 
                     <Label htmlFor="last_name">Last Name</Label>            
-                    <Input type="text" placeholder="Last Person *" id="last_name" name="last_name" value={this.state.formField.last_name} onChange={this.changeHandler} />
+                    <Input type="text" placeholder="Last Name *" id="last_name" name="last_name" value={this.state.formField.last_name} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>  
@@ -187,22 +186,7 @@ class Users extends Component {
                     <Input type="text" placeholder="Contact Number " id="phoneNumber" name="phoneNumber" value={this.state.formField.phoneNumber} onChange={this.changeHandler}  />
                   </FormGroup>
                 </Col>
-                <Col md={"6"}>  
-                  <FormGroup> 
-                    <Label htmlFor="address">Address</Label>            
-                    <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
-                  </FormGroup>
-                </Col>
-                {/* <Col md={"4"}>  
-                  <FormGroup> 
-                    <Label htmlFor="profileImage">Profile Image</Label>            
-                    <Input type="file" id="profileImage" name="profileImage" onChange={this.onProfileImgChange} />
-                  </FormGroup>
-                </Col> */}
-                <Col md={"6"}>
-                { this.state.formField.profilePic ? <img src={this.state.formField.profilePic} alt={this.state.formField.first_name} width="100" /> : '' }
-                </Col>
-              </Row>           
+                </Row>           
             </ModalBody>
             <ModalFooter>
               {changeStatusBtn}
@@ -218,4 +202,4 @@ class Users extends Component {
   }
 }
 
-export default Users;
+export default AdvertiserList;

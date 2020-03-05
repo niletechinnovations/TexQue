@@ -111,7 +111,7 @@ class FoodTruckData extends Component {
     
     return (
       <MUIDataTable
-        title={"Food Truck Lists"}
+        title={"Food Truck list"}
         data={rowsItem}
         columns={columns}
         options={options}

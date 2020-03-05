@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Media, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 import { FormErrors } from '../../Formerrors/Formerrors';
+import AutoCompletePlaces from '../../../core/google-map/AutoCompletePlaces';
 
 import Loader from '../../Loader/Loader';
 import OrganizationData from './OrganizationData';
@@ -24,13 +25,17 @@ class Organization extends Component {
       formField: {organization_name: '', email: '', first_name: '', last_name: '', phoneNumber: '', address: '' },
       formErrors: {organization_name: '', email: '', first_name: '', last_name: '', error: ''},
       formValid: false,
-      filterItem: { filter_organization_id: '',organization_name: '', location: '', custom_search: ''},
+      filterItem: { filter_organization_id: '', filterOrgName: '', filterLocation: '', custom_search: ''},
+      address: '',
+      latitude:'',
+      longitude:''
     } 
     this.handleEditOrganization = this.handleEditOrganization.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.handleDeleteOrganization = this.handleDeleteOrganization.bind(this);
     this.filterOragnizationList = this.filterOragnizationList.bind(this);
     this.uploadOrgDocument = this.uploadOrgDocument.bind(this);
+    this.setLatitudeLongitude = this.setLatitudeLongitude.bind(this);
   }
   // Fetch the organization List
   componentDidMount() { 
@@ -38,16 +43,16 @@ class Organization extends Component {
   }
   /*organization List API*/
   organizationList(filterItem = {}) {
-    let organizationQuery = "";
-    
-    if(filterItem.organization_name !== undefined && filterItem.organization_name !== "" ) 
-      organizationQuery += (organizationQuery !=="" ) ? "&organization_name="+filterItem.organization_name: "?organization_name="+filterItem.organization_name;
-    if(filterItem.state !== undefined && filterItem.state !== "" ) 
-      organizationQuery += (organizationQuery !=="" ) ? "&state="+filterItem.state: "?state="+filterItem.state;
+    let organizationQuery = "?pageSize=10000";
+    console.log(filterItem);
+    if(filterItem.filterOrgName !== undefined && filterItem.filterOrgName !== "" ) 
+      organizationQuery += (organizationQuery !=="" ) ? "&organizationName="+filterItem.filterOrgName: "?organizationName="+filterItem.filterOrgName;
+    if(filterItem.filterLocation !== undefined && filterItem.filterLocation !== "" ) 
+      organizationQuery += (organizationQuery !=="" ) ? "&location="+filterItem.filterLocation: "?location="+filterItem.filterLocation;
     if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
-      organizationQuery += (organizationQuery !=="" ) ? "&keyword="+filterItem.custom_search: "?keyword="+filterItem.custom_search;
+      organizationQuery += (organizationQuery !=="" ) ? "&emailOrName="+filterItem.custom_search: "?emailOrName="+filterItem.custom_search;
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('organization?pageSize=10000'+organizationQuery)
+      commonService.getAPIWithAccessToken('organization'+organizationQuery)
         .then( res => {
           
            
@@ -82,10 +87,18 @@ class Organization extends Component {
         "firstName": formInputField.first_name, 
         "lastName": formInputField.last_name, 
         "phoneNumber": formInputField.phoneNumber, 
-        "address": formInputField.address, 
         "organizationName": formInputField.organization_name
       };
-
+      
+      if(this.state.address)
+        formData['address'] = this.state.address;
+      
+      if(this.state.latitude)
+        formData['latitude'] = this.state.latitude;
+      
+      if(this.state.longitude)
+        formData['longitude'] = this.state.longitude;
+      
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
        const organizationInfo = this.state.organizationList[rowIndex];
@@ -336,7 +349,12 @@ class Organization extends Component {
     }
   }
 
-
+  // Set address, latitude and longitude
+  setLatitudeLongitude(address, latLng){
+    let formField = this.state.formField;
+    formField.address = address;
+    this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address, formField: formField })
+  }
 
   render() {
 
@@ -354,7 +372,7 @@ class Organization extends Component {
           <Col lg={12}>
             <Card>
               <CardHeader className="mainHeading">
-                <strong>Food Truck Owner Lists</strong>
+                <strong>Food Truck Owner List</strong>
                 {/* <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button> */}
               </CardHeader>
               <CardBody>
@@ -363,17 +381,17 @@ class Organization extends Component {
                     <Row>                      
                       <Col md={"3"}>
                         <FormGroup> 
-                          <Input id="organizationName" name="organizationName" placeholder="Organization Name" className="form-control" value={this.state.filterItem.organizationName}  onChange={this.changeFilterHandler} />
+                          <Input id="filterOrgName" name="filterOrgName" placeholder="Organization Name" value={this.state.filterItem.filterOrgName}  onChange={this.changeFilterHandler} />
                         </FormGroup>  
                       </Col>
                       <Col md={"3"}>
                         <FormGroup> 
-                          <Input id="location" name="location" placeholder="Location" className="form-control" value={this.state.filterItem.location}  onChange={this.changeFilterHandler} /> 
+                          <Input type="text" placeholder="Search By Email ID / Name" id="custom_search" name="custom_search" value={this.state.filterItem.custom_search} onChange={this.changeFilterHandler} />
                         </FormGroup>  
                       </Col>
                       <Col md={"4"}>
                         <FormGroup> 
-                          <Input type="text" placeholder="Search By Email/ Name" id="custom_search" name="custom_search" value={this.state.formField.custom_search} onChange={this.changeFilterHandler} />
+                          <Input type="text" placeholder="Search By Location" name="filterLocation" value={this.state.filterItem.filterLocation} onChange={this.changeFilterHandler} />
                         </FormGroup>  
                       </Col>
                       <Col md={"2"}>
@@ -430,7 +448,7 @@ class Organization extends Component {
                 <Col md={"6"}>  
                   <FormGroup> 
                     <Label htmlFor="address">Address</Label>            
-                    <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
+                    <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} truckAdress={ this.state.formField.address } /> 
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>  
@@ -441,11 +459,13 @@ class Organization extends Component {
                   </FormGroup>
                 </Col>
                 <Col md={"12"} className="mt-2"> 
+                  <Row>
                   {organizationDocuments.map((doc, index) =>
-                    <Media className="docBtnArea" key={index}>
+                    <Col md="1" className="docBtnArea" key={index}>
                       <a className="btn btn-primary btn-sm" href={doc} target="_blank" rel="noopener noreferrer" > <i className="fa fa-download"></i></a>
-                    </Media>
+                    </Col>
                   )}
+                  </Row>
                 </Col>             
                 
               </Row>           

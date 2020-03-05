@@ -94,10 +94,6 @@ class AdvertiserPaymentStatus extends React.Component {
                     <Col lg={10}>
                         { (paymentData.payerId )}
                     </Col>
-                    <Col lg={2}>Plan ID:</Col>
-                    <Col lg={10}>
-                        { (paymentData.planId )}
-                    </Col>
                     <Col lg={2}>Amount:</Col>
                     <Col lg={10}>
                         ${paymentData.amount}

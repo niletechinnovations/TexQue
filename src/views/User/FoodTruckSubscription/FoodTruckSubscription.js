@@ -91,7 +91,7 @@ class FoodTruckSubscription extends React.Component {
   //Cancel subscription
   cancelSubscription(subscriberId){
     if(subscriberId!==''){
-      if (window.confirm('Are you sure you wish to delete this food truck?')) {
+      if (window.confirm('Are you sure you want to cancel this subscription?')) {
         const formData = {
           "subscriberId": subscriberId
         }

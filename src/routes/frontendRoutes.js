@@ -1,8 +1,8 @@
 import HomePage from '../views/Pages/Frontend/HomePage';
 import AboutPage from '../views/Pages/Frontend/AboutPage';
 import ContactPage from '../views/Pages/Frontend/ContactPage';
-import BlogPage from '../views/Pages/Frontend/BlogPage';
-import SingleBlogPage from '../views/Pages/Frontend/SingleBlogPage';
+//import BlogPage from '../views/Pages/Frontend/BlogPage';
+//import SingleBlogPage from '../views/Pages/Frontend/SingleBlogPage';
 import LoginPage from '../views/Pages/Login/LoginPage';
 import ResetPassword from '../views/Pages/Login/ResetPassword';
 import RegisterPage from '../views/Pages/Register/RegisterPage';
@@ -17,8 +17,8 @@ const frontendRoutes = [
   { path: '/home', name: 'Home', component: HomePage },  
   { path: '/about-us', exact: true,  name: 'About us', component: AboutPage },
   { path: '/contact-us', exact: true,  name: 'Contact us', component: ContactPage },
-  { path: '/blog', exact: true,  name: 'Blog', component: BlogPage },
-  { path: '/blog/:token', exact: true,  name: 'Single Blog', component: SingleBlogPage },
+  //{ path: '/blog', exact: true,  name: 'Blog', component: BlogPage },
+  //{ path: '/blog/:token', exact: true,  name: 'Single Blog', component: SingleBlogPage },
   { path: '/login', exact: true, name: 'Login', component: LoginPage },
   { path: '/register', exact: true,  name: 'Register', component: RegisterPage },
   { path: '/verify-email/:token', exact: true,  name: 'Verify Email', component: VerifyEmailPage },
