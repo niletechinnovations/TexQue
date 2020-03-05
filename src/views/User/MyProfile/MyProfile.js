@@ -264,7 +264,7 @@ class MyProfile extends Component {
                   </div>              
                   <div className="col-md-6">
                      <div className="form-group">
-                        <Button color="primary" className="Submit-form-button" disabled={!this.state.formValid} type="submit">Update Profile</Button>
+                        <Button color="primary" className="Submit-form-button" type="submit">Update Profile</Button>
                      </div>
                   </div>
                </div>

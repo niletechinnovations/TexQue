@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../../core/services/commonService';
 import { FormErrors } from '../../../Formerrors/Formerrors';
+import AutoCompletePlaces from '../../../../core/google-map/AutoCompletePlaces';
 
 import Loader from '../../../Loader/Loader';
 import './FoodTruck.css'
@@ -50,6 +51,7 @@ class EditFoodTruckList extends Component {
     };
     this.submitHandler = this.submitHandler.bind(this);
     this.deleteTruckImage = this.deleteTruckImage.bind(this);
+    this.setLatitudeLongitude = this.setLatitudeLongitude.bind(this);
   }
 
   componentDidMount() {     
@@ -378,6 +380,13 @@ organizationList() {
     })
   }
 
+   // Set address, latitude and longitude
+   setLatitudeLongitude(address, latLng){
+    let formField = this.state.formField;
+    formField.address = address;
+    this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address, formField: formField })
+  }
+
 
   render() {
     const { loading, formProccessing, organizationList, categoryList, foodTruckDetail,selectedCategories, changeStatusBtn } = this.state;
@@ -452,14 +461,14 @@ organizationList() {
                 </Col>
                 <Col md={"6"}>
                   <FormGroup>
-                    <Label htmlFor="category_id">Cuisine </Label>            
+                    <Label htmlFor="category_id">Cuisine *</Label>            
                     <Select name="category_id" id="category_id" options={categoryItems} value={selectedCategories} onChange={this.handleCategoryChange} isMulti />
                   </FormGroup>  
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="address">Address</Label>            
-                    <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
+                    <Label htmlFor="address">Address *</Label>            
+                    <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} truckAdress={ this.state.formField.address } />     
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>

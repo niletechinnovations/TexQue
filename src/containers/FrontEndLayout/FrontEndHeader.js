@@ -87,9 +87,6 @@ class FrontEndHeader extends React.Component {
                     <Link className="nav-link" to="/about-us">About Us</Link>
                   </NavItem>
                   <NavItem>
-                    <Link className="nav-link" to="/blog">Blog</Link>
-                  </NavItem>
-                  <NavItem>
                     <Link className="nav-link" to="/become-an-advertiser">Become an Advertiser</Link>
                   </NavItem>
                   <NavItem>

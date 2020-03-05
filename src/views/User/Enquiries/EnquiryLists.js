@@ -237,7 +237,7 @@ class EnquiryLists extends Component {
         {loaderElement}
         <Card>
           <CardHeader className="mainHeading">
-            <strong>Enquiry Lists</strong>
+            <strong>Enquiry List</strong>
           </CardHeader>
           <CardBody>
             

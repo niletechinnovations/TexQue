@@ -41,7 +41,7 @@ class FoodTruckList extends Component {
       formField: { organizationId: '', truckName: '', contactPerson: '', phoneNumber:'', address: '', description:'', defaultImage: '',category_id:''},
       formErrors: { organizationId: '', truckName: '',  address:'', error: ''},
       formValid: false,
-      filterItem: { filter_organization_id: '', filter_cat_id: '', filter_truckName: '', filter_address:'', custom_search: ''},
+      filterItem: { filter_organization_id: '', filter_cat_id: '', filter_truckName: '', filterRating:'', filter_address:'', custom_search: ''},
     } 
     this.submitHandler = this.submitHandler.bind(this);
     this.handleDeleteTruck = this.handleDeleteTruck.bind(this);
@@ -69,13 +69,13 @@ class FoodTruckList extends Component {
     if(filterItem.filter_organization_id !== undefined && filterItem.filter_organization_id !== "" ) 
       stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&organizationAuthId="+filterItem.filter_organization_id: "&organizationAuthId="+filterItem.filter_organization_id;
     if(filterItem.filter_cat_id !== undefined && filterItem.filter_cat_id !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&category_id="+filterItem.filter_cat_id: "&category_id="+filterItem.filter_cat_id;
+      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&categoryId="+filterItem.filter_cat_id: "&categoryId="+filterItem.filter_cat_id;
     if(filterItem.filterFoodTruckName !== undefined && filterItem.filterFoodTruckName !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&foodTruckName="+filterItem.filterFoodTruckName: "&foodTruckName="+filterItem.filterFoodTruckName;
-    if(filterItem.filterFoodTruckOwner !== undefined && filterItem.filterFoodTruckOwner !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&foodTruckOwner="+filterItem.filterFoodTruckOwner: "&foodTruckOwner="+filterItem.filterFoodTruckOwner;
+      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&truckName="+filterItem.filterFoodTruckName: "&truckName="+filterItem.filterFoodTruckName;
+    if(filterItem.filterRating !== undefined && filterItem.filterRating !== "" ) 
+      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&rating="+filterItem.filterRating: "&rating="+filterItem.filterRating;
     if(filterItem.filter_address !== undefined && filterItem.filter_address !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&address="+filterItem.filter_address: "&address="+filterItem.filter_address;
+      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&location="+filterItem.filter_address: "&location="+filterItem.filter_address;
     if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
       stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&keyword="+filterItem.custom_search: "&keyword="+filterItem.custom_search;
     this.setState( { loading: true}, () => {
@@ -424,19 +424,13 @@ class FoodTruckList extends Component {
                           </Input>
                         </FormGroup>  
                       </Col>
-                      <Col md={"2"}>
+                      <Col md={"3"}>
                         <FormGroup> 
                           <Label htmlFor="filterFoodTruckName">Food Truck Name</Label>
                           <Input type="text" placeholder="Search by Food Truck Name" id="filterFoodTruckName" name="filterFoodTruckName" value={this.state.formField.filterFoodTruckName} onChange={this.changeFilterHandler} />   
                         </FormGroup>  
                       </Col>
-                      <Col md={"2"}>
-                        <FormGroup> 
-                          <Label htmlFor="filterFoodTruckOwner">Owner Name</Label>
-                          <Input type="text" placeholder="Search by Owner Name" id="filterFoodTruckOwner" name="filterFoodTruckOwner" value={this.state.formField.filterFoodTruckOwner} onChange={this.changeFilterHandler} />   
-                        </FormGroup>  
-                      </Col>
-                      <Col md={"2"}>
+                      <Col md={"3"}>
                         <FormGroup> 
                           <Label htmlFor="filter_address">Search by Location</Label>            
                           <Input type="text" placeholder="Search by Address/ Location" id="filter_address" name="filter_address" value={this.state.formField.filter_address} onChange={this.changeFilterHandler} />

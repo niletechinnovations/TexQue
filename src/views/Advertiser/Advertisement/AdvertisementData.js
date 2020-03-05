@@ -93,7 +93,7 @@ class AdvertisementData extends Component {
     
     return (
       <MUIDataTable
-        title={"Advertisement Lists"}
+        title={"Advertisement List"}
         data={rowsItem}
         columns={columns}
         options={options}

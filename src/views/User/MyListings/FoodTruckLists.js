@@ -345,7 +345,7 @@ class FoodTruckLists extends Component {
         {loaderElement}
         <Card>
           <CardHeader className="mainHeading">
-            <strong>Food Truck Lists</strong>
+            <strong>Food Truck list</strong>
             <Button size="sm" color="secondary" className="addListing pull-right" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
           </CardHeader>
           <CardBody>

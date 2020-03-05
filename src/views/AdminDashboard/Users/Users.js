@@ -26,7 +26,8 @@ class Users extends Component {
     }
 
     this.handleEditUser = this.handleEditUser.bind(this);
-    
+    this.onProfileImgChange = this.onProfileImgChange.bind(this)
+
   }
   componentDidMount() { 
     this.userList();
@@ -87,37 +88,39 @@ class Users extends Component {
   }
 
   //Set profile picture on change
-  onProfileImgChange = event => {   
+  onProfileImgChange = (event) => {
     this.setState({
       profileImage: event.target.files[0],
     });
-    console.log(this.state.profileImage);
-    if(this.state.profileImage !== ""){
-      const formData = new FormData();
-      formData.append('profileImage', this.state.profileImage);
-      formData.append('profileId', this.state.formField.profileId);
+    if(event.target.files.length > 0){
+      this.setState( { loading: true}, () => {  
+        const formData = new FormData();
+        formData.append('profileImage', this.state.profileImage );
+        formData.append('profileId', this.state.formField.profileId);
       
-       commonService.putAPIWithAccessToken('profile/picture', formData)
-       .then( res => {
-         if ( undefined === res.data.data || !res.data.status ) {
-           this.setState( { loading: false} );
-           toast.error(res.data.message);
-           return;
-         }
-         this.setState({ loading: false});
-         this.userList();
-         toast.success(res.data.message);
-       } )
-       .catch( err => {         
-         if(err.response !== undefined && err.response.status === 401) {
-           localStorage.clear();
-           this.props.history.push('/login');
-         }
-         else
-           this.setState( { loading: false } );
-           toast.error(err.message);
-       } )
+        commonService.putAPIWithAccessToken('profile/picture', formData)
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {
+            this.setState( { loading: false} );
+            toast.error(res.data.message);
+            return;
+          }
+          this.setState({ loading: false});
+          this.userList();
+          toast.success(res.data.message);
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else
+            this.setState( { loading: false } );
+            toast.error(err.message);
+        } )
+      } ) 
     }
+     
   }
  
   toggle = () => {
@@ -190,13 +193,13 @@ class Users extends Component {
                     <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
                   </FormGroup>
                 </Col>
-                <Col md={"4"}>  
+                {/* <Col md={"4"}>  
                   <FormGroup> 
                     <Label htmlFor="profileImage">Profile Image</Label>            
                     <Input type="file" id="profileImage" name="profileImage" onChange={this.onProfileImgChange} />
                   </FormGroup>
-                </Col>
-                <Col md={"2"}>
+                </Col> */}
+                <Col md={"6"}>
                 { this.state.formField.profilePic ? <img src={this.state.formField.profilePic} alt={this.state.formField.first_name} width="100" /> : '' }
                 </Col>
               </Row>           
