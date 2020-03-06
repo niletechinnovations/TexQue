@@ -9,3 +9,4 @@
 button.Submit-form-button {background: #002164;border: none;font-size: 13px;font-weight: bold;color: #fff;width: 100%;padding: 10px 15px;border-radius: 4px;display: inline-block;outline: none;cursor: pointer;}
 .docBtnArea{ float: left;  margin-right: 10px;}
 .downloadOrgDocLabel{ float: left; width: 100%;}
+.docBtnArea{margin: 2px;}

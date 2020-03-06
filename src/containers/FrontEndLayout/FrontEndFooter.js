@@ -43,7 +43,7 @@ const frontEndFooter = () => {
                   <div className="footer-link">
                     <h2>Information</h2>
                     <ul className="footer-contact-info">
-                      <li><i className="fa fa-envelope"></i> Email:&nbsp;<a href="mailto:contact@texque.com">support@texque.com</a></li>
+                      <li><i className="fa fa-envelope"></i> Email:&nbsp;<a href="mailto:support@texque.com">support@texque.com</a></li>
                     </ul>
                     </div>
                   </div>

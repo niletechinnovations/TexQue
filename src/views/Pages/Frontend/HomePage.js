@@ -28,7 +28,7 @@ class HomePage extends React.Component {
                     </div>
 
                     <div className="col-md-4">
-                        <div className="offer-slider pl-4 pt-3" id="homepage-slider">
+                        <div className="offer-slider" id="homepage-slider">
                             <OfferSlider />
                         </div>
                     </div>
