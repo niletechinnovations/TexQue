@@ -121,12 +121,18 @@ body{ background: none !important;}
 	transform: translate3d(0,0,0);
 }
 .grey-text, .main-content p{ color: #666666; font-size: 14px; line-height: 1.5em; margin-bottom: 15px;}
-.main-content{ background: #f7f7f7; }
+.main-content{ background: #f7faff; }
 .main-content h4{ font-size: 1rem; margin-bottom: 0;}
+<<<<<<< HEAD
 .main-content ul{ margin-left: 2.7em; color: #666666; font-size: 14px; line-height: 1.5em; }
 .main-content ol{ margin-left: 1em; color: #666666; font-size: 14px; line-height: 1.5em; }
 
 
+=======
+.main-content ul {color: #666666; font-size: 14px; padding: 0 0 0 20px; }
+.main-content ol{ color: #666666; font-size: 14px; padding: 0 0 0 20px;}
+.main-content ul li{ color: #666666; font-size: 14px; line-height: 1.5em; text-align:justify;}
+>>>>>>> 182f9d510d3ee438378b93e0bf11b056bb50b6d7
 /* Mobile Fixes for User Menu */
 @media only screen and (max-width: 1366px) and (min-width: 1240px) {
 	.user-menu .user-name {
@@ -251,11 +257,15 @@ body{ background: none !important;}
 .text blockquote .quote-icon{position: relative; border: none;}
 .text blockquote .blockquote-text{    padding-right: 0;    padding-left: 0;}
 .user-dashboard .MuiTableCell-body {font-size: 13px;white-space: normal; height: auto; border: none;}
-
-
+.user-dashboard .card{margin-bottom: 10px;}
+.heading-title {margin-top: 0; margin-bottom: 10px; }
+.downloadOrgDocLabel{display: none;}
 }
 
 @media only screen and (max-width: 576px) {
+.how-it-section .heading-title {margin-bottom: 0; margin-top: 0; }
+.how-it-section .heading-title h2{    font-size: 1.5rem;}
+.grey-text, .main-content p{text-align: justify;}
 }
 
 @media only screen and (max-width : 480px) {}

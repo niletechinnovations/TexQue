@@ -90,8 +90,13 @@ class HomePage extends React.Component {
                     </div>
 
                     <div className="col-md-4">
+<<<<<<< HEAD
                         <div className="offer-slider pl-4 pt-3" id="homepage-slider">
                             <OfferSlider data={dataAdvertismentList} />
+=======
+                        <div className="offer-slider" id="homepage-slider">
+                            <OfferSlider />
+>>>>>>> 182f9d510d3ee438378b93e0bf11b056bb50b6d7
                         </div>
                     </div>
                 </div>
