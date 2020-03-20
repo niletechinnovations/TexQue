@@ -44,9 +44,10 @@ class VerifyEmailPage extends Component {
         } )
     } )
 
+    window.scrollTo(0, 0);
+    
   }
 
-  scrollToTop = () => window.scrollTo(0, 0);
 
   render() {
     const { loading,resError,resMessage} = this.state;

@@ -85,7 +85,7 @@ class MyProfile extends Component {
           "address": formInputField.address, 
           "organizationName": formInputField.organizationName
         };
-        debugger;
+        //debugger;
         commonService.putAPIWithAccessToken('profile', formData)
           .then( res => {
             if ( undefined === res.data.data || !res.data.status ) {
@@ -95,8 +95,10 @@ class MyProfile extends Component {
               return;
             }           
             this.setState({ loading: false});
+            localStorage.setItem( 'userName', formInputField.firstName+' '+formInputField.lastName);
+            window.location.reload();
             toast.success(res.data.message);
-           
+            
           } )
           .catch( err => {         
             if(err.response !== undefined && err.response.status === 401) {
@@ -227,7 +229,7 @@ class MyProfile extends Component {
                   <div className="col-md-6">
                      <div className="form-group">
                         <label htmlFor="email">Email address</label>
-                        <input type="text" name="email" id="email" className="form-control" placeholder="Email address" value={this.state.formField.email} onChange={this.changeHandler} required />
+                        <input type="text" name="email" id="email" className="form-control" placeholder="Email address" value={this.state.formField.email} disabled required />
                      </div>
                   </div>
                   <div className="col-md-6">
@@ -236,32 +238,34 @@ class MyProfile extends Component {
                         <input type="number" name="phoneNumber" id="phoneNumber" className="form-control" placeholder="Mobile No." value={this.state.formField.phoneNumber} onChange={this.changeHandler} />
                      </div>
                   </div>
-                  <div className="col-md-6">
-                     <div className="form-group">
+                  <Col md={"6"}>
+                     <FormGroup>
                         <label htmlFor="organizationName">Organization Name</label>
                         <input type="text" name="organizationName" className="form-control" placeholder="Organization Name" value={this.state.formField.organizationName} onChange={this.changeHandler} />
-                     </div>
-                  </div>
-                  <Col md={"4"}>  
+                     </FormGroup>
+                  </Col>
+                  <Col md={"6"}>
+                     <FormGroup> 
+                        <label htmlFor="address">Address</label>
+                        <Input type="text" placeholder="Address" id="address" className="form-control" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
+                     </FormGroup>
+                  </Col>              
+                  <Col md={"6"}>  
                      <FormGroup> 
                         <Label htmlFor="orgDoc">Company Documents</Label>            
                         <Input type="file" id="orgDoc" className="chooseOrgDoc form-control" name="orgDoc" multiple onChange={this.onDocumentChange} />
                      </FormGroup>
                   </Col>
-                  <Col md={"2"}>
-                     <Label htmlFor="downloadOrgDoc" className="downloadOrgDocLabel">&nbsp;</Label>   
-                     {organizationDocuments.map((doc, index) =>
-                     <div className="docBtnArea" key={index}>
-                        <a className="btn btn-primary btn-sm" href={doc} target="_blank" rel="noopener noreferrer" > <i className="fa fa-file-o"></i></a>
-                     </div>
-                     )}
+                  <Col md={"6"}>
+                     <FormGroup> 
+                        <Label htmlFor="downloadOrgDoc" className="downloadOrgDocLabel">Uploaded Documents</Label>   
+                        {organizationDocuments.map((doc, index) =>
+                        <div className="docBtnArea" key={index}>
+                           <a className="btn btn-primary btn-sm" href={doc} target="_blank" rel="noopener noreferrer" > <i className="fa fa-file-o"></i></a>
+                        </div>
+                        )}
+                     </FormGroup>
                   </Col>
-                  <div className="col-md-12">
-                     <div className="form-group">
-                        <label htmlFor="address">Address</label>
-                        <Input type="text" placeholder="Address" id="address" className="form-control" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
-                     </div>
-                  </div>              
                   <div className="col-md-6">
                      <div className="form-group">
                         <Button color="primary" className="Submit-form-button" type="submit">Update Profile</Button>

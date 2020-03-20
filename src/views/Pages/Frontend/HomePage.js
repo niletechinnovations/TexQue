@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import commonService from '../../../core/services/commonService';
+
 import HomepageSlider from "../../Sliders/HomeSlider";
 import OfferSlider from "../../Sliders/OfferSlider";
 import ProductSlider from "../../Sliders/ProductSlider";
@@ -7,8 +9,68 @@ import "./HomePage.css";
 
 
 class HomePage extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            dataLatestTruckList: [],
+            dataTopRatedTruckList: [],
+            dataAdvertismentList: [],
+            loading: true,
+        } 
+      }
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
+        this.latestTruckList();
+        this.topRatedTruckList();
+        this.advertisementList();
+    }
+
+    /* Latest Food Truck List API */
+    latestTruckList() {
+      this.setState( { loading: true}, () => {
+        commonService.getAPIWithAccessToken('food-truck/public/?pageSize=12')
+            .then( res => {
+                if ( undefined === res.data.data || !res.data.status ) {
+                    this.setState( { loading: false } );
+                    return;
+                }
+                this.setState({loading:false, dataLatestTruckList: res.data.data.truckList});     
+            } )
+        } )
+    }
+
+    /* Advertisement List API */
+    advertisementList() {
+        this.setState( { loading: true}, () => {
+          commonService.getAPIWithAccessToken('advertisement/public/?pageSize=12')
+              .then( res => {
+                  if ( undefined === res.data.data || !res.data.status ) {
+                      this.setState( { loading: false } );
+                      return;
+                  }
+                  this.setState({loading:false, dataAdvertismentList: res.data.data});     
+              } )
+          } )
+      }
+
+    /* Top Rated Food Truck List API */
+    topRatedTruckList() {
+        this.setState( { loading: true}, () => {
+          commonService.getAPIWithAccessToken('food-truck/public/?sortedBy=rating_high_to_low&pageSize=9')
+            .then( res => {
+                if ( undefined === res.data.data || !res.data.status ) {
+                    this.setState( { loading: false } );
+                    return;
+                }
+                this.setState({loading:false, dataTopRatedTruckList: res.data.data.truckList});     
+            } )
+        } )
+    }
+    
     render() {
-        
+        const { dataLatestTruckList, dataAdvertismentList, dataTopRatedTruckList } = this.state;
 
         return (
         <>
@@ -22,14 +84,14 @@ class HomePage extends React.Component {
                         </div>
 
                         <div className="homepage-category-list" id="home-category-carousel">
-                            <HomepageSlider />
+                            <HomepageSlider data={dataLatestTruckList} />
                         </div>
 
                     </div>
 
                     <div className="col-md-4">
                         <div className="offer-slider pl-4 pt-3" id="homepage-slider">
-                            <OfferSlider />
+                            <OfferSlider data={dataAdvertismentList} />
                         </div>
                     </div>
                 </div>
@@ -90,7 +152,7 @@ class HomePage extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <ProductSlider />
+                        <ProductSlider data={dataTopRatedTruckList} />
                     </div>
                 </div>   
             </div>

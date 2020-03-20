@@ -77,12 +77,13 @@ section.products-section {padding: 2rem 0; position: relative; background: #f3f7
 .products-section  .heading-title p {color: #6c757d; font-size: 20px; font-weight: 300; padding: 0; margin-bottom: 20px;}
 
 #products-carousel .item{ margin: 10px;}
+#products-carousel .owl-nav button {background: #002164; color: #ffffff; display: inline-block; height: 28px; line-height: 28px; margin: 0; text-align: center; text-transform: uppercase; width: 28px; }
 .products-item-card{position: relative;}
 .products-item-content h2 {font-size: 16px; font-weight: bold; padding: 0 50px 0 0; }
 .products-item-content h2 a{color:#202223;}
-.location {font-size: 13px; color: #607D8B; line-height: normal; margin-bottom: 10px; }
-.products-item-image {border-radius: 5px; overflow: hidden; }
-.products-item-content{background-color: #fff;box-shadow: 0 12px 20px rgba(1,84,85,.1);border-radius: 10px;padding: 15px;position: relative;margin-left: auto;margin-top: -60px;width: calc(100% - 40px);margin-right: auto;}
+.location {font-size: 13px; color: #607D8B; line-height: normal; margin-bottom: 10px; font-weight: 600; }
+.products-item-image {border-radius: 5px; overflow: hidden; height: 238px; }
+.products-item-content{background-color: #fff;box-shadow: 0 12px 20px rgba(1,84,85,.1);border-radius: 10px;padding: 15px;position: relative;margin-left: auto;margin-top: -60px;width: calc(100% - 40px);margin-right: auto; height: 95px; overflow: hidden;}
 .products-item-content p {font-size: 14px; font-weight: 300; text-align: justify; line-height: 22px; color: #607d8b; }
 .products-rate {position: absolute; top: 10px; margin-top: 0; background-color: #4CAF50; font-size: 11px; color: #fff; font-weight: 700; padding:0px 10px; z-index: 1; -webkit-border-radius: 2px; border-radius: 2px; right: 10px; }
 .becomemember-section{padding: 2rem 0; position: relative; background:#ffffff; }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import { AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
@@ -32,17 +32,12 @@ class DefaultHeader extends Component {
 
         
         <Nav className="ml-auto" navbar>
-          <NavItem className="d-md-down-none mr-2">
-            <NavLink to="#" className="nav-link"><i className="icon-bell"></i><Badge pill color="danger">0</Badge></NavLink>
-          </NavItem>
-          <NavItem className="d-md-down-none dropdown">
-            <NavLink to="#" className="nav-link">
-              <i className="icon-envelope-letter"></i><Badge pill color="info">20</Badge>
-            </NavLink>
-          </NavItem>          
           <UncontrolledDropdown nav direction="down">
             <DropdownToggle nav>
               <div className="admin-avatar"><UserAvtar /></div>
+              <span className="admin-profile-username">
+                {localStorage.getItem( 'userName' )} <span className="caret"></span>
+              </span>
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem header tag="div" className="text-center"><strong>My Account</strong></DropdownItem>

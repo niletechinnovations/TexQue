@@ -38,8 +38,6 @@ class TransactionData extends Component {
         createdAt: (new Date(enquiry.createdAt)).toLocaleDateString("en-US"),
         indexVal: i,
         reviewId: enquiry.reviewId,
-        action: <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-          this.editDataItem(i)}><i className="fa fa-eye"></i> </Button>
       }      
       rowsItem.push(resInfo);
     }
@@ -54,12 +52,20 @@ class TransactionData extends Component {
         { label: 'End Date', name: 'endDate' },
         { label: 'Status', name: 'status' },
         {
-            name: "action",
-            label: "Action",
-            options: {
-                filter: false,
-                sort: false,
+          name: "action",
+          label: "Action",
+          options: {
+            filter: false,
+            sort: false,
+            download: false,
+            customBodyRender: (value, tableMeta, updateValue) => {
+              let i = tableMeta.rowIndex;
+              return (
+                <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
+                  this.editDataItem(i)}><i className="fa fa-eye"></i> </Button>
+              );
             }
+          }
         },
     ];
 
@@ -69,7 +75,8 @@ class TransactionData extends Component {
       filter: false,
       searchOpen: false,
       print: false,
-      download: false,
+      download: true,
+      downloadOptions: {filename: 'texque-transaction-list.csv', separator: ','},
       responsive: 'stacked',
       selectableRows: 'none',
       textLabels: {

@@ -123,8 +123,8 @@ body{ background: none !important;}
 .grey-text, .main-content p{ color: #666666; font-size: 14px; line-height: 1.5em; margin-bottom: 15px;}
 .main-content{ background: #f7f7f7; }
 .main-content h4{ font-size: 1rem; margin-bottom: 0;}
-.main-content ul{ margin-left: 2.7em; color: #666666; font-size: 14px; }
-.main-content ol{ margin-left: 1em; color: #666666; font-size: 14px; }
+.main-content ul{ margin-left: 2.7em; color: #666666; font-size: 14px; line-height: 1.5em; }
+.main-content ol{ margin-left: 1em; color: #666666; font-size: 14px; line-height: 1.5em; }
 
 
 /* Mobile Fixes for User Menu */

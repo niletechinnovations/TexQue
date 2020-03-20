@@ -166,13 +166,13 @@ class Users extends Component {
                 <Col md={"6"}>  
                   <FormGroup> 
                     <Label htmlFor="first_name">First Name</Label>            
-                    <Input type="text" placeholder="First Person *" id="first_name" name="first_name" value={this.state.formField.first_name} onChange={this.changeHandler} required />
+                    <Input type="text" placeholder="First Name *" id="first_name" name="first_name" value={this.state.formField.first_name} onChange={this.changeHandler} required />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>  
                   <FormGroup> 
                     <Label htmlFor="last_name">Last Name</Label>            
-                    <Input type="text" placeholder="Last Person *" id="last_name" name="last_name" value={this.state.formField.last_name} onChange={this.changeHandler} />
+                    <Input type="text" placeholder="Last Name *" id="last_name" name="last_name" value={this.state.formField.last_name} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>  
@@ -193,12 +193,6 @@ class Users extends Component {
                     <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
                   </FormGroup>
                 </Col>
-                {/* <Col md={"4"}>  
-                  <FormGroup> 
-                    <Label htmlFor="profileImage">Profile Image</Label>            
-                    <Input type="file" id="profileImage" name="profileImage" onChange={this.onProfileImgChange} />
-                  </FormGroup>
-                </Col> */}
                 <Col md={"6"}>
                 { this.state.formField.profilePic ? <img src={this.state.formField.profilePic} alt={this.state.formField.first_name} width="100" /> : '' }
                 </Col>

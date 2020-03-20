@@ -3,43 +3,28 @@ import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
-
 const HomeSlider = (props) => {
   
-  return (
-    <OwlCarousel  className="owl-theme" loop nav={false} lazyLoad  responsive={ {0:{items:2},200:{items:3},1000:{items:6},12000:{items:6}}}>
-      <div className="home-category-item">
-        <a href="/">
-          <img src="/images/1.png" alt="Chinese food van"/>
-          <h6>Chinese food van</h6>
-        </a>
-      </div>
-      <div className="home-category-item">
-        <a href="/">
-          <img src="/images/2.png" alt="FOOD FACTORY"/>
-          <h6>FOOD FACTORY</h6>
-        </a>
-      </div>
-      <div className="home-category-item">
-        <a href="/">
-          <img src="/images/3.png" alt="DupChuk Food Truck"/>
-          <h6>DupChuk Food Truck</h6>
-        </a>
-      </div>
-      <div className="home-category-item">
-        <a href="/">
-          <img src="/images/4.png" alt="Freshplate Food Truck"/>
-          <h6>Freshplate Food Truck</h6>
-        </a>
-      </div>
-      <div className="home-category-item">
-        <a href="/">
-          <img src="/images/5.png" alt="Silver Spoon Food Trucks"/>
-          <h6>Silver Spoon Food Trucks</h6>
-        </a>
-      </div>
-    </OwlCarousel>
-  );
+  const myLists = props.data;
+  const listItems = myLists.map((value, index) =>  
+    <div  key={index} className="home-category-item">
+      <a href="#!">
+        <img src={ ( value.featuredImage!=='' ? value.featuredImage : "/images/dummy-food-truck.png" ) } alt={value.truckName}/>
+        <h6>{value.truckName}</h6>
+      </a>
+    </div>
+  );  
+  
+  if(listItems.length===0)
+    return (<></>);
+    
+    return (
+      <>
+      <OwlCarousel  className="owl-theme" loop nav={false} lazyLoad  responsive={ {0:{items:2},200:{items:3},1000:{items:6},12000:{items:6}}}>
+        {listItems}
+      </OwlCarousel>
+      </>
+    );
 }
 
 export default HomeSlider;

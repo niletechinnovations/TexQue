@@ -11,7 +11,8 @@ class CategoryData extends Component {
     };
     
   }
-  componentDidMount() {   
+  componentDidMount() {
+    window.scrollTo(0, 0);
   }
   /* Edit Category Item */
   editCategoryItem(rowIndex){    

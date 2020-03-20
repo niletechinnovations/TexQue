@@ -14,6 +14,8 @@ import FoodTruckReviewList from '../views/AdminDashboard/Organization/FoodTruckR
 import AdvertiserList from '../views/AdminDashboard/Advertisers/AdvertiserList';
 import AdvertisementList from '../views/AdminDashboard/Advertisers/Advertisement/AdvertisementList';
 import UserTransactionList from '../views/AdminDashboard/UserTransactions/UserTransactionList';
+import SubscribedAdvertiserList from '../views/AdminDashboard/SubscribedUsers/SubscribedAdvertiserList';
+import SubscribedOwnerList from '../views/AdminDashboard/SubscribedUsers/SubscribedOwnerList';
 
 const adminRoutes = [
   { path: '/admin/', exact: true, name: 'Admin' },
@@ -32,9 +34,10 @@ const adminRoutes = [
   { path: '/admin/subscription/food-truck', exact: true, name: 'Manage Food Truck Subscription', component: FoodTruckSubscription },
   { path: '/admin/change-password', exact: true,  name: 'Change Password', component: ChangePassword },
   { path: '/admin/advertisers', exact: true, name: 'Manage Advertisers', component: AdvertiserList },
-  { path: '/admin/advertisement', exact: true, name: 'Manage Advertisers', component: AdvertisementList },
+  { path: '/admin/advertisement', exact: true, name: 'Manage Advertisement', component: AdvertisementList },
   { path: '/admin/transactions', exact: true, name: 'Manage Transactions', component: UserTransactionList },
-  
+  { path: '/admin/subscribed', exact: true, name: 'Subscribed Owner', component: SubscribedOwnerList },
+  { path: '/admin/subscribed/advertisers', exact: true, name: 'Subscribed Advertiser', component: SubscribedAdvertiserList },
 ];
 
 export default adminRoutes;

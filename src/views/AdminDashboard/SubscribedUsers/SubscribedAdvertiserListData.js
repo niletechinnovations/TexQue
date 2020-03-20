@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MUIDataTable from "mui-datatables";
 
-class AdvertiserListData extends Component {
+class SubscribedAdvertiserListData extends Component {
   
   constructor(props){
     super(props);   
@@ -28,10 +28,15 @@ class AdvertiserListData extends Component {
     for(const [i, userData] of this.props.data.entries()){
       console.log(i);
       let userInfo = {
-        userName: userData.firstName+' '+userData.lastName,
+        userName: userData.userName,
         email: userData.email,
-        phoneNumber: userData.phoneNumber || " ",
-        status: userData.status ? "Active" : "Inactive",
+        phoneNumber: userData.phoneNumber,
+        planName: userData.planName || " ",
+        transactionProfileId: userData.transactionProfileId,
+        status: userData.statusLabel,
+        amount: '$'+userData.amount,
+        startDate: (new Date(userData.startDate)).toLocaleDateString("en-US"),
+        endDate: (new Date(userData.endDate)).toLocaleDateString("en-US")
       }      
       rowsItem.push(userInfo);
     }      
@@ -41,12 +46,34 @@ class AdvertiserListData extends Component {
         name: 'userName',
       },
       {
-        label: 'Email ID',
+        label: 'Email',
         name: 'email',
       },
       {
         label: 'Phone no.',
         name: 'phoneNumber',
+        options: { display: false}
+      },
+      {
+        label: 'Plan',
+        name: 'planName',
+      },
+      {
+        label: 'Amount',
+        name: 'amount',
+      },
+      {
+        label: 'Subscription ID',
+        name: 'transactionProfileId',
+        options: { display: false}
+      },
+      {
+        label: 'Start Date',
+        name: 'startDate',
+      },
+      {
+        label: 'End Date',
+        name: 'endDate',
       },
       {
         label: 'Status',
@@ -62,9 +89,8 @@ class AdvertiserListData extends Component {
           customBodyRender: (value, tableMeta, updateValue) => {
             let i = tableMeta.rowIndex;
             return (
-              <div><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
-                this.editUserRow(i)}><i className="fa fa-pencil"></i> </button>
-                <a href="#!" className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteUserRow(i) };}} ><i className="fa fa-trash"></i></a></div>
+              <button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
+                this.editUserRow(i)}><i className="fa fa-eye"></i> </button>
             );
           }
         }
@@ -76,7 +102,7 @@ class AdvertiserListData extends Component {
       searchOpen: false,
       print: false,
       download: true,
-      downloadOptions: {filename: 'texque-advertiser-list.csv', separator: ','},
+      downloadOptions: {filename: 'texque-subscribed-advertiser-list.csv', separator: ','},
       responsive: 'stacked',
       selectableRows: 'none',
       textLabels: {
@@ -93,7 +119,7 @@ class AdvertiserListData extends Component {
     
     return (
       <MUIDataTable
-        title={"Advertiser List"}
+        title={"Subscribed Advertiser List"}
         data={rowsItem}
         columns={columns}
         options={options}
@@ -102,4 +128,4 @@ class AdvertiserListData extends Component {
   }
 }
 
-export default AdvertiserListData;
+export default SubscribedAdvertiserListData;

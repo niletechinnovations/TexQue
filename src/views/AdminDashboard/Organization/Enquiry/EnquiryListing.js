@@ -195,7 +195,7 @@ class EnquiryListing extends Component {
         </Card>
 
         <Modal isOpen={modal} toggle={this.toggle} size="lg" className="full-width-modal-section equiry-modal">
-          <ModalHeader toggle={this.toggle}>Enquiry Message</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Inquiry Message</ModalHeader>
           <Form onSubmit={this.submitHandler} noValidate className="texQueForm">
             <ModalBody>
               

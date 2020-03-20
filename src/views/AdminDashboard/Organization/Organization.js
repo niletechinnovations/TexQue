@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 import { FormErrors } from '../../Formerrors/Formerrors';
 import AutoCompletePlaces from '../../../core/google-map/AutoCompletePlaces';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import Loader from '../../Loader/Loader';
 import OrganizationData from './OrganizationData';
@@ -25,7 +27,7 @@ class Organization extends Component {
       formField: {organization_name: '', email: '', first_name: '', last_name: '', phoneNumber: '', address: '' },
       formErrors: {organization_name: '', email: '', first_name: '', last_name: '', error: ''},
       formValid: false,
-      filterItem: { filter_organization_id: '', filterOrgName: '', filterLocation: '', custom_search: ''},
+      filterItem: { filter_organization_id: '', filterOrgName: '', filterLocation: '', filterFrom:'',  filterTo:'', filterStatus:'', custom_search: ''},
       address: '',
       latitude:'',
       longitude:''
@@ -51,10 +53,19 @@ class Organization extends Component {
       organizationQuery += (organizationQuery !=="" ) ? "&location="+filterItem.filterLocation: "?location="+filterItem.filterLocation;
     if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
       organizationQuery += (organizationQuery !=="" ) ? "&emailOrName="+filterItem.custom_search: "?emailOrName="+filterItem.custom_search;
+    if(filterItem.filterFrom !== undefined && filterItem.filterFrom !== "" ){
+      let newFromDate = this.getFormatDate( filterItem.filterFrom );
+      organizationQuery += (organizationQuery !=="" ) ? "&start_date="+newFromDate : "?start_date="+newFromDate;
+    }
+    if(filterItem.filterTo !== undefined && filterItem.filterTo !== "" ){
+      let newToDate = this.getFormatDate( filterItem.filterTo );
+      organizationQuery += (organizationQuery !=="" ) ? "&end_date="+newToDate: "?end_date="+newToDate;
+    }
+    if(filterItem.filterStatus !== undefined && filterItem.filterStatus !== "" ) 
+      organizationQuery += (organizationQuery !=="" ) ? "&status="+filterItem.filterStatus: "?status="+filterItem.filterStatus;
     this.setState( { loading: true}, () => {
       commonService.getAPIWithAccessToken('organization'+organizationQuery)
         .then( res => {
-          
            
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( { loading: false } );
@@ -356,9 +367,36 @@ class Organization extends Component {
     this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address, formField: formField })
   }
 
-  render() {
+  setFilterFromDate = date => {
+    let filterFormField = this.state.filterItem;
+    filterFormField.filterFrom = date;
+    this.setState({ filterItem: filterFormField });
+    console.log(this.state.filterItem);
+  };
+  setFilterToDate = date => {
+    let filterFormField = this.state.filterItem;
+    filterFormField.filterTo = date;
+    this.setState({ filterItem: filterFormField });
+    console.log(this.state.filterItem);
+  };
 
-    const { organizationList,organizationDocuments, loading, modal, formProccessing, changeStatusBtn } = this.state;     
+  resetfilterOragnization = () => {
+    this.setState({
+      filterItem: { filter_organization_id: '', filterOrgName: '', filterLocation: '', filterFrom:'',  filterTo:'', filterStatus:'', custom_search: ''}
+    });
+    this.organizationList();
+  }
+  
+  getFormatDate(date) {
+    var year = date.getFullYear().toString();
+    var month = (date.getMonth() + 101).toString().substring(1);
+    var day = (date.getDate() + 100).toString().substring(1);
+    return year + "-" + month + "-" + day;
+}
+
+  render() {
+    
+    const { organizationList,organizationDocuments, loading, modal, formProccessing, changeStatusBtn, filterItem } = this.state;     
     let loaderElement = '';
     if(loading)        
       loaderElement = <Loader />
@@ -378,25 +416,52 @@ class Organization extends Component {
               <CardBody>
                 <Row>
                   <Col md={12}>
-                    <Row>                      
-                      <Col md={"3"}>
-                        <FormGroup> 
+                    <Row className="filterRow">                      
+                      <Col md={"2"} className="pl-3">
+                        <FormGroup>
+                          <Label htmlFor="filterOrgName">Organization</Label>
                           <Input id="filterOrgName" name="filterOrgName" placeholder="Organization Name" value={this.state.filterItem.filterOrgName}  onChange={this.changeFilterHandler} />
-                        </FormGroup>  
-                      </Col>
-                      <Col md={"3"}>
-                        <FormGroup> 
-                          <Input type="text" placeholder="Search By Email ID / Name" id="custom_search" name="custom_search" value={this.state.filterItem.custom_search} onChange={this.changeFilterHandler} />
-                        </FormGroup>  
-                      </Col>
-                      <Col md={"4"}>
-                        <FormGroup> 
-                          <Input type="text" placeholder="Search By Location" name="filterLocation" value={this.state.filterItem.filterLocation} onChange={this.changeFilterHandler} />
                         </FormGroup>  
                       </Col>
                       <Col md={"2"}>
                         <FormGroup> 
-                          <Button color="success" type="button" onClick={this.filterOragnizationList}>Search</Button> 
+                          <Label>Email ID / Name</Label>
+                          <Input type="text" placeholder="Search By Email ID / Name" id="custom_search" name="custom_search" value={this.state.filterItem.custom_search} onChange={this.changeFilterHandler} />
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"2"}>
+                        <FormGroup> 
+                          <Label>Location</Label>
+                          <Input type="text" placeholder="Search By Location" name="filterLocation" value={this.state.filterItem.filterLocation} onChange={this.changeFilterHandler} />
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"1"}>
+                        <FormGroup> 
+                          <Label>Status</Label>
+                          <Input type="select" name="filterStatus" value={filterItem.filterStatus} onChange={this.changeFilterHandler}>
+                            <option value="">All</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                          </Input>
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"2"}>
+                        <FormGroup> 
+                          <Label>Date From</Label>
+                          <DatePicker className="form-control" selected={ filterItem.filterFrom } onChange={this.setFilterFromDate} dateFormat="MM/dd/yyyy" />
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"2"}>
+                        <FormGroup> 
+                          <Label>Date To</Label>
+                          <DatePicker className="form-control" selected={ filterItem.filterTo } onChange={this.setFilterToDate} dateFormat="MM/dd/yyyy" />
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"1"} className="p-0">
+                        <FormGroup> 
+                          <Label>&nbsp;</Label><br />
+                          <Button color="success" type="button" size="sm" onClick={this.filterOragnizationList}><i className="fa fa-search"></i></Button>&nbsp;
+                          <Button color="danger" type="reset" size="sm" onClick={this.resetfilterOragnization}><i className="fa fa-refresh"></i></Button>
                         </FormGroup>             
                       </Col>
                     </Row>  

@@ -1,6 +1,10 @@
 import React from "react";
 
 class TermsConditionsPage extends React.Component {
+
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
   
   render() {
     return (
@@ -11,7 +15,7 @@ class TermsConditionsPage extends React.Component {
               <div className="col-md-12">
                 <h2 className="font-weight-bold mt-5 mb-4">Terms of Service TexQue</h2>
                 <p><em>Last updated: February 20, 2020</em></p>
-                <p>TexQue, Inc. (&ldquo;TEXQUE,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) welcomes you. We provide you access to our website located at http://texque.com/ (the &ldquo;Website&rdquo;) subject to the following Terms of Service, which may be updated from time to time, with or without notice to you. By browsing the public areas of the Website, or by accessing and using the Website, you acknowledge that you have read, understood, and agree to be legally bound by these Terms of Service and our Privacy Policy, which is hereby incorporated by reference (collectively, this &ldquo;Agreement&rdquo;). If you are accepting this Agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity to the terms and conditions contained herein. If you do not agree to any of these terms, then please do not use the Website.</p>
+                <p>TexQue, Inc. (&ldquo;TEXQUE,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) welcomes you. We provide you access to our website located at Texque.com subject to the following Terms of Service, which may be updated from time to time, with or without notice to you. By browsing the public areas of the Website, or by accessing and using the Website, you acknowledge that you have read, understood, and agree to be legally bound by these Terms of Service and our Privacy Policy, which is hereby incorporated by reference (collectively, this &ldquo;Agreement&rdquo;). If you are accepting this Agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity to the terms and conditions contained herein. If you do not agree to any of these terms, then please do not use the Website.</p>
                 <p>If you accept or agree to the Agreement on behalf of a company or other legal entity, you represent and warrant that you have the authority to bind that company or other legal entity to the Agreement and, in such event, &ldquo;you&rdquo; and &ldquo;your&rdquo; will refer and apply to that company or other legal entity.</p>
                 <p>In addition to the Website, TEXQUE provides Subscribers access to our proprietary platform (the &ldquo;Platform&rdquo;), subject to the terms and conditions of that certain Platform Subscription Agreement between each Subscriber and TEXQUE.</p>
                 <p>Capitalized terms not defined in these Terms of Service shall have the meaning set forth in our Privacy Policy.</p>
@@ -61,9 +65,9 @@ class TermsConditionsPage extends React.Component {
                 <ol start="6">
                 <li><strong> NO WARRANTIES/LIMITATION OF LIABILITY</strong></li>
                 </ol>
-                <p>THE WEBSITE AND OUR SERVICES ARE PROVIDED ON AN &ldquo;AS IS&rdquo; AND &ldquo;AS AVAILABLE&rdquo; BASIS, AND TEXQUE DOES NOT MAKE ANY WARRANTIES WITH RESPECT TO THE SAME OR OTHERWISE IN CONNECTION WITH THIS AGREEMENT. TEXQUE HEREBY DISCLAIMS ANY AND ALL EXPRESS, IMPLIED, OR STATUTORY WARRANTIES, INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AVAILABILITY, ERROR-FREE OR UNINTERRUPTED OPERATION, AND ANY WARRANTIES ARISING FROM A COURSE OF DEALING, COURSE OF PERFORMANCE, OR USAGE OF TRADE.</p>
-                <p>IN CONNECTION WITH ANY WARRANTY, CONTRACT, OR COMMON LAW TORT CLAIMS: (I) WE SHALL NOT BE LIABLE FOR ANY INCIDENTAL AND CONSEQUENTIAL DAMAGES, LOST PROFITS, OR DAMAGES RESULTING FROM LOST DATA OR BUSINESS INTERRUPTION RESULTING FROM THE USE OR INABILITY TO USE THE WEBSITE, OR THE CONTENT, AND (II) ANY DIRECT DAMAGES THAT YOU MAY SUFFER AS A RESULT OF YOUR USE OF THE WEBSITE, OR, THE CONTENT SHALL BE LIMITED TO ONE HUNDRED DOLLARS ($100). SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES. THEREFORE, SOME OF THE ABOVE LIMITATIONS ON WARRANTIES IN THIS SECTION MAY NOT APPLY TO YOU.</p>
-                <p>THE WEBSITE MAY CONTAIN TECHNICAL INACCURACIES OR TYPOGRAPHICAL ERRORS OR OMISSIONS. WE ARE NOT RESPONSIBLE FOR ANY SUCH TYPOGRAPHICAL, TECHNICAL, OR PRICING ERRORS LISTED ON THE WEBSITE. WE RESERVE THE RIGHT TO MAKE CHANGES, CORRECTIONS, AND/OR IMPROVEMENTS TO THE WEBSITE AT ANY TIME WITHOUT NOTICE.</p>
+                <p>The website and our services are provided on an “as is” and “as available” basis, and texque does not make any warranties with respect to the same or otherwise in connection with this agreement. texque hereby disclaims any and all express, implied, or statutory warranties, including, without limitation, any warranties of non-infringement, merchantability, fitness for a particular purpose, availability, error-free or uninterrupted operation, and any warranties arising from a course of dealing, course of performance, or usage of trade.</p>
+                <p>In connection with any warranty, contract, or common law tort claims: (i) We shall not be liable for any incidental and consequential damages, lost profits, or damages resulting from lost data or business interruption resulting from the use or inability to use the website, or the content, and (ii) Any direct damages that you may suffer as a result of your use of the website, or, the content shall be limited to one hundred dollars ($100). Some jurisdictions do not allow the exclusion of certain warranties. Therefore, some of the above limitations on warranties in this section may not apply to you.</p>
+                <p>The website may contain technical inaccuracies or typographical errors or omissions. We are not responsible for any such typographical, technical, or pricing errors listed on the website. W reserve the right to make changes, corrections, and/or improvements to the website at any time without notice.</p>
                 <ol start="7">
                 <li><strong> EXTERNAL SITES</strong></li>
                 </ol>

@@ -96,7 +96,7 @@ class EnquiryData extends Component {
     
     return (
       <MUIDataTable
-        title={"Food Truck Enquiries"}
+        title={"Food Truck Inquiries"}
         data={rowsItem}
         columns={columns}
         options={options}

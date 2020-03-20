@@ -104,12 +104,12 @@ class Dashboard extends Component {
                 <Row>
                   <Col md="4" lg="5">
                     <div className="icon-big text-center icon-warning">
-                      <img src="/images/message-icon.png" alt="Enquiries" width="64" />
+                      <img src="/images/message-icon.png" alt="Inquiries" width="64" />
                     </div>
                   </Col>
                   <Col md="84" lg="7">
                     <div className="numbers">
-                      <p className="card-category">Enquiries</p>
+                      <p className="card-category">Inquiries</p>
                       <p className="card-title">{dashBoardStats.enquiryCount}</p>
                     </div>
                   </Col>
@@ -117,7 +117,7 @@ class Dashboard extends Component {
               </CardBody>
               <CardFooter>
                 <hr />
-                <div className="stats"><Link className="btn btn-sm btn-outline-secondary" to="/user/enquiries"><i className="fa fa-eye"></i> Browse All Enquiries</Link></div>
+                <div className="stats"><Link className="btn btn-sm btn-outline-secondary" to="/user/enquiries"><i className="fa fa-eye"></i> Browse All Inquiries</Link></div>
               </CardFooter>
             </Card>
           </Col>
@@ -151,7 +151,7 @@ class Dashboard extends Component {
         <Row>
           <Col md="12" className="mt-4">
             <Card className="card-list-info">
-              <CardHeader tag="h4">Recent Enquiries</CardHeader>
+              <CardHeader tag="h4">Recent Inquiries</CardHeader>
               <CardBody>
                 <Table size="sm" className="listing-table">
                   <thead>

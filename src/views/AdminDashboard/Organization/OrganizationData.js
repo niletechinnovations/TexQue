@@ -27,17 +27,16 @@ class OrganizationData extends Component {
    
     let rowsItem = [];    
     for(const [i, orgnization] of this.props.data.entries()){
+      console.log(i);
       let orgInfo = {
         organizationName: orgnization.organizationName,  
+        authId: orgnization.authId,
         firstName: orgnization.firstName +' '+ orgnization.lastName,
         email: orgnization.email,
         phoneNumber: orgnization.phoneNumber || " ",
         address: orgnization.address || " ",
+        createdAt: (new Date(orgnization.createdAt)).toLocaleDateString("en-US"),
         status: orgnization.status ? "Active" : "Inactive",   
-        action: <p><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
-          this.editOrganizationItem(i)}><i className="fa fa-pencil"></i> </button>
-          <Link className="btn-view" to={`/admin/organization/truck-listing/${orgnization.authId}`}><i className="fa fa-truck"></i> </Link>
-          <a href="#!" className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteOrganizationItem(i) };}} ><i className="fa fa-trash"></i></a></p>,       
       }      
       rowsItem.push(orgInfo);
     }      
@@ -63,6 +62,10 @@ class OrganizationData extends Component {
         name: 'address',
       },
       {
+        label: 'Registered on',
+        name: 'createdAt',
+      },
+      {
         label: 'Status',
         name: 'status',
       },
@@ -71,7 +74,17 @@ class OrganizationData extends Component {
         name: 'action',
         options: {
           filter: false,
-          sort: false
+          sort: false,
+          download: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            let i = tableMeta.rowIndex;
+            return (
+              <p><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
+                this.editOrganizationItem(i)}><i className="fa fa-pencil"></i> </button>
+                <Link className="btn-view" to={`/admin/organization/truck-listing/${rowsItem[i].authId}`}><i className="fa fa-truck"></i> </Link>
+                <a href="#!" className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteOrganizationItem(i) };}} ><i className="fa fa-trash"></i></a></p>
+            );
+          }
         }
       },
     ];
@@ -80,7 +93,8 @@ class OrganizationData extends Component {
       filter: false,
       searchOpen: false,
       print: false,
-      download: false,
+      download: true,
+      downloadOptions: {filename: 'texque-food-truck-owner-list.csv', separator: ','},
       responsive: 'stacked',
       selectableRows: 'none',
       textLabels: {

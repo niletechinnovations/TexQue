@@ -38,46 +38,61 @@ class EnquiryListData extends Component {
         truckName: enquiry.truckName,
         phoneNumber: enquiry.contactNo || " ",
         message: enquiry.message || " ",
+        numberofPerson: enquiry.numberofPerson,
         status: enquiry.statusLabel ? enquiry.statusLabel : "Pending",   
         createdAt: (new Date(enquiry.createdAt)).toLocaleDateString("en-US"),
         indexVal: i,
         enquiryId: enquiry.enquiryId,
-        action: <>
-        <div className="actionBtnGroup"><Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-          this.editEnquiryItem(i)}><i className="fa fa-pencil"></i> </Button><Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteEnquiryItem(i) };}} ><i className="fa fa-trash"></i> </Button></div>
-          </>
       }      
       rowsItem.push(resInfo);
     }
 
     const columns = [ 
         {
-            label: 'User',
-            name: 'contactPerson',
+          label: 'User',
+          name: 'contactPerson',
         },
         {
-            label: 'Message',
-            name: 'message',
+          label: 'Phone no.',
+          name: 'phoneNumber',
+          options: { display: false}
         },
         {
-            label: 'Truck Name',
-            name: 'truckName',
+          label: 'Message',
+          name: 'message',
+        },
+        {
+          label: 'No. of person',
+          name: 'numberofPerson',
+          options: { display: false}
+        },
+        {
+          label: 'Event Date',
+          name: 'createdAt',
+        },
+        {
+          label: 'Truck Name',
+          name: 'truckName',
         }, 
         {
-            label: 'Date',
-            name: 'createdAt',
+          label: 'Status',
+          name: 'status',
         },
         {
-            label: 'Status',
-            name: 'status',
-        },
-        {
-            name: "action",
-            label: " Action ",
-            options: {
-                filter: false,
-                sort: false,
+          name: "action",
+          label: " Action ",
+          options: {
+            filter: false,
+            sort: false,
+            download: false,
+            customBodyRender: (value, tableMeta, updateValue) => {
+              let i = tableMeta.rowIndex;
+              return (
+                <div className="actionBtnGroup"><Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
+                this.editEnquiryItem(i)}><i className="fa fa-pencil"></i> </Button><Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteEnquiryItem(i) };}} ><i className="fa fa-trash"></i> </Button></div>
+              );
             }
+          }
         },
     ];
 
@@ -87,7 +102,8 @@ class EnquiryListData extends Component {
       filter: false,
       searchOpen: false,
       print: false,
-      download: false,
+      download: true,
+      downloadOptions: {filename: 'texque-enquiry-list.csv', separator: ','},
       responsive: 'stacked',
       selectableRows: 'none',
       textLabels: {
@@ -103,7 +119,7 @@ class EnquiryListData extends Component {
     
     return (
       <MUIDataTable
-        title={"Food Truck Enquiries"}
+        title={"Food Truck Inquiries"}
         data={rowsItem}
         columns={columns}
         options={options}

@@ -4,25 +4,25 @@ import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 const OfferSlider = (props) => {
-  
-  return (
-    <OwlCarousel className="owl-theme" loop nav items="1" dots="0">
-      <div className="item">
-        <a href="/">
-          <img src="/images/slider.png" className="img-fluid rounded" alt="Slider 1"/>
-        </a>
-      </div>
-      <div className="item">
-        <a href="/">
-          <img src="/images/slider1.png" className="img-fluid rounded" alt="Slider 2"/>
-        </a>
-      </div>
-      <div className="item">
-        <a href="/">
-          <img src="/images/slider.png" className="img-fluid rounded" alt="Slider 3"/>
-        </a>
-      </div>
-    </OwlCarousel>
+
+  const myLists = props.data;
+  const listItems = myLists.map((value, index) =>  
+    <div key={index} className="item">
+      <a href={ ( value.adLink!=='' ? value.adLink : "#!" ) } target={ ( value.adLink!=='' ? "_blank" : "_self" ) } >
+        <img src={ ( value.adImage!=='' ? value.adImage : "/images/slider.png" ) } className="img-fluid rounded" alt="Advertisement" />
+      </a>
+    </div>
+  ); 
+
+  if(listItems.length===0)
+    return (<></>);
+    
+    return (
+      <>
+      <OwlCarousel className="owl-theme" loop nav items="1" dots="0">
+        {listItems}
+      </OwlCarousel>
+      </>
   );
 }
 

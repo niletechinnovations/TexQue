@@ -23,8 +23,10 @@ class LoginPage extends Component {
     };
     
   }
-
-  scrollToTop = () => window.scrollTo(0, 0);
+  
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
   
   submitHandler = event => {
     event.preventDefault();
@@ -101,6 +103,8 @@ class LoginPage extends Component {
             this.props.history.push('/admin/dashboard');
           else if(loggedInfo.data.role.toLowerCase() === 'organization')
             this.props.history.push('/user/dashboard');
+          else if(loggedInfo.data.role.toLowerCase() === 'advertiser')
+          this.props.history.push('/advertiser/ads');
           else
             this.props.history.push('/');
         } )

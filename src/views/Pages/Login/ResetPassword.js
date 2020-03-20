@@ -25,9 +25,10 @@ class ResetPassword extends Component {
     const { match: { params } } = this.props;
     localStorage.clear();
     this.setState( { token: params.token})
+
+    window.scrollTo(0, 0);
   }
 
-  scrollToTop = () => window.scrollTo(0, 0);
   
   submitHandler = event => {
     event.preventDefault();

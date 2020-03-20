@@ -25,8 +25,7 @@ class AdvertiserList extends Component {
     }
 
     this.handleEditUser = this.handleEditUser.bind(this);
-    this.onProfileImgChange = this.onProfileImgChange.bind(this)
-
+    this.submitHandler = this.submitHandler.bind(this);
   }
   componentDidMount() { 
     this.userList();
@@ -36,14 +35,14 @@ class AdvertiserList extends Component {
   userList() {
     
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken(`statistics/advertiser-list`)
+      commonService.getAPIWithAccessToken(`profile/list?roleType=advertiser`)
         .then( res => {
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( {  loading: false } );
             toast.error(res.data.message);    
             return;
           }
-          this.setState({loading:false, userList: res.data.data.listItem});
+          this.setState({loading:false, userList: res.data.data.profileList});
         } )
         .catch( err => {   
                
@@ -86,27 +85,64 @@ class AdvertiserList extends Component {
     this.setState({rowIndex: rowIndex, formField: formField, modal: true, changeStatusBtn:statusBtn, formValid: true});
   }
 
-  //Set profile picture on change
-  onProfileImgChange = (event) => {
-    this.setState({
-      profileImage: event.target.files[0],
-    });
-    if(event.target.files.length > 0){
-      this.setState( { loading: true}, () => {  
-        const formData = new FormData();
-        formData.append('profileImage', this.state.profileImage );
-        formData.append('profileId', this.state.formField.profileId);
+  /* Submit Form Handler*/
+  submitHandler (event) {
+    event.preventDefault();
+    event.target.className += " was-validated";
+    this.setState( { formProccessing: true}, () => {
+      const formInputField = this.state.formField;
+      const formData = {
+        "email": formInputField.email,
+        "firstName": formInputField.first_name, 
+        "lastName": formInputField.last_name, 
+        "phoneNumber": formInputField.phoneNumber
+      };
       
-        commonService.putAPIWithAccessToken('profile/picture', formData)
+      const rowIndex = this.state.rowIndex;
+      if(rowIndex > -1) {
+       const userInfo = this.state.userList[rowIndex];
+       formData['profileId'] = userInfo.profileId;
+       commonService.putAPIWithAccessToken('profile', formData)
+       .then( res => {
+         if ( undefined === res.data.data || !res.data.status ) {
+           this.setState( { formProccessing: false} );
+           toast.error(res.data.message);
+           return;
+         }
+         this.setState({ modal: false, formProccessing: false});
+         toast.success(res.data.message);
+         this.userList();
+       } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }
+          else
+            this.setState( { formProccessing: false } );
+            toast.error(err.message);
+        } )
+      }
+    } );  
+  };
+
+  /* Change Profile status*/
+  changeProfileStatus(profileId,status){
+    this.setState( { loading: true}, () => {
+      const formData = {
+        "profileId": profileId,
+        "status": (status ? false : true ),
+      };
+      commonService.putAPIWithAccessToken('profile/status', formData)
         .then( res => {
-          if ( undefined === res.data.data || !res.data.status ) {
+          if ( undefined === res.data.data || !res.data.status ) {           
             this.setState( { loading: false} );
             toast.error(res.data.message);
             return;
-          }
-          this.setState({ loading: false});
-          this.userList();
+          } 
+          this.setState({ modal: false, loading: false});
           toast.success(res.data.message);
+          this.userList();        
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
@@ -117,11 +153,9 @@ class AdvertiserList extends Component {
             this.setState( { loading: false } );
             toast.error(err.message);
         } )
-      } ) 
-    }
-     
+    } );
   }
- 
+
   toggle = () => {
     this.setState({
       modal: !this.state.modal,

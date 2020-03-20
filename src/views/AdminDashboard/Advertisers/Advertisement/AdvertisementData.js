@@ -31,27 +31,42 @@ class AdvertisementData extends Component {
     for(const [i, rowData] of this.props.data.entries()){
       //console.log(i);
       let resInfo = {
-        adImage: <img src={rowData.adImage} width="100" className="img-thumbnail" alt="Ad" />,
+        adImage: rowData.adImage,
         adView: rowData.adView,
+        adLink: rowData.adLink,
         adClick: rowData.adClick,
+        userName: rowData.userName,
         status: ( rowData.adStatus===1 ? 'Active' : rowData.adStatus===2 ? 'Approval Pending' : "Inactive" ),
         createdAt: (new Date(rowData.createdAt)).toLocaleDateString("en-US"),
         indexVal: i,
         enquiryId: rowData.enquiryId,
-        action: 
-          <>
-          <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-          this.editRowItem(i)}><i className="fa fa-pencil"></i> </Button> &nbsp;
-          <Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteRowItem(i) };}}><i className="fa fa-trash"></i> </Button>
-          </>  
       }      
       rowsItem.push(resInfo);
     }
 
     const columns = [ 
         {
-            label: 'Ad Image',
-            name: 'adImage',
+          label: 'Ad Image',
+          name: 'adImage',
+          options: {
+            filter: false,
+            sort: false,
+            customBodyRender: (value, tableMeta, updateValue) => {
+              let j = tableMeta.rowIndex;
+              return (
+                rowsItem[j].adImage ? <img src={rowsItem[j].adImage} width="100" className="img-thumbnail" alt="Ad" /> : ''              
+              );
+            }
+          }
+        },
+        {
+          label: 'Ad Link',
+          name: 'adLink',
+          options: {display: false}
+        },
+        {
+          label: 'User',
+          name: 'userName',
         },
         {
             label: 'Date',
@@ -62,12 +77,23 @@ class AdvertisementData extends Component {
             name: 'status',
         },
         {
-            name: "action",
-            label: "Action",
-            options: {
-                filter: false,
-                sort: false,
+          name: "action",
+          label: "Action",
+          options: {
+            filter: false,
+            sort: false,
+            download: false,
+            customBodyRender: (value, tableMeta, updateValue) => {
+              let i = tableMeta.rowIndex;
+              return (
+                <>
+              <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
+              this.editRowItem(i)}><i className="fa fa-pencil"></i> </Button> &nbsp;
+              <Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteRowItem(i) };}}><i className="fa fa-trash"></i> </Button>
+              </>
+              );
             }
+          }
         },
     ];
 
@@ -77,7 +103,8 @@ class AdvertisementData extends Component {
       filter: false,
       searchOpen: false,
       print: false,
-      download: false,
+      download: true,
+      downloadOptions: {filename: 'texque-advertisement-list.csv', separator: ','},
       responsive: 'stacked',
       selectableRows: 'none',
       textLabels: {

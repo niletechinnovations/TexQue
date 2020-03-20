@@ -59,14 +59,14 @@ class UserAside extends Component {
               </Link>
             </NavItem>
             <NavItem>
-              <Link to="/user/enquiries">
-                <span className="icon-orders"><img src="/images/message-icon.png" height="20" alt="Enquiries" /></span>
-                <span className="value-orders">Enquiries</span>
+              <Link to="/user/inquiries">
+                <span className="icon-orders"><img src="/images/message-icon.png" height="20" alt="Inquiries" /></span>
+                <span className="value-orders">Inquiries</span>
               </Link>
             </NavItem>
             <NavItem>
               <Link to="/user/reviews">
-                <span className="icon-orders"><img src="/images/review-icon.png" height="20" alt="Enquiries" /></span>
+                <span className="icon-orders"><img src="/images/review-icon.png" height="20" alt="Reviews" /></span>
                 <span className="value-orders">Reviews</span>
               </Link>
             </NavItem>

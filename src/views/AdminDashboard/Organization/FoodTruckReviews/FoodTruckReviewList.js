@@ -121,17 +121,17 @@ class FoodTruckReviewList extends Component {
 
   /* To edit enquiry details/ change status */
   handleEditEnquiry(rowIndex){
-      const rowData = this.state.enquiryLists[rowIndex];
-      const formField = {
-          reviewId: rowData.reviewId,
-          truckName: rowData.truckName,
-          reviewedBY: rowData.reviewedBY,
-          rating: rowData.rating,
-          message: rowData.message,
-          comment: rowData.replyMessage,
-          status: rowData.status,
-      }
-      this.setState({rowIndex: rowIndex, formField: formField, modal: true });
+    const rowData = this.state.enquiryLists[rowIndex];
+    const formField = {
+      reviewId: rowData.reviewId,
+      truckName: rowData.truckName,
+      reviewedBY: rowData.reviewedBY,
+      rating: rowData.rating,
+      message: rowData.message,
+      comment: rowData.replyMessage,
+      status: rowData.status,
+    }
+    this.setState({rowIndex: rowIndex, formField: formField, modal: true });
   }
   
   handleDeleteEnquiry(rowIndex){
@@ -213,9 +213,10 @@ class FoodTruckReviewList extends Component {
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="status">Status</Label>
-                    <Input type="select" name="status" id="status" value={(formField.status ? 1 : 0 ) } onChange={this.changeHandler} required >
-                      <option value="1">Approve</option>
-                      <option value="0">Pending</option>
+                    <Input type="select" name="status" id="status" value={(formField.status ? formField.status : 2 ) } onChange={this.changeHandler} required >
+                      <option value="1">Approved</option>
+                      <option value="2">Pending</option>
+                      <option value="3">Rejected</option>
                     </Input>   
                   </FormGroup>
                 </Col>

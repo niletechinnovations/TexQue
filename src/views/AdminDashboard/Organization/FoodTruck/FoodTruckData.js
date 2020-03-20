@@ -25,26 +25,37 @@ class FoodTruckData extends Component {
   }
 
   render() {
-    
+    let count=0;
     let rowsItem = [];
     for(const [i, Store] of this.props.data.entries()){
       let orgInfo = {   
         organizationName: Store.organizationName,      
-        truckName: Store.truckName,        
-        featuredImage: Store.featuredImage ? <img src={Store.featuredImage} width="50" alt="Food Truck" className="img-thumbnail" /> : '' ,
+        truckName: Store.truckName,
+        foodTruckId: Store.foodTruckId,
+        featuredImage: Store.featuredImage,
         phoneNumber: Store.phoneNumber || " ",
         address: Store.address || " ",
         status: Store.status ? 'Active' : 'Inactive',   
-        action: <div className="actionBtnGroup"><Link className="btn-edit" disabled={this.state.buttonProcessing} to={`/admin/organization/edit-truck/${Store.foodTruckId}`}><i className="fa fa-pencil"></i> </Link>
-          <button className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => {if(window.confirm('Are you sure you want to delete this record?')){ this.deleteStoreItem(i) };}} ><i className="fa fa-trash"></i></button></div>,
       }      
       rowsItem.push(orgInfo);
+      count = count+i;
     }      
     
     const columns = [ 
       {
         label: 'Image',
         name: 'featuredImage',
+        options: {
+          filter: false,
+          sort: false,
+          download: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            let j = tableMeta.rowIndex;
+            return (
+              rowsItem[j].featuredImage ? <img src={rowsItem[j].featuredImage} width="50" alt="Food Truck" className="img-thumbnail" /> : ''              
+            );
+          }
+        }
       },     
       {
         label: 'Food Truck',
@@ -70,6 +81,18 @@ class FoodTruckData extends Component {
       {
         label: 'Action',
         name: 'action',
+        options: {
+          filter: false,
+          sort: false,
+          download: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            let i = tableMeta.rowIndex;
+            return (
+              <div className="actionBtnGroup"><Link className="btn-edit" disabled={this.state.buttonProcessing} to={`/admin/organization/edit-truck/${rowsItem[i].foodTruckId}`}><i className="fa fa-pencil"></i> </Link>
+              <button className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => {if(window.confirm('Are you sure you want to delete this record?')){ this.deleteStoreItem(i) };}} ><i className="fa fa-trash"></i></button></div>
+            );
+          }
+        }
       },
     ];
     const options = {
@@ -77,7 +100,8 @@ class FoodTruckData extends Component {
       filter: false,
       searchOpen: false,
       print: false,
-      download: false,
+      download: true,
+      downloadOptions: {filename: 'texque-food-truck-list.csv', separator: ','},
       responsive: 'stacked',
       selectableRows: 'none',
       textLabels: {

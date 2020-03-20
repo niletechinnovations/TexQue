@@ -28,41 +28,14 @@ class AdvertisementList extends Component {
     this.handleDeleteData = this.handleDeleteData.bind(this);
   }
 
-  // Fetch the Enquiry List
+  // Fetch the Ads List
   componentDidMount() {
-    this.checkAdvertiserSubscription();
-    this.enquiryLists({});   
+    this.adsLists({});   
   }
 
-  //Check Advertiser Subscription
-  checkAdvertiserSubscription(){
-    this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('profile/advertisement-subscription')
-        .then( res => {
-          console.log(res);
-          if ( undefined === res.data.data || !res.data.status ) {
-            this.setState( {  loading: false } );
-            toast.error(res.data.message);  
-            this.props.history.push('/admin/users');  
-            return;
-          }
-          
-        } )
-        .catch( err => {         
-          if(err.response !== undefined && err.response.status === 401) {
-            localStorage.clear();
-            this.props.history.push('/login');
-          }
-          else {
-            this.setState( { loading: false } );
-            toast.error(err.message);    
-          }
-        } )
-    } )
-  }
-
+ 
   /* Enquiry List API */
-  enquiryLists() {
+  adsLists() {
     this.setState( { loading: true}, () => {
       commonService.getAPIWithAccessToken('advertisement?pageSize=1000')
         .then( res => {
@@ -114,7 +87,7 @@ class AdvertisementList extends Component {
           
           this.setState({ modal: false, formProccessing: false});
           toast.success(res.data.message);
-          this.enquiryLists();
+          this.adsLists();
          
         } )
         .catch( err => {         
@@ -139,7 +112,7 @@ class AdvertisementList extends Component {
           
           this.setState({ modal: false, formProccessing: false});
           toast.success(res.data.message);
-          this.enquiryLists();
+          this.adsLists();
          
         } )
         .catch( err => {         
@@ -183,8 +156,11 @@ class AdvertisementList extends Component {
       const rowData = this.state.enquiryLists[rowIndex];
       const formField = {
           advertisementId: rowData.advertisementId,
+          adImage: rowData.adImage,
           adLink: rowData.adLink,
-          status: rowData.adStatus,
+          userName: rowData.userName,
+          createdAt: (new Date(rowData.createdAt)).toLocaleDateString("en-US"),
+          status: rowData.adStatus
       }
       this.setState({rowIndex: rowIndex, formField: formField, modal: true });
   }
@@ -200,7 +176,7 @@ class AdvertisementList extends Component {
           }         
           
           toast.success(res.data.message);
-          this.enquiryLists();
+          this.adsLists();
         } )
         .catch( err => {       
           if(err.response !== undefined && err.response.status === 401) {
@@ -249,25 +225,43 @@ class AdvertisementList extends Component {
             <ModalBody>
               
               <Row>
-                <Col md={"12"}>
+                <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="adFile">Ad File *</Label>            
-                    <Input type="file" id="adFile" name="adFile" className="form-control" onChange={this.handleImageChange} required />
+                    <Label htmlFor="adFile">Ad File</Label>            
+                    <Input type="file" id="adFile" name="adFile" className="form-control" onChange={this.handleImageChange} />
                   </FormGroup>  
                 </Col>
-                <Col md={"12"}>
+                <Col md={"6"}>
+                  <FormGroup>
+                    {(formField.adImage!=='' ? <img src={formField.adImage} alt="Ad" width="100" className="img-thumbnail" /> : '' )}
+                  </FormGroup>  
+                </Col>
+                <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="adLink">Ad Link (optional)</Label>            
                     <Input type="text" placeholder="" id="adLink" name="adLink" value={formField.adLink} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
-                <Col md={"12"}>
+                <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="status">Status</Label>            
                     <Input type="select" name="status" id="status" value={ formField.status } onChange={this.changeHandler} required >
                       <option value="1">Active</option>
+                      <option value="2">Approval Pending</option>
                       <option value="3">Inactive</option>
                     </Input>
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="userName">User</Label>            
+                    <Input type="text" id="userName" name="userName" value={formField.userName} disabled />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="createdAt">Created on </Label>            
+                    <Input type="text" id="createdAt" name="createdAt" value={formField.createdAt} disabled />
                   </FormGroup>
                 </Col>
               </Row>

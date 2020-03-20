@@ -22,12 +22,7 @@ export default {
       ]    
     },
     {
-      name: 'Users',
-      url: '/admin/users',
-      icon: 'icon-user',
-    },
-    {
-      name: 'Enquiries',      
+      name: 'Inquiries',      
       icon: 'icon-envelope',
       url: '/admin/enquiries',
     },
@@ -37,14 +32,9 @@ export default {
       url: '/admin/reviews',
     },
     {
-      name: 'Transactions',      
-      icon: 'fa fa-money',
-      url: '/admin/transactions',
-    },
-    {
-      name: 'Advertisements',      
-      icon: 'fa fa-picture-o',
-      url: '/admin/advertisement',
+      name: 'Users',
+      url: '/admin/users',
+      icon: 'icon-user',
     },
     {
       name: 'Advertisers',
@@ -66,6 +56,16 @@ export default {
           icon: 'fa fa-user',
         },
       ]    
+    },
+    {
+      name: 'Advertisements',      
+      icon: 'fa fa-picture-o',
+      url: '/admin/advertisement',
+    },
+    {
+      name: 'Transactions',      
+      icon: 'fa fa-money',
+      url: '/admin/transactions',
     },
     {
       name: 'Manage Subscription',
