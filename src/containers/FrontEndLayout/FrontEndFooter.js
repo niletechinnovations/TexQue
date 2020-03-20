@@ -43,14 +43,10 @@ const frontEndFooter = () => {
                   <div className="footer-link">
                     <h2>Information</h2>
                     <ul className="footer-contact-info">
-<<<<<<< HEAD
                       <li><i className="fa fa-envelope"></i> Email:&nbsp;<a href="mailto:contact@texque.com">support@texque.com</a></li>
                       <li>
                         <a href="https://www.facebook.com/TexQueApp/" target="_blank" rel="noopener noreferrer"><i className="fa fa-facebook-square"></i> Facebook</a>
                       </li>
-=======
-                      <li><i className="fa fa-envelope"></i> Email:&nbsp;<a href="mailto:support@texque.com">support@texque.com</a></li>
->>>>>>> 182f9d510d3ee438378b93e0bf11b056bb50b6d7
                     </ul>
                     </div>
                   </div>
