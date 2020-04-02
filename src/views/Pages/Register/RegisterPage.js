@@ -171,7 +171,7 @@ class RegisterPage extends React.Component {
                 <ToastContainer /> 
                 {loaderElement} 
                 <div className="account-form">
-                  <h3 className="login-heading mb-4">Sign Up Your Truck Today!</h3>
+                  <h3 className="login-heading mb-4">Sign Up Your Food Truck Today!</h3>
                   <p>The Food Truck app that Pros use! The app will be simple and effective for the everyday seller and buyer of delicious meals on wheels.</p>
                   <Form onSubmit={this.submituserRegistrationForm} noValidate>
                     <Row form>
@@ -221,7 +221,7 @@ class RegisterPage extends React.Component {
                       <Col md={6}>
                         <FormGroup>
                           <Label for="organizationName">Business name</Label>
-                          <Input type="text" name="organizationName" id="organizationName" value={organizationName} invalid={errors['organizationName'] !== undefined && errors['organizationName'] !== ""} onChange={this.changeHandler} placeholder="Business name" required/>
+                          <Input type="text" name="organizationName" id="organizationName" value={organizationName} invalid={errors['organizationName'] !== undefined && errors['organizationName'] !== ""} onChange={this.changeHandler} placeholder="Organization / Business name" required/>
                           <FormFeedback>{errors['organizationName']}</FormFeedback>
                         </FormGroup>
                       </Col>
@@ -241,7 +241,7 @@ class RegisterPage extends React.Component {
                       </Col>
                     </Row>
                     <FormGroup>
-                      <div className="footer-text text-center pt-3">
+                      <div className="footer-text pt-3">
                         Already have an account? <Link className="sign-up-link" to="/login">Sign In</Link>
                       </div>
                     </FormGroup>

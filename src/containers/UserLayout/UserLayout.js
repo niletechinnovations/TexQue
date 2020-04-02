@@ -7,7 +7,7 @@ import userRoutes from '../../routes/userRoutes';
 
 import FrontEndHeader from '../FrontEndLayout/FrontEndHeader';
 import FrontEndFooter from '../FrontEndLayout/FrontEndFooter';
-import UserSidebar from './UserAside';
+import UserNavbar from './UserNavbar';
 
 class UserLayout extends Component {
   
@@ -27,8 +27,10 @@ class UserLayout extends Component {
           <main className="user-profile-section">
             <Container>
               <Row>
-                <Col md={3}><UserSidebar /></Col>
-                <Col md={9}>
+                <Col md={12}>
+                  <UserNavbar />
+                </Col>  
+                <Col md={12}>
                   <ToastContainer />
                   <Suspense fallback={this.loading()}>
                     <Switch>
