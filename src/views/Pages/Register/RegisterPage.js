@@ -171,7 +171,7 @@ class RegisterPage extends React.Component {
                 <ToastContainer /> 
                 {loaderElement} 
                 <div className="account-form">
-                  <h3 className="login-heading mb-4">Become a Member</h3>
+                  <h3 className="login-heading mb-4">Sign Up Your Truck Today!</h3>
                   <p>The Food Truck app that Pros use! The app will be simple and effective for the everyday seller and buyer of delicious meals on wheels.</p>
                   <Form onSubmit={this.submituserRegistrationForm} noValidate>
                     <Row form>
@@ -220,8 +220,8 @@ class RegisterPage extends React.Component {
                       </Col>
                       <Col md={6}>
                         <FormGroup>
-                          <Label for="organizationName">Organization</Label>
-                          <Input type="text" name="organizationName" id="organizationName" value={organizationName} invalid={errors['organizationName'] !== undefined && errors['organizationName'] !== ""} onChange={this.changeHandler} placeholder="Organization Name" required/>
+                          <Label for="organizationName">Business name</Label>
+                          <Input type="text" name="organizationName" id="organizationName" value={organizationName} invalid={errors['organizationName'] !== undefined && errors['organizationName'] !== ""} onChange={this.changeHandler} placeholder="Business name" required/>
                           <FormFeedback>{errors['organizationName']}</FormFeedback>
                         </FormGroup>
                       </Col>
@@ -236,7 +236,7 @@ class RegisterPage extends React.Component {
                     <Row>
                       <Col md={6}>
                         <FormGroup>
-                          <Button className="Submit-form-button">Sign Up Now</Button>
+                          <Button className="Submit-form-button">Sign Up</Button>
                         </FormGroup>
                       </Col>
                     </Row>

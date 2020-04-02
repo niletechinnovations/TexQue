@@ -8,10 +8,12 @@ const HomeSlider = (props) => {
   const myLists = props.data;
   const listItems = myLists.map((value, index) =>  
     <div  key={index} className="home-category-item">
+      <div className="inner-item">
       <a href="#!">
         <img src={ ( value.featuredImage!=='' ? value.featuredImage : "/images/dummy-food-truck.png" ) } alt={value.truckName}/>
         <h6>{value.truckName}</h6>
       </a>
+      </div>
     </div>
   );  
   
@@ -20,7 +22,7 @@ const HomeSlider = (props) => {
     
     return (
       <>
-      <OwlCarousel  className="owl-theme" loop nav={false} lazyLoad  responsive={ {0:{items:2},200:{items:3},1000:{items:6},12000:{items:6}}}>
+      <OwlCarousel  className="owl-theme" loop nav={false} lazyLoad  responsive={ {0:{items:2},200:{items:3},1000:{items:4},12000:{items:4}}}>
         {listItems}
       </OwlCarousel>
       </>

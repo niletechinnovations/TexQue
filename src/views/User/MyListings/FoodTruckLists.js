@@ -55,9 +55,39 @@ class FoodTruckLists extends Component {
 
   }
 
-  componentDidMount() {     
+  componentDidMount() {    
+    this.checkSubscription(); 
     this.truckLists({});   
     this.categoryList();
+  }
+
+  //Check subscription
+  checkSubscription(){
+    this.setState( { loading: true}, () => {
+      commonService.getAPIWithAccessToken('profile/business-subscription')
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {
+            this.setState( { loading: false } );
+            toast.error(res.data.message);
+            return;
+          }
+          if(res.data.data.isActive)
+            return
+          else{
+            this.props.history.push('/user/subscription');
+            toast.error('You need to buy a subscription plan.');
+          }
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }else {
+            this.setState( { loading: false } );
+            toast.error(err.message);
+          }
+        } )
+    } )
   }
 
   truckLists() {

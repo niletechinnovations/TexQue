@@ -39,6 +39,7 @@ class EnquiryListData extends Component {
         phoneNumber: enquiry.contactNo || " ",
         message: enquiry.message || " ",
         numberofPerson: enquiry.numberofPerson,
+        eventDate: enquiry.eventDate,
         status: enquiry.statusLabel ? enquiry.statusLabel : "Pending",   
         createdAt: (new Date(enquiry.createdAt)).toLocaleDateString("en-US"),
         indexVal: i,
@@ -68,7 +69,7 @@ class EnquiryListData extends Component {
         },
         {
           label: 'Event Date',
-          name: 'createdAt',
+          name: 'eventDate',
         },
         {
           label: 'Truck Name',
@@ -77,6 +78,10 @@ class EnquiryListData extends Component {
         {
           label: 'Status',
           name: 'status',
+        },
+        {
+          label: 'Created on',
+          name: 'createdAt',
         },
         {
           name: "action",

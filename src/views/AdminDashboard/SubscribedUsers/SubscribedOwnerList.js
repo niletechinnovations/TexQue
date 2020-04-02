@@ -105,13 +105,13 @@ class SubscribedOwnerList extends Component {
         </Row>
 
         <Modal isOpen={modal} toggle={this.toggle} className="full-width-modal-section organization-modal">
-          <ModalHeader toggle={this.toggle}>Subscribed Advertiser Info</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Subscribed Food Truck Owner Info</ModalHeader>
           <Form noValidate>
             <ModalBody>
               <Row>
                 <Col md={"6"}>  
                   <FormGroup> 
-                    <Label htmlFor="userName">Advertiser Name</Label>            
+                    <Label htmlFor="userName">Owner Name</Label>            
                     <Input type="text" id="userName" name="userName" value={this.state.formField.userName} disabled />
                   </FormGroup>
                 </Col>

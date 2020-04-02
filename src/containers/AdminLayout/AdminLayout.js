@@ -22,7 +22,7 @@ import navigation from './_nav';
 // routes config
 import adminRoutes from '../../routes/adminRoutes';
 import './AdminLayout.css';
-import DefaultAside from './DefaultAside';
+//import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
 
@@ -44,7 +44,7 @@ class AdminLayout extends Component {
             <DefaultHeader onLogout={e=>this.signOut(e)}/>
           </Suspense>
         </AppHeader>
-        <div className="app-body">
+        <div className="app-body admin-panel">
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
@@ -79,7 +79,7 @@ class AdminLayout extends Component {
           </main>
           <AppAside fixed>
             <Suspense fallback={this.loading()}>
-              <DefaultAside />
+              {/* <DefaultAside /> */}
             </Suspense>
           </AppAside>
         </div>

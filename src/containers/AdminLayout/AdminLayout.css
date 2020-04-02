@@ -13,7 +13,7 @@ body.header-fixed .app.dashboard-template{
 	top: 3em !important;
 }
 .app-header { background-color: #1e222b !important; }
-
+.admin-panel{ min-height: 90vh;}
 a.profileDropDownLink {
     color: #000 !important;
     padding: 0px !important;

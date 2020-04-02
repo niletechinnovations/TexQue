@@ -100,7 +100,7 @@ class HomePage extends React.Component {
         <section className="how-it-section">
             <div className="container">
                 <div className="heading-title text-center">
-                    <h2>How it Work</h2>
+                    <h2>How it Works</h2>
                     <p>The Food Truck app that Pros use! The app will be simple and <br />effective for the everyday seller and buyer of delicious meals on wheels.</p>
                 </div>
                 <div className="row">
@@ -161,12 +161,12 @@ class HomePage extends React.Component {
         <section className="becomemember-section">
             <div className="container">
                 <div className="heading-title text-center">
-                    <h2>Become a Member</h2>
+                    <h2>Sign Up Your Food Truck Today!</h2>
                     <p>The Food Truck app that Pros use! The app will be simple and <br />effective for the everyday seller and buyer of delicious meals on wheels.</p>
                 </div>
                 <div className="row">
                     <div className="col-sm-12 text-center">
-                        <Link to="/register" className="btn-blue">Create an Account <i className="fa fa-chevron-circle-right"></i>
+                        <Link to="/register" className="btn-blue">Get Started <i className="fa fa-chevron-circle-right"></i>
                         </Link>
                     </div>
                 </div>

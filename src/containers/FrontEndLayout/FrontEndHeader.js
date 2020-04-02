@@ -66,10 +66,10 @@ class FrontEndHeader extends React.Component {
       else {
       headerItem = <>
         <NavItem>
-          <Link className="nav-link btn-header-white" to="/login">Login</Link>
+          <Link className="nav-link btn-Get" to="/register">Sign Up as Food Truck Owner</Link>
         </NavItem>
         <NavItem>
-          <Link className="nav-link btn-Get" to="/register">Get started for FREE</Link>
+          <Link className="btn btn-primary nav-link text-white px-3" to="/login">Login</Link>
         </NavItem>
       </>
     }
@@ -91,12 +91,12 @@ class FrontEndHeader extends React.Component {
                     <Link className="nav-link" to="/about-us">About Us</Link>
                   </NavItem>
                   <NavItem>
-                    <Link className="nav-link" to="/become-an-advertiser">Become an Advertiser</Link>
-                  </NavItem>
-                  <NavItem>
                     <Link className="nav-link" to="/contact-us">Contact Us</Link>
                   </NavItem>
-
+                  <NavItem>
+                    <Link className="nav-link" to="/become-an-advertiser">Join as Advertiser</Link>
+                  </NavItem>
+                  
                   {headerItem}
 
                 </Nav>

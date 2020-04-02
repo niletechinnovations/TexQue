@@ -45,12 +45,18 @@ const frontEndFooter = () => {
                     <ul className="footer-contact-info">
                       <li><i className="fa fa-envelope"></i> Email:&nbsp;<a href="mailto:contact@texque.com">support@texque.com</a></li>
                       <li>
-                        <a href="https://www.facebook.com/TexQueApp/" target="_blank" rel="noopener noreferrer"><i className="fa fa-facebook-square"></i> Facebook</a>
+                        <a href="https://www.facebook.com/TexQue-104605764519211/" target="_blank" rel="noopener noreferrer"><i className="fa fa-facebook-square"></i> Facebook</a>
+                      </li>
+                      <li>
+                        <a href="https://twitter.com/que_tex" target="_blank" rel="noopener noreferrer"><i className="fa fa-twitter-square"></i> Twitter</a>
+                      </li>
+                      <li>
+                        <a href="https://www.instagram.com/texque8/" target="_blank" rel="noopener noreferrer"><i className="fa fa-instagram"></i> Instagram</a>
                       </li>
                     </ul>
-                    </div>
                   </div>
                 </div>
+              </div>
             </div>
           </div>
 

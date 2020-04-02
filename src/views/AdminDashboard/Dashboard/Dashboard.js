@@ -67,7 +67,7 @@ const options = {
     enabled: false,
     custom: CustomTooltips
   },
-  maintainAspectRatio: false
+  maintainAspectRatio: true
 }
 
 class Dashboard extends Component {

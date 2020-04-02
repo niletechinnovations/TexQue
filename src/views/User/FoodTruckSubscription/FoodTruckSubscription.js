@@ -23,6 +23,7 @@ class FoodTruckSubscription extends React.Component {
     super( props );
     this.state = {
         planList: [],
+        activePlanType: 1,
         loading: false,
     };
   }
@@ -57,11 +58,22 @@ class FoodTruckSubscription extends React.Component {
   }
 
   // Buy subscription plan
-  choosePlan(planId){
+  choosePlan(planId, index){
     if(planId!==''){
+      let choosedPlanInfo = this.state.planList[index];
+      let planVariationId = '';
+      if(this.state.activePlanType===1)
+        planVariationId = choosedPlanInfo.planVariation[0].id;
+      else
+        planVariationId = choosedPlanInfo.planVariation[1].id;
+      
       const formData = {
-        "planId": planId
+        "planId": planId,
+        "planVariationId": planVariationId
       }
+
+      console.log(formData);
+      
       this.setState( { loading:true }, () =>{
         commonService.postAPIWithAccessToken('subscription/buy', formData)
         .then( res => {
@@ -72,7 +84,7 @@ class FoodTruckSubscription extends React.Component {
           }
           //console.log(res.data);
           if (typeof window !== 'undefined') {
-            window.location.href = res.data.data.redirectUrl;
+            //window.location.href = res.data.data.redirectUrl;
           }
         })
         .catch( err => {
@@ -120,8 +132,16 @@ class FoodTruckSubscription extends React.Component {
     }
   }
 
+  changePlanType = () => {
+    if(this.state.activePlanType===1)
+      this.setState( { activePlanType: 4 } );
+    else
+      this.setState( { activePlanType: 1 } );
+  }
+
+
   render() {
-    const { loading, planList } = this.state;
+    const { loading, planList, activePlanType  } = this.state;
     
     let loaderElement = '';
     if(loading)
@@ -137,19 +157,34 @@ class FoodTruckSubscription extends React.Component {
                   <Link to="/advertiser/plan" className="addListing btn-success btn-sm pull-right"> Advertisement Plan</Link>
                 </h2>
                 <hr className="divider" />
+
+                <div className="pricing-section">
+                  <label className={ ( activePlanType===1 ? 'toggler toggler--is-active' : 'toggler' ) } id="filt-monthly">Monthly</label>
+                  <div className="toggle">
+                    <input type="checkbox" id="switcher" className="check" onClick={ () =>  this.changePlanType() } />
+                    <b className="b switch"></b>
+                  </div>
+                  <label className={ ( activePlanType===4 ? 'toggler toggler--is-active' : 'toggler' ) } id="filt-yearly">Yearly</label>
+                </div>
+
                 <Row>
                     { planList.map( (planInfo, index) =>
+                    
                         <Col lg={6} className="mb-4" key={index}>
                             <div className={'card mb-5 mb-lg-0 '+(planInfo.isPlanActive ? 'active' :'' ) }>
                               <div className="card-body">
                                 <h5 className="card-title text-muted text-uppercase text-center">{planInfo.planName}</h5>
-                                <h6 className="card-price text-center">${planInfo.amount}<span className="period">/{getPlanType(planInfo.duration)}</span></h6>
+                                { (activePlanType===1) ? 
+                                  <h6 className="card-price monthly text-center">${planInfo.planVariation[0].amount}<span className="period">/{getPlanType(Number(planInfo.planVariation[0].duration))}</span></h6>
+                                  :
+                                  <h6 className="card-price yearly text-center">${planInfo.planVariation[1].amount}<span className="period">/{getPlanType(Number(planInfo.planVariation[1].duration))}</span></h6>
+                                }
                                 <hr />
                                 <div className="plan-description">
-                                  Upto {planInfo.advertisementAccess} Listings<br />
+                                  Up to {planInfo.advertisementAccess} Listings<br />
                                   {planInfo.description}
                                 </div>
-                                <button className="btn btn-block btn-primary text-uppercase" onClick={ () =>  ( planInfo.isPlanActive ? '' : this.choosePlan(planInfo.planId) ) } disabled={ (planInfo.isPlanActive ? 'disabled' : '' ) }>{ (planInfo.isPlanActive ? 'Current Plan' : 'Buy Now' ) }</button>
+                                <button className="btn btn-block btn-primary text-uppercase" onClick={ () =>  ( planInfo.isPlanActive ? '' : this.choosePlan(planInfo.planId, index) ) } disabled={ (planInfo.isPlanActive ? 'disabled' : '' ) }>{ (planInfo.isPlanActive ? 'Current Plan' : 'Buy Now' ) }</button>
                                 { ( planInfo.isPlanActive ? <p className="text-center mb-0"><button className="btn-sm btn-danger mt-3" onClick={ () =>  this.cancelSubscription(planInfo.subscriberId) }>Cancel Subscription</button></p> : '' ) }
                               </div>
                             </div>

@@ -35,6 +35,8 @@ class FoodTruckData extends Component {
         featuredImage: Store.featuredImage,
         phoneNumber: Store.phoneNumber || " ",
         address: Store.address || " ",
+        rating: Store.rating || " ",
+        createdAt: (new Date(Store.createdAt)).toLocaleDateString("en-US"),
         status: Store.status ? 'Active' : 'Inactive',   
       }      
       rowsItem.push(orgInfo);
@@ -75,8 +77,17 @@ class FoodTruckData extends Component {
         name: 'phoneNumber',
       },
       {
+        label: 'Rating',
+        name: 'rating',
+        options: { display: false}
+      },
+      {
         label: 'Status',
         name: 'status',
+      },
+      {
+        label: 'Created on',
+        name: 'createdAt',
       },
       {
         label: 'Action',

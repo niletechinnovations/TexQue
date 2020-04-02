@@ -24,14 +24,16 @@ class UsersData extends Component {
   
   render() {
    
-    let rowsItem = [];    
+    let rowsItem = [];
+    let count = 0;
     for(const [i, userData] of this.props.data.entries()){
-      console.log(i);
+      count = count+i;
       let userInfo = {
         firstName: userData.firstName +' '+ userData.lastName,
         email: userData.email,
         phoneNumber: userData.phoneNumber || " ",
         address: userData.address || " ",
+        createdAt: (new Date(userData.createdAt)).toLocaleDateString("en-US"),
         status: userData.status ? "Active" : "Inactive",   
       }      
       rowsItem.push(userInfo);
@@ -56,6 +58,10 @@ class UsersData extends Component {
       {
         label: 'Status',
         name: 'status',
+      },
+      {
+        label: 'Registered on',
+        name: 'createdAt',
       },
       {
         label: 'Action',

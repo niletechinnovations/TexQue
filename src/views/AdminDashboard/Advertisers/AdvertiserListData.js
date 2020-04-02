@@ -10,7 +10,6 @@ class AdvertiserListData extends Component {
       rowIndex: '',
       dataTableItem: [],
     };
-    
   }
   componentDidMount() {   
   }
@@ -32,6 +31,7 @@ class AdvertiserListData extends Component {
         email: userData.email,
         phoneNumber: userData.phoneNumber || " ",
         status: userData.status ? "Active" : "Inactive",
+        createdAt: (new Date(userData.createdAt)).toLocaleDateString("en-US"),
       }      
       rowsItem.push(userInfo);
     }      
@@ -51,6 +51,10 @@ class AdvertiserListData extends Component {
       {
         label: 'Status',
         name: 'status',
+      },
+      {
+        label: 'Registered on',
+        name: 'createdAt',
       },
       {
         label: 'Action',

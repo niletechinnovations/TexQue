@@ -7,7 +7,8 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../../core/services/commonService';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import EnquiryData from './EnquiryListData';
 import Loader from '../../../Loader/Loader';
 
@@ -18,36 +19,49 @@ class EnquiryListing extends Component {
     this.state = {
       modal: false,
       enquiryLists: [],
+      organizationList: [],
       loading: true,
       rowIndex: -1,
-      formField: { enquiryId: '', truckName: '', contactPerson: '', phoneNumber:'' },
-     
+      formField: { enquiryId: '', truckName: '', contactPerson: '', phoneNumber:'', status:'', comment:'' },
+      filterItem: { filter_organization_id: '', filterFrom:'',  filterTo:'', filterStatus:'' },    
     } 
     this.submitHandler = this.submitHandler.bind(this);
     this.handleEditEnquiry = this.handleEditEnquiry.bind(this);
     this.handleDeleteEnquiry = this.handleDeleteEnquiry.bind(this);
-
+    this.filterEnquiryList = this.filterEnquiryList.bind(this);
   }
 
   // Fetch the Enquiry List
   componentDidMount() {     
     this.enquiryLists({});   
+    this.organizationList();
   }
 
   /* Enquiry List API */
-  enquiryLists() {
+  enquiryLists(filterItem = {}) {
+    let filterQuery = "?pageSize=10000";
+    if(filterItem.filter_organization_id !== undefined && filterItem.filter_organization_id !== "" ) 
+      filterQuery += (filterQuery !=="" ) ? "&organizationAuthId="+filterItem.filter_organization_id: "&organizationAuthId="+filterItem.filter_organization_id;
+    if(filterItem.filterFrom !== undefined && filterItem.filterFrom !== "" ){
+      let newFromDate = this.getFormatDate( filterItem.filterFrom );
+      filterQuery += (filterQuery !=="" ) ? "&start_date="+newFromDate : "?start_date="+newFromDate;
+    }
+    if(filterItem.filterTo !== undefined && filterItem.filterTo !== "" ){
+      let newToDate = this.getFormatDate( filterItem.filterTo );
+      filterQuery += (filterQuery !=="" ) ? "&end_date="+newToDate: "?end_date="+newToDate;
+    }
+    if(filterItem.filterStatus !== undefined && filterItem.filterStatus !== "" ) 
+      filterQuery += (filterQuery !=="" ) ? "&status="+filterItem.filterStatus: "?status="+filterItem.filterStatus;
+    
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('food-truck/enquiry?pageSize=10000')
-        .then( res => {
-           
+      commonService.getAPIWithAccessToken('food-truck/enquiry'+filterQuery)
+        .then( res => {       
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( { loading: false } );
             toast.error(res.data.message);
             return;
           }   
-
-          this.setState({loading:false, enquiryLists: res.data.data.enquiryList});     
-         
+          this.setState({loading:false, enquiryLists: res.data.data.enquiryList});              
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
@@ -130,7 +144,7 @@ class EnquiryListing extends Component {
           numberofPerson: rowData.numberofPerson,
           eventDate: rowData.eventDate,
           message: rowData.message,
-          comment: rowData.comment,
+          comment: rowData.ownerComments,
           status: rowData.status,
       }
       this.setState({rowIndex: rowIndex, formField: formField, modal: true });
@@ -167,8 +181,65 @@ class EnquiryListing extends Component {
     })
   }  
 
+  /*Organization List API*/
+  organizationList() {      
+    commonService.getAPIWithAccessToken('organization?pageSize=10000')
+      .then( res => {       
+        if ( undefined === res.data.data || !res.data.status ) {
+          this.setState( { loading: false } );
+          toast.error(res.data.message);
+          return;
+        }   
+        this.setState({loading:false, organizationList: res.data.data.profileList});       
+      } )
+      .catch( err => {         
+        if(err.response !== undefined && err.response.status === 401) {
+          localStorage.clear();
+          this.props.history.push('/login');
+        }else 
+          this.setState( { loading: false } );
+      } )
+  }
+
+  filterEnquiryList(){
+    const filterItem = this.state.filterItem;
+    this.enquiryLists(filterItem);
+  }
+  
+  changeFilterHandler = event => {
+    const name = event.target.name;
+    const value = event.target.value;
+    const filterItem = this.state.filterItem
+    filterItem[name] = value;
+    this.setState({ filterItem: filterItem });
+  };
+  setFilterFromDate = date => {
+    let filterFormField = this.state.filterItem;
+    filterFormField.filterFrom = date;
+    this.setState({ filterItem: filterFormField });
+  };
+  setFilterToDate = date => {
+    let filterFormField = this.state.filterItem;
+    filterFormField.filterTo = date;
+    this.setState({ filterItem: filterFormField });
+  };
+
+  resetfilterForm = () => {
+    this.setState({
+      filterItem: { filter_organization_id: '', filterFrom:'',  filterTo:'', filterStatus:'' }
+    });
+    this.enquiryLists();
+  }
+  
+  getFormatDate(date) {
+    var year = date.getFullYear().toString();
+    var month = (date.getMonth() + 101).toString().substring(1);
+    var day = (date.getDate() + 100).toString().substring(1);
+    return year + "-" + month + "-" + day;
+  }
+
   render() {
-    const { enquiryLists, loading, modal, formField, formProccessing } = this.state;
+    const { enquiryLists, loading, modal, formField, formProccessing, organizationList, filterItem } = this.state;
     
     let statusLists = [
         {status:0, statusLabel:'Pending' },
@@ -187,6 +258,52 @@ class EnquiryListing extends Component {
         <Card>
           <CardBody>
             <Row>
+              <Col md={12}>
+                <Row className="filterRow">                      
+                  <Col md={"4"} className="pl-3">
+                    <FormGroup> 
+                      <Label htmlFor="filter_organization_id">Organization</Label>            
+                      <Input type="select" placeholder="Organization *" id="filter_organization_id" name="filter_organization_id" value={filterItem.filter_organization_id} onChange={this.changeFilterHandler} >
+                        <option value="">All</option>
+                        {organizationList.map((organizationInfo, index) =>
+                          <SetOrganizationDropDownItem key={index} organizationInfo={organizationInfo} />
+                        )}
+                      </Input>
+                    </FormGroup> 
+                  </Col>
+                  <Col md={"2"}>
+                    <FormGroup> 
+                      <Label>Status</Label>
+                      <Input type="select" name="filterStatus" value={filterItem.filterStatus} onChange={this.changeFilterHandler}>
+                        <option value="">All</option>
+                        <option value="0">Pending</option>
+                        <option value="1">Accepted</option>
+                        <option value="2">Rejected</option>
+                      </Input>
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"2"}>
+                    <FormGroup> 
+                      <Label>Date From</Label>
+                      <DatePicker className="form-control" selected={ filterItem.filterFrom } onChange={this.setFilterFromDate} dateFormat="MM/dd/yyyy" />
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"2"}>
+                    <FormGroup> 
+                      <Label>Date To</Label>
+                      <DatePicker className="form-control" selected={ filterItem.filterTo } onChange={this.setFilterToDate} dateFormat="MM/dd/yyyy" />
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"1"} className="p-0">
+                    <FormGroup> 
+                      <Label>&nbsp;</Label><br />
+                      <Button color="success" type="button" size="sm" onClick={this.filterEnquiryList}><i className="fa fa-search"></i></Button>&nbsp;
+                      <Button color="danger" type="reset" size="sm" onClick={this.resetfilterForm}><i className="fa fa-refresh"></i></Button>
+                    </FormGroup>             
+                  </Col>
+                </Row>
+              </Col>
+              
               <Col md={12}>
                 <EnquiryData data={enquiryLists} editEnquiryAction={this.handleEditEnquiry} deleteEnquiryAction={this.handleDeleteEnquiry} dataTableLoadingStatus = {this.state.loading} />
               </Col>
@@ -239,7 +356,7 @@ class EnquiryListing extends Component {
                 <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="status">Status</Label>
-                    <Input type="select" name="status" id="status" value={formField.status} onChange={this.changeHandler}  required>
+                    <Input type="select" name="status" id="status" value={formField.status} onChange={this.changeHandler} required>
                         {statusLists.map((status, index) =>
                             <option key={index} value={status.status}>{status.statusLabel}</option>
                         )}
@@ -250,7 +367,7 @@ class EnquiryListing extends Component {
                 <Col md={"12"}>
                   <FormGroup> 
                     <Label htmlFor="comment">Comment</Label>            
-                    <Input type="textarea" placeholder="Put your comments here" id="comment" name="comment" value={formField.comment} />
+                    <Input type="textarea" placeholder="Put your comments here" id="comment" name="comment" value={formField.comment} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
               </Row>
@@ -267,6 +384,11 @@ class EnquiryListing extends Component {
 
     );
   }
+}
+
+function SetOrganizationDropDownItem (props) {
+  const organizationInfo = props.organizationInfo;
+  return (<option value={organizationInfo.authId} >{organizationInfo.organizationName}</option>)
 }
 
 export default EnquiryListing;

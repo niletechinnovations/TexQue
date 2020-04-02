@@ -164,9 +164,8 @@ class AdvertiserSignup extends React.Component {
                 <ToastContainer /> 
                 {loaderElement} 
                 <div className="account-form">
-                  <h3 className="login-heading mb-4">Become an Advertiser</h3>
+                  <h3 className="login-heading mb-4">Sign up for your Advertising account now.</h3>
                   <p>The Food Truck app that Pros use. Advertise on this app and get your message to reach Millions of Users who are connected with TexQue application. And all this at very attractive Advertising Tarrif's.</p>
-                  <p><strong>Sign up for your Advertising account now. </strong></p>
                   <Form onSubmit={this.submitUserRegistrationForm} noValidate>
                     <Row form>
                       <Col md={6}>
@@ -216,7 +215,7 @@ class AdvertiserSignup extends React.Component {
                     <Row>
                       <Col md={6}>
                         <FormGroup>
-                          <Button className="Submit-form-button">Sign Up Now</Button>
+                          <Button className="Submit-form-button">Sign Up</Button>
                         </FormGroup>
                       </Col>
                     </Row>

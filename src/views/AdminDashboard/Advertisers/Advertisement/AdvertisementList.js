@@ -7,6 +7,8 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../../core/services/commonService';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import EnquiryData from './AdvertisementData';
 import Loader from '../../../Loader/Loader';
@@ -22,10 +24,12 @@ class AdvertisementList extends Component {
       loading: true,
       rowIndex: -1,
       formField: { advertisementId: '', adFile: '', adLink:'', status:'' },
+      filterItem: { filterPhone:'', custom_search: '', filterFrom:'',  filterTo:'', filterStatus:''}
     } 
     this.submitHandler = this.submitHandler.bind(this);
     this.handleEditEnquiry = this.handleEditEnquiry.bind(this);
     this.handleDeleteData = this.handleDeleteData.bind(this);
+    this.filterAdsList = this.filterAdsList.bind(this);
   }
 
   // Fetch the Ads List
@@ -35,11 +39,22 @@ class AdvertisementList extends Component {
 
  
   /* Enquiry List API */
-  adsLists() {
-    this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('advertisement?pageSize=1000')
-        .then( res => {
-           
+  adsLists(filterItem = {}) {
+    let filterQuery = "?pageSize=10000";
+   if(filterItem.filterFrom !== undefined && filterItem.filterFrom !== "" ){
+      let newFromDate = this.getFormatDate( filterItem.filterFrom );
+      filterQuery += (filterQuery !=="" ) ? "&start_date="+newFromDate : "?start_date="+newFromDate;
+    }
+    if(filterItem.filterTo !== undefined && filterItem.filterTo !== "" ){
+      let newToDate = this.getFormatDate( filterItem.filterTo );
+      filterQuery += (filterQuery !=="" ) ? "&end_date="+newToDate: "?end_date="+newToDate;
+    }
+    if(filterItem.filterStatus !== undefined && filterItem.filterStatus !== "" ) 
+      filterQuery += (filterQuery !=="" ) ? "&status="+filterItem.filterStatus: "?status="+filterItem.filterStatus;
+    
+      this.setState( { loading: true}, () => {
+        commonService.getAPIWithAccessToken('advertisement'+filterQuery)
+        .then( res => {          
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( { loading: false } );
             toast.error(res.data.message);
@@ -189,11 +204,47 @@ class AdvertisementList extends Component {
           }
       } )
     })
-  } 
+  }
 
+  filterAdsList(){
+    const filterItem = this.state.filterItem;
+    this.adsLists(filterItem);
+  }
+  
+  changeFilterHandler = event => {
+    const name = event.target.name;
+    const value = event.target.value;
+    const filterItem = this.state.filterItem
+    filterItem[name] = value;
+    this.setState({ filterItem: filterItem });
+  };
+  setFilterFromDate = date => {
+    let filterFormField = this.state.filterItem;
+    filterFormField.filterFrom = date;
+    this.setState({ filterItem: filterFormField });
+  };
+  setFilterToDate = date => {
+    let filterFormField = this.state.filterItem;
+    filterFormField.filterTo = date;
+    this.setState({ filterItem: filterFormField });
+  };
+
+  resetfilterForm = () => {
+    this.setState({
+      filterItem: { filterFrom:'',  filterTo:'', filterStatus:''}
+    });
+    this.adsLists();
+  }
+  
+  getFormatDate(date) {
+    var year = date.getFullYear().toString();
+    var month = (date.getMonth() + 101).toString().substring(1);
+    var day = (date.getDate() + 100).toString().substring(1);
+    return year + "-" + month + "-" + day;
+  }
   
   render() {
-    const { enquiryLists, loading, modal, formField, formProccessing } = this.state;
+    const { enquiryLists, loading, modal, formField, formProccessing, filterItem } = this.state;
         
     let loaderElement = '';
     if(loading)        
@@ -209,8 +260,41 @@ class AdvertisementList extends Component {
             <strong>Advertisement</strong>
           </CardHeader>
           <CardBody>
-            
             <Row>
+              <Col md={12}>
+                <Row>                      
+                  <Col md={"3"}>
+                    <FormGroup> 
+                      <Label>Status</Label>
+                      <Input type="select" name="filterStatus" value={filterItem.filterStatus} onChange={this.changeFilterHandler}>
+                        <option value="">All</option>
+                        <option value="1">Active</option>
+                        <option value="2">Approval Pending</option>
+                        <option value="3">Inactive</option>
+                      </Input>
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"2"}>
+                    <FormGroup> 
+                      <Label>Date From</Label>
+                      <DatePicker className="form-control" selected={ filterItem.filterFrom } onChange={this.setFilterFromDate} dateFormat="MM/dd/yyyy" />
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"2"}>
+                    <FormGroup> 
+                      <Label>Date To</Label>
+                      <DatePicker className="form-control" selected={ filterItem.filterTo } onChange={this.setFilterToDate} dateFormat="MM/dd/yyyy" />
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"2"} className="p-0">
+                    <FormGroup> 
+                      <Label>&nbsp;</Label><br />
+                      <Button color="success" type="button" size="sm" onClick={this.filterAdsList}><i className="fa fa-search"></i></Button>&nbsp;
+                      <Button color="danger" type="reset" size="sm" onClick={this.resetfilterForm}><i className="fa fa-refresh"></i></Button>
+                    </FormGroup>             
+                  </Col>
+                </Row>
+              </Col>
               
               <Col md={12}>
                 <EnquiryData data={enquiryLists} editEnquiryAction={this.handleEditEnquiry} deleteRowAction={this.handleDeleteData}  dataTableLoadingStatus = {this.state.loading} />

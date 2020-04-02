@@ -6,6 +6,8 @@ import commonService from '../../../../core/services/commonService';
 import { FormErrors } from '../../../Formerrors/Formerrors';
 import Loader from '../../../Loader/Loader';
 import Select from 'react-select';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import AutoCompletePlaces from '../../../../core/google-map/AutoCompletePlaces';
 import FoodTruckData from './FoodTruckData';
 import './FoodTruck.css'
@@ -41,7 +43,7 @@ class FoodTruckList extends Component {
       formField: { organizationId: '', truckName: '', contactPerson: '', phoneNumber:'', address: '', description:'', defaultImage: '',category_id:''},
       formErrors: { organizationId: '', truckName: '',  address:'', error: ''},
       formValid: false,
-      filterItem: { filter_organization_id: '', filter_cat_id: '', filter_truckName: '', filterRating:'', filter_address:'', custom_search: ''},
+      filterItem: { filter_organization_id: '', filter_cat_id: '', filterTruckName: '', filterRating:'', filter_address:'', filterFrom:'',  filterTo:'', filterStatus:'', custom_search: '' },
     } 
     this.submitHandler = this.submitHandler.bind(this);
     this.handleDeleteTruck = this.handleDeleteTruck.bind(this);
@@ -65,21 +67,32 @@ class FoodTruckList extends Component {
   }
   /*Food Truck List API*/
   foodTruckList(filterItem = {}) {
-    let stroreWalkQuery = "";
+    let filterQuery = "?pageSize=10000";
     if(filterItem.filter_organization_id !== undefined && filterItem.filter_organization_id !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&organizationAuthId="+filterItem.filter_organization_id: "&organizationAuthId="+filterItem.filter_organization_id;
+      filterQuery += (filterQuery !=="" ) ? "&organizationAuthId="+filterItem.filter_organization_id: "&organizationAuthId="+filterItem.filter_organization_id;
     if(filterItem.filter_cat_id !== undefined && filterItem.filter_cat_id !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&categoryId="+filterItem.filter_cat_id: "&categoryId="+filterItem.filter_cat_id;
-    if(filterItem.filterFoodTruckName !== undefined && filterItem.filterFoodTruckName !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&truckName="+filterItem.filterFoodTruckName: "&truckName="+filterItem.filterFoodTruckName;
+     filterQuery += (filterQuery !=="" ) ? "&categoryId="+filterItem.filter_cat_id: "&categoryId="+filterItem.filter_cat_id;
+    if(filterItem.filterTruckName !== undefined && filterItem.filterTruckName !== "" ) 
+      filterQuery += (filterQuery !=="" ) ? "&truckName="+filterItem.filterTruckName: "&truckName="+filterItem.filterTruckName;
     if(filterItem.filterRating !== undefined && filterItem.filterRating !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&rating="+filterItem.filterRating: "&rating="+filterItem.filterRating;
+      filterQuery += (filterQuery !=="" ) ? "&rating="+filterItem.filterRating: "&rating="+filterItem.filterRating;
     if(filterItem.filter_address !== undefined && filterItem.filter_address !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&location="+filterItem.filter_address: "&location="+filterItem.filter_address;
+      filterQuery += (filterQuery !=="" ) ? "&location="+filterItem.filter_address: "&location="+filterItem.filter_address;
     if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
-      stroreWalkQuery += (stroreWalkQuery !=="" ) ? "&keyword="+filterItem.custom_search: "&keyword="+filterItem.custom_search;
+      filterQuery += (filterQuery !=="" ) ? "&keyword="+filterItem.custom_search: "&keyword="+filterItem.custom_search;
+    if(filterItem.filterFrom !== undefined && filterItem.filterFrom !== "" ){
+      let newFromDate = this.getFormatDate( filterItem.filterFrom );
+      filterQuery += (filterQuery !=="" ) ? "&start_date="+newFromDate : "?start_date="+newFromDate;
+    }
+    if(filterItem.filterTo !== undefined && filterItem.filterTo !== "" ){
+      let newToDate = this.getFormatDate( filterItem.filterTo );
+      filterQuery += (filterQuery !=="" ) ? "&end_date="+newToDate: "?end_date="+newToDate;
+    }
+    if(filterItem.filterStatus !== undefined && filterItem.filterStatus !== "" ) 
+      filterQuery += (filterQuery !=="" ) ? "&status="+filterItem.filterStatus: "?status="+filterItem.filterStatus;
+    
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('food-truck?pageSize=10000'+stroreWalkQuery)
+      commonService.getAPIWithAccessToken('food-truck'+filterQuery)
         .then( res => {
            
           if ( undefined === res.data.data || !res.data.status ) {
@@ -367,9 +380,34 @@ class FoodTruckList extends Component {
     this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address })
   }
   
+  setFilterFromDate = date => {
+    let filterFormField = this.state.filterItem;
+    filterFormField.filterFrom = date;
+    this.setState({ filterItem: filterFormField });
+  };
+  setFilterToDate = date => {
+    let filterFormField = this.state.filterItem;
+    filterFormField.filterTo = date;
+    this.setState({ filterItem: filterFormField });
+  };
+
+  resetfilterForm = () => {
+    this.setState({
+      filterItem: { filter_organization_id: '', filter_cat_id: '', filterTruckName: '', filterRating:'', filter_address:'', filterFrom:'',  filterTo:'', filterStatus:'', custom_search: '' }
+    });
+    this.foodTruckList();
+  }
+  
+  getFormatDate(date) {
+    var year = date.getFullYear().toString();
+    var month = (date.getMonth() + 101).toString().substring(1);
+    var day = (date.getDate() + 100).toString().substring(1);
+    return year + "-" + month + "-" + day;
+  }
+
   render() {
 
-    const { storeList, loading, modal, formProccessing, organizationList, categoryList } = this.state;
+    const { storeList, loading, modal, formProccessing, organizationList, categoryList, filterItem } = this.state;
 
     let categoryItems = []; 
     let counter = 0;
@@ -401,48 +439,84 @@ class FoodTruckList extends Component {
                 
                 <Row>
                   <Col md={12}>
-                    <Row>
-                      <Col md={"2"}>
+                    <Row className="filterRow">                      
+                      <Col md={"2"} className="pl-3">
                         <FormGroup> 
                           <Label htmlFor="filter_organization_id">Organization</Label>            
-                          <Input type="select" placeholder="Organization *" id="filter_organization_id" name="filter_organization_id" value={this.state.filterItem.filter_organization_id} onChange={this.changeFilterHandler} >
-                            <option value="">Select Organization</option>
+                          <Input type="select" placeholder="Organization *" id="filter_organization_id" name="filter_organization_id" value={filterItem.filter_organization_id} onChange={this.changeFilterHandler} >
+                            <option value="">All</option>
                             {organizationList.map((organizationInfo, index) =>
                               <SetOrganizationDropDownItem key={index} organizationInfo={organizationInfo} />
                             )}
                           </Input>
-                        </FormGroup>  
+                        </FormGroup> 
                       </Col>
-                      <Col md={"2"}>
+                      <Col md={"1"}>
                         <FormGroup> 
                           <Label htmlFor="filter_cat_id">Cuisine</Label>
-                          <Input type="select" placeholder="Cuisine *" id="filter_cat_id" name="filter_cat_id" value={this.state.filterItem.filter_cat_id} onChange={this.changeFilterHandler} >
-                            <option value="">Select Cuisine</option>
+                          <Input type="select" placeholder="Cuisine *" id="filter_cat_id" name="filter_cat_id" value={filterItem.filter_cat_id} onChange={this.changeFilterHandler} >
+                            <option value="">All</option>
                             {categoryList.map((catInfo, index) =>
                               <SetCatDropDownItem key={index} catInfo={catInfo} />
                             )}
                           </Input>
-                        </FormGroup>  
-                      </Col>
-                      <Col md={"3"}>
-                        <FormGroup> 
-                          <Label htmlFor="filterFoodTruckName">Food Truck Name</Label>
-                          <Input type="text" placeholder="Search by Food Truck Name" id="filterFoodTruckName" name="filterFoodTruckName" value={this.state.formField.filterFoodTruckName} onChange={this.changeFilterHandler} />   
-                        </FormGroup>  
-                      </Col>
-                      <Col md={"3"}>
-                        <FormGroup> 
-                          <Label htmlFor="filter_address">Search by Location</Label>            
-                          <Input type="text" placeholder="Search by Address/ Location" id="filter_address" name="filter_address" value={this.state.formField.filter_address} onChange={this.changeFilterHandler} />
-                        </FormGroup>  
+                        </FormGroup>
                       </Col>
                       <Col md={"2"}>
-                        <FormGroup className="filter-button-section"> 
-                          <Label>&nbsp;</Label>
-                          <Button color="success" type="button" onClick={this.filterTruckList}>Search</Button> 
+                        <FormGroup> 
+                          <Label htmlFor="filterTruckName">Food Truck Name</Label>
+                          <Input type="text" placeholder="Search by Food Truck Name" id="filterTruckName" name="filterTruckName" value={filterItem.filterTruckName} onChange={this.changeFilterHandler} />   
+                        </FormGroup>
+                      </Col>
+                      <Col md={"2"}>
+                        <FormGroup> 
+                          <Label htmlFor="filter_address">Search by Location</Label>            
+                          <Input type="text" placeholder="Search by Address/ Location" id="filter_address" name="filter_address" value={filterItem.filter_address} onChange={this.changeFilterHandler} />
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"1"}>
+                        <FormGroup> 
+                          <Label>Rating</Label>
+                          <Input type="select" name="filterRating" value={filterItem.filterRating} onChange={this.changeFilterHandler}>
+                            <option value="">All</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                          </Input>
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"1"}>
+                        <FormGroup> 
+                          <Label>Status</Label>
+                          <Input type="select" name="filterStatus" value={filterItem.filterStatus} onChange={this.changeFilterHandler}>
+                            <option value="">All</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                          </Input>
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"1"}>
+                        <FormGroup> 
+                          <Label>Date From</Label>
+                          <DatePicker className="form-control" selected={ filterItem.filterFrom } onChange={this.setFilterFromDate} dateFormat="MM/dd/yyyy" />
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"1"}>
+                        <FormGroup> 
+                          <Label>Date To</Label>
+                          <DatePicker className="form-control" selected={ filterItem.filterTo } onChange={this.setFilterToDate} dateFormat="MM/dd/yyyy" />
+                        </FormGroup>  
+                      </Col>
+                      <Col md={"1"} className="p-0">
+                        <FormGroup> 
+                          <Label>&nbsp;</Label><br />
+                          <Button color="success" type="button" size="sm" onClick={this.filterTruckList}><i className="fa fa-search"></i></Button>&nbsp;
+                          <Button color="danger" type="reset" size="sm" onClick={this.resetfilterForm}><i className="fa fa-refresh"></i></Button>
                         </FormGroup>             
                       </Col>
-                    </Row>  
+                    </Row>
                   </Col>
                   <Col md={12}>
                     <FoodTruckData data={storeList} editStoreAction={this.handleEditStore} deleteStoreAction={this.handleDeleteTruck} dataTableLoadingStatus = {this.state.loading} />

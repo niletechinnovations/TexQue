@@ -69,7 +69,7 @@ class AdvertisementData extends Component {
           name: 'userName',
         },
         {
-            label: 'Date',
+            label: 'Created on',
             name: 'createdAt',
         },
         {

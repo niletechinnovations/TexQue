@@ -3,6 +3,8 @@ import { Card, CardBody, Col, Row, Button, Form, Input, FormGroup, Label, Modal,
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import { FormErrors } from '../../Formerrors/Formerrors';
 import Loader from '../../Loader/Loader';
@@ -21,22 +23,39 @@ class AdvertiserList extends Component {
       formErrors: { email: '', first_name: '', last_name: '', error: ''},
       formValid: false,
       profileImage:'',
-      filterItem: { user_name: '', location: '', custom_search: ''},
+      filterItem: { filterPhone:'', custom_search: '', filterFrom:'',  filterTo:'', filterStatus:''}
     }
 
     this.handleEditUser = this.handleEditUser.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.filterUserList = this.filterUserList.bind(this);
+    this.handleDeleteUser = this.handleDeleteUser.bind(this);
   }
   componentDidMount() { 
-    this.userList();
+    this.userList({});
   }
 
   /*User List API*/
-  userList() {
+  userList(filterItem = {}){
+    let filterQuery = "?roleType=advertiser&pageSize=20000";
+    if(filterItem.custom_search !== undefined && filterItem.custom_search !== "" ) 
+      filterQuery += (filterQuery !=="" ) ? "&emailOrName="+filterItem.custom_search: "&emailOrName="+filterItem.custom_search;
+    if(filterItem.filterPhone !== undefined && filterItem.filterPhone !== "" ) 
+      filterQuery += (filterQuery !=="" ) ? "&phoneNumber="+filterItem.filterPhone: "&phoneNumber="+filterItem.phoneNumber;
+    if(filterItem.filterFrom !== undefined && filterItem.filterFrom !== "" ){
+      let newFromDate = this.getFormatDate( filterItem.filterFrom );
+      filterQuery += (filterQuery !=="" ) ? "&start_date="+newFromDate : "?start_date="+newFromDate;
+    }
+    if(filterItem.filterTo !== undefined && filterItem.filterTo !== "" ){
+      let newToDate = this.getFormatDate( filterItem.filterTo );
+      filterQuery += (filterQuery !=="" ) ? "&end_date="+newToDate: "?end_date="+newToDate;
+    }
+    if(filterItem.filterStatus !== undefined && filterItem.filterStatus !== "" ) 
+      filterQuery += (filterQuery !=="" ) ? "&status="+filterItem.filterStatus: "?status="+filterItem.filterStatus;
     
-    this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken(`profile/list?roleType=advertiser`)
-        .then( res => {
+      this.setState( { loading: true}, () => {
+        commonService.getAPIWithAccessToken('profile/list'+filterQuery)
+        .then( res => {    
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( {  loading: false } );
             toast.error(res.data.message);    
@@ -49,8 +68,7 @@ class AdvertiserList extends Component {
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else {
+          }else {
             this.setState( { loading: false } );
             toast.error(err.message); 
           }  
@@ -156,6 +174,35 @@ class AdvertiserList extends Component {
     } );
   }
 
+  handleDeleteUser(rowIndex){
+    const rowInfo = this.state.userList[rowIndex];
+    const delFormData = {
+      "profileId": rowInfo.profileId,
+    };
+    this.setState( { loading: true}, () => {
+      commonService.deleteAPIWithAccessToken( `profile`, delFormData)
+        .then( res => {
+          if ( undefined === res.data || !res.data.status ) {            
+            this.setState( { loading: false} );
+            toast.error(res.data.message);      
+            return;
+          }         
+          this.setState({ loading: false});
+          this.userList();
+          toast.success(res.data.message);
+        } )
+        .catch( err => {                   
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }else{
+            this.setState( { loading: false } );
+            toast.error(err.message);
+          }
+      } )
+    })
+  }
+  
   toggle = () => {
     this.setState({
       modal: !this.state.modal,
@@ -167,9 +214,46 @@ class AdvertiserList extends Component {
     });
   }
 
+  filterUserList(){
+    const filterItem = this.state.filterItem;
+    this.userList(filterItem);
+  }
+  
+  changeFilterHandler = event => {
+    const name = event.target.name;
+    const value = event.target.value;
+    const filterItem = this.state.filterItem
+    filterItem[name] = value;
+    this.setState({ filterItem: filterItem });
+  };
+  setFilterFromDate = date => {
+    let filterFormField = this.state.filterItem;
+    filterFormField.filterFrom = date;
+    this.setState({ filterItem: filterFormField });
+  };
+  setFilterToDate = date => {
+    let filterFormField = this.state.filterItem;
+    filterFormField.filterTo = date;
+    this.setState({ filterItem: filterFormField });
+  };
+
+  resetfilterForm = () => {
+    this.setState({
+      filterItem: { filterPhone:'', custom_search: '', filterFrom:'',  filterTo:'', filterStatus:''}
+    });
+    this.userList();
+  }
+  
+  getFormatDate(date) {
+    var year = date.getFullYear().toString();
+    var month = (date.getMonth() + 101).toString().substring(1);
+    var day = (date.getDate() + 100).toString().substring(1);
+    return year + "-" + month + "-" + day;
+  }
+
   render() {
 
-    const { userList, loading, modal, changeStatusBtn, formProccessing } = this.state;     
+    const { userList, loading, modal, changeStatusBtn, formProccessing, filterItem } = this.state;     
     let loaderElement = '';
     if(loading) 
       loaderElement = <Loader />
@@ -178,17 +262,63 @@ class AdvertiserList extends Component {
 
     return (
       <div className="animated fadeIn">
-        <Row>
-          <Col lg={12}>
-            <Card>
-              <CardBody>
-                <ToastContainer />
-                {loaderElement}
+          <ToastContainer />
+        {loaderElement}
+        
+        <Card>
+          <CardBody>
+            <Row>
+              <Col md={12}>
+                <Row className="filterRow">                      
+                  <Col md={"3"} className="pl-3">
+                    <FormGroup> 
+                      <Label>Email ID / Name</Label>
+                      <Input type="text" placeholder="Search By Email ID / Name" id="custom_search" name="custom_search" value={filterItem.custom_search} onChange={this.changeFilterHandler} />
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"2"}>
+                    <FormGroup>
+                      <Label htmlFor="filterPhone">Phone no.</Label>
+                      <Input id="filterPhone" name="filterPhone" placeholder="Phone no." value={filterItem.filterPhone}  onChange={this.changeFilterHandler} />
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"2"}>
+                    <FormGroup> 
+                      <Label>Status</Label>
+                      <Input type="select" name="filterStatus" value={filterItem.filterStatus} onChange={this.changeFilterHandler}>
+                        <option value="">All</option>
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                      </Input>
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"2"}>
+                    <FormGroup> 
+                      <Label>Date From</Label>
+                      <DatePicker className="form-control" selected={ filterItem.filterFrom } onChange={this.setFilterFromDate} dateFormat="MM/dd/yyyy" />
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"2"}>
+                    <FormGroup> 
+                      <Label>Date To</Label>
+                      <DatePicker className="form-control" selected={ filterItem.filterTo } onChange={this.setFilterToDate} dateFormat="MM/dd/yyyy" />
+                    </FormGroup>  
+                  </Col>
+                  <Col md={"1"} className="p-0">
+                    <FormGroup> 
+                      <Label>&nbsp;</Label><br />
+                      <Button color="success" type="button" size="sm" onClick={this.filterUserList}><i className="fa fa-search"></i></Button>&nbsp;
+                      <Button color="danger" type="reset" size="sm" onClick={this.resetfilterForm}><i className="fa fa-refresh"></i></Button>
+                    </FormGroup>             
+                  </Col>
+                </Row>
+              </Col>
+              <Col md={12}>
                 <UsersData data={userList} editUserAction={this.handleEditUser} deleteUserAction={this.handleDeleteUser} dataTableLoadingStatus = {this.state.loading} />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+              </Col>
+            </Row>
+          </CardBody>
+        </Card>
 
         <Modal isOpen={modal} toggle={this.toggle} className="full-width-modal-section organization-modal">
           <ModalHeader toggle={this.toggle}>Advertiser Info</ModalHeader>

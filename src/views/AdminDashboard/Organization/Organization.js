@@ -371,13 +371,11 @@ class Organization extends Component {
     let filterFormField = this.state.filterItem;
     filterFormField.filterFrom = date;
     this.setState({ filterItem: filterFormField });
-    console.log(this.state.filterItem);
   };
   setFilterToDate = date => {
     let filterFormField = this.state.filterItem;
     filterFormField.filterTo = date;
     this.setState({ filterItem: filterFormField });
-    console.log(this.state.filterItem);
   };
 
   resetfilterOragnization = () => {
@@ -392,7 +390,7 @@ class Organization extends Component {
     var month = (date.getMonth() + 101).toString().substring(1);
     var day = (date.getDate() + 100).toString().substring(1);
     return year + "-" + month + "-" + day;
-}
+  }
 
   render() {
     
