@@ -76,11 +76,11 @@ class Dashboard extends Component {
         {loaderElement}
         <Row>
           <Col xs="6" sm="6" md="4" lg="4">
-            <Card className="card-stats">
+            <Card className="card-stats bgcard-1">
               <CardBody>
                 <Row>
                   <Col md="4" lg="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="icon-big text-center icon-warning bgImg-1">
                       <img src="/images/listing-icon.png" alt="listings" width="64" />
                     </div>
                   </Col>
@@ -99,11 +99,11 @@ class Dashboard extends Component {
             </Card>
           </Col>
           <Col xs="6" sm="6" md="4" lg="4">
-            <Card className="card-stats">
+            <Card className="card-stats bgcard-2">
               <CardBody>
                 <Row>
                   <Col md="4" lg="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="icon-big text-center icon-warning bgImg-2">
                       <img src="/images/message-icon.png" alt="Inquiries" width="64" />
                     </div>
                   </Col>
@@ -122,11 +122,11 @@ class Dashboard extends Component {
             </Card>
           </Col>
           <Col xs="6" sm="6" md="4" lg="4">
-            <Card className="card-stats">
+            <Card className="card-stats bgcard-3">
               <CardBody>
                 <Row>
                   <Col md="4" lg="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="icon-big text-center icon-warning bgImg-3">
                       <img src="/images/user-rating-icon.png" alt="Review" width="64" />
                     </div>
                   </Col>
@@ -156,7 +156,7 @@ class Dashboard extends Component {
                 <Table size="sm" className="listing-table">
                   <thead>
                     <tr>
-                      <th>#</th>
+                      <th>Sr. No.</th>
                       <th>Name</th>
                       <th>Phone</th>
                       <th>Food Truck</th>

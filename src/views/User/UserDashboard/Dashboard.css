@@ -16,7 +16,7 @@
     line-height: 1.2em;
 }
 .card-stats .card-body .numbers .card-category {
-    color: #9a9a9a;
+    color: #fff;
     font-size: 16px;
     line-height: 1.4em;
     text-transform: capitalize;
@@ -24,11 +24,14 @@
 }
 .card-stats .card-body .numbers p {
     margin-bottom: 0;
+    color: #fff;
 }
 .card-stats .card-footer .stats {
     color: #5c5c5c;
     text-align: center;
 }
+
+.card-stats.card{border-radius: 14px;}
 .listing-table{ font-size: 14px;}
 
 
@@ -39,3 +42,14 @@
 .listing-table tbody{background: #ffffff;}
 
 .listing-table thead th,.listing-table tbody tr td, .listing-table.table-sm th{ padding: 7px}
+
+.card-stats.bgcard-1{background: #4b4aa7;}
+.card-stats.bgcard-2{background: #9294d0;}
+.card-stats.bgcard-3{background: #f87c87;}
+
+.user-dashboard .bgImg-1 img{background: #6e6dd6; padding: 3px; border-radius: 4px;}
+.user-dashboard .bgImg-2 img{background: #b4b6f3; padding: 5px; border-radius: 4px;}
+.user-dashboard .bgImg-3 img{background: #ff9aac; padding: 5px; border-radius: 4px;}
+
+.stats .btn-outline-secondary{color: #f4f7fb; border-color: #f4f7fb;}
+

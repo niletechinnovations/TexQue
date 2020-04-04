@@ -25,7 +25,7 @@ class UserLayout extends Component {
         <div className="flyout">
           <FrontEndHeader />
           <main className="user-profile-section">
-            <Container>
+            <Container-fluid>
               <Row>
                 <Col md={12}>
                   <UserNavbar />
@@ -51,7 +51,7 @@ class UserLayout extends Component {
                   </Suspense>
                 </Col>
               </Row>  
-            </Container>
+            </Container-fluid>
           </main>
           <FrontEndFooter />           
         </div>
