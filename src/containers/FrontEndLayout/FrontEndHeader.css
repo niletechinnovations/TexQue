@@ -1,17 +1,31 @@
+/*----------------------------
+Add font
+----------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Sulphur+Point:300,400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap');
+
+body {font-size: 12px;font-family: 'Source Sans Pro', sans-serif; line-height: 26px;color: #777;-webkit-font-smoothing: antialiased;font-weight: normal;}
+	
 body{ background: none !important;}
 .header{position: relative;width: 100%;}
-.navbar-toggler{    background-color: #d5042b !important;}
+.header:after{content: ''; position: absolute; background: url(/images/head-strip.png); height:20px; width: 100%; z-index: 9;}
+.header .navbar-brand{ padding-bottom: 0px;}
+.navbar-brand .logo{ width:90px;}
+.navbar-toggler{ background-color: #d5042b !important;}
 .navbar-toggler-icon:before {display: inline-block; font-family: FontAwesome; font-size: inherit; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; content: "\f0c9"; line-height: 30px; color: #fff; }
-
 .header-navigation .navbar {padding: 0; }
-.header-navigation .navbar-nav > li{position:relative;padding:10px 15px;} 
-.header-navigation .navbar-nav > li > a{position: relative; color: #495057; text-align:center; font-weight: 600; font-size: 12px; text-transform:uppercase; } 
+.header-navigation .navbar-nav > li{position:relative; padding: 10px 5px;} 
+.header-navigation .navbar-nav > li > a{position: relative; color: #607D8B; text-align:center; font-weight: bold; font-size: 14px; text-transform:uppercase; } 
 .header-navigation .navbar-nav > li > a.active {color: #5cc9cb; }
 .header-navigation .navbar-nav > li .dropdown-menu {border: 1px solid #dcf5f7; border-radius: 0; } 
 .header-navigation .navbar-nav > li a.dropdown-item {position: relative; color: #495057; text-align: left; font-size: 12px; }
 .header-navigation .navbar-nav > li a.dropdown-item:active,
 .header-navigation .navbar-nav > li a.dropdown-item:focus, 
 .header-navigation .navbar-nav > li a.dropdown-item:hover{background-color: #f8f9fa;}
+.btn-get{background: #fff; color: #002164; font-size: 16px; padding: 10px 25px; border-radius: 5px; font-weight: bold;}
+.header-navigation .navbar-nav > li > a.btn-login {background: #002164 !important; color: #fff !important; margin-bottom: 0; padding: 8px 24px !important; background-color: #fff; border-radius: 3px; }
+.header-navigation .navbar-nav > li > a.btn-register {background: #d5042b !important; color: #fff !important; margin-bottom: 0; padding: 8px 24px !important; background-color: #fff; border-radius: 3px; }
 
 /* ---------------------------------- */
 /* User Menu
@@ -123,16 +137,9 @@ body{ background: none !important;}
 .grey-text, .main-content p{ color: #666666; font-size: 14px; line-height: 1.5em; margin-bottom: 15px;}
 .main-content{ background: #f7faff; }
 .main-content h4{ font-size: 1rem; margin-bottom: 0;}
-<<<<<<< HEAD
-.main-content ul{ margin-left: 2.7em; color: #666666; font-size: 14px; line-height: 1.5em; }
-.main-content ol{ margin-left: 1em; color: #666666; font-size: 14px; line-height: 1.5em; }
-
-
-=======
 .main-content ul {color: #666666; font-size: 14px; padding: 0 0 0 20px; }
 .main-content ol{ color: #666666; font-size: 14px; padding: 0 0 0 20px;}
 .main-content ul li{ color: #666666; font-size: 14px; line-height: 1.5em; text-align:justify;}
->>>>>>> 182f9d510d3ee438378b93e0bf11b056bb50b6d7
 /* Mobile Fixes for User Menu */
 @media only screen and (max-width: 1366px) and (min-width: 1240px) {
 	.user-menu .user-name {
@@ -172,21 +179,47 @@ body{ background: none !important;}
 		float: left;
 	}
 }
-
-.footer{ background: #EDF1F4; position: relative;padding: 4rem 0 }
+.footer{ background:#1b1b1b url(/images/footer_bg.png); position: relative;}
+.footer-top{padding: 3rem 0;}
 .footer ul { margin: 0; padding: 0;}
 .footer ul li { line-height: 26px; list-style: outside none none;}
 .footer ul li a { color: #6c8293;}
-.footer-tag-content{padding: 2rem 0}
-.footer-tag-content h2 {font-size: 18px; font-weight: bold; color: #536382; padding: 0; }
-.footer-tag-links a {color: #717b8e; font-size: 14px; }
-.footer-copyright{background: #dde4e9; position: relative;padding:1rem 0 }
-.footer-copyright p {color: #6c757d; font-size: 12px; font-weight: 300; padding: 0; margin-bottom: 0; text-align: center !important; }
+
 .footer-link h2,
-.app h2{font-size: 18px; font-weight: bold; color: #536382; padding: 0; }
+.app h2{font-size: 18px; font-weight: bold; color: #fff; padding: 0; }
+.app p{font-size: 14px; font-weight: 300; text-align: justify; line-height: 22px; color: #aaa;}
+
+.footer ul li a {color: #aaa; font-size: 14px; }
+
+
+.footer-contact-info{
+  padding-left: 17px;
+  list-style-type: none;
+  margin: 0;
+}
+
+.footer-contact-info li {
+    position: relative;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 22px;
+    color: #aaa;
+}
+.footer-contact-info li a { color: #aaa;}
+
+.footer-tag-content{padding: 2rem 0}
+.footer-tag-content h2 {font-size: 18px; font-weight: bold; color: #fff; padding: 0; }
+.footer-tag-links a {color: #aaa; font-size: 14px; }
+
+.footer-copyright {position: relative; padding: 1rem 0; border-top: 1px solid #3c3c3c; margin-top: 15px; }
+.footer-copyright p {color: #6c757d; font-size: 12px; font-weight: 300; padding: 0; margin-bottom: 0; text-align: center; }
+
+.footer-link h2,
+.footer .app h2{font-size: 18px; font-weight: bold; color: #fff; padding: 0; }
+.footer-link h2{ color: #fff;}
 .about-app{margin-bottom: 15px; }
-.footer ul li a {color: #717b8e; font-size: 14px; }
-.footer .about-text{ color: #717b8e; font-size: 14px;}
+.footer ul li a {color: #aaa; font-size: 14px; }
+.footer .about-text{ color: #aaa; font-size: 14px;}
 
 .footer-contact-info{
   padding-left: 17px;
@@ -198,9 +231,9 @@ body{ background: none !important;}
     font-size: 14px;
     font-weight: 300;
     line-height: 22px;
-    color: #607d8b;
+    color: #aaa;
 }
-.footer-contact-info li a { color: #607d8b;}
+.footer-contact-info li a { color: #aaa;}
 
 
 

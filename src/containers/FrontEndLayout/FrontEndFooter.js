@@ -4,14 +4,14 @@ import {Link} from 'react-router-dom';
 const frontEndFooter = () => {
     return (
 
-        <section>
-          <div className="footer">
+        <section className="footer">
+          <div className="footer-top">
             <div className="container">
               <div className="row">
                 <div className="col-md-3 col-12 col-sm-12">
                   <div className="about-app">
                     <h2>DOWNLOAD APP</h2>
-                    <p className="about-text">The Food Truck app that Pros use! The app will be simple and effective for the everyday seller and buyer of delicious meals on wheels.</p>
+                    <p>The Food Truck app that Pros use! The app will be simple and effective for the everyday seller and buyer of delicious meals on wheels.</p>
                     <a href="https://play.google.com/store/apps/details?id=com.texque&hl=en" target="_blank" rel="noopener noreferrer">
                       <img className="img-fluid" src="/images/google.png" alt="Google Play Store" />
                       </a>
@@ -22,7 +22,7 @@ const frontEndFooter = () => {
                 </div>
                 <div className="col-md-3 col-6 col-sm-4">
                   <div className="footer-link">
-                    <h2>About Texque</h2>
+                    <h2>About TexQue</h2>
                     <ul>
                         <li><Link to="/about-us">About Us</Link></li>
                         <li><Link to="/contact-us">Contact Us</Link></li>
@@ -35,7 +35,6 @@ const frontEndFooter = () => {
                     <ul>
                         <li><Link to="/privacy-policy"> Privacy Policy</Link></li>
                         <li><Link to="/terms-of-service"> Terms of Service</Link></li>
-                        <li><Link to="/faq">Faq's</Link></li>
                     </ul>
                   </div>
                 </div>
@@ -43,7 +42,7 @@ const frontEndFooter = () => {
                   <div className="footer-link">
                     <h2>Information</h2>
                     <ul className="footer-contact-info">
-                      <li><i className="fa fa-envelope"></i> Email:&nbsp;<a href="mailto:contact@texque.com">support@texque.com</a></li>
+                      <li><i className="fa fa-envelope"></i> <a href="mailto:support@texque.com">support@texque.com</a></li>
                       <li>
                         <a href="https://www.facebook.com/TexQue-104605764519211/" target="_blank" rel="noopener noreferrer"><i className="fa fa-facebook-square"></i> Facebook</a>
                       </li>
