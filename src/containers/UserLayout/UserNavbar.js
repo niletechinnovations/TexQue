@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import { Navbar, Collapse, Nav, NavItem} from 'reactstrap';
 
+import './UserNavbar.css';
+
+
 class UserNavbar extends Component {
 
   constructor(props) {
@@ -64,12 +67,6 @@ class UserNavbar extends Component {
               <Link to="/user/subscription" className="nav-link">
                 <span className="icon-orders"><img src="/images/subscription.svg" height="20" alt="Subscription" /></span>
                 <span className="value-orders">Subscription</span>
-              </Link>
-            </NavItem>
-            <NavItem>
-              <Link to="/user/my-profile" className="nav-link">
-                <span className="icon-orders"><img src="/images/user-icon.svg" height="20" alt="My Profile" /></span>
-                <span className="value-orders">My Profile</span>
               </Link>
             </NavItem>
             </>

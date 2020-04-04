@@ -17,6 +17,7 @@ import { FormErrors } from '../../Formerrors/Formerrors';
 import AutoCompletePlaces from '../../../core/google-map/AutoCompletePlaces';
 
 import "./MyList.css";
+import "./FoodTruckLists.css";
 
 import Checkbox from "../../../core/commonComponent/Checkbox";
 const weekArr = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -385,13 +386,201 @@ class FoodTruckLists extends Component {
             <Button size="sm" color="secondary" className="addListing pull-right" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
           </CardHeader>
           <CardBody>
+          <div className="row">
+            <div className="col-lg-4 SecondRow">
+              <div class="item">
+                  <div class="products-item-card">
+                    <div class="products-item-image">
+                        <div className="icon-big text-center icon-warning">
+                          <img src="/images/1.png" alt="listings" />
+                        </div>
+                     </div>
+                    <div class="products-item-content">
+                        <h2><a href="#">Silver Spoon Food Trucks</a></h2>
+                        <div class="products-rate"><i class="fa fa-star-o"></i> 0</div>
+                        <div class="location">311 W. Broadway, Eden, TX 76837, United States</div>
+
+                        <div className="row">
+                          <div className="col-lg-6 dateShow">
+                            <h6>Date</h6>
+                            <p>03/03/2020</p>
+                          </div> 
+
+                          <div className="col-lg-6 statusShow">
+                            <h6>Status</h6>
+                            <p>03/03/2020</p>
+                          </div> 
+
+                          <div className="col-lg-4 actionShow">
+                            <h6>Action</h6>
+                            <div><a class="btn btn-info btn-sm" href="/user/my-listings/5e819742c463de186344d503"><i class="fa fa-pencil"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp;</div>
+                          </div>  
+                          <div className="col-lg-8 statusShow">
+                            <h6>Address</h6>
+                            <p>United States</p>
+                          </div> 
+                        </div>
+                    </div>
+                  </div>
+               </div>
+            </div>
+            <div className="col-lg-4 SecondRow">
+              <div class="item">
+                  <div class="products-item-card">
+                    <div class="products-item-image">
+                        <div className="icon-big text-center icon-warning">
+                          <img src="/images/1.png" alt="listings" />
+                        </div>
+                     </div>
+                    <div class="products-item-content">
+                        <h2><a href="#">Silver Spoon Food Trucks</a></h2>
+                        <div class="products-rate"><i class="fa fa-star-o"></i> 0</div>
+                        <div class="location">311 W. Broadway, Eden, TX 76837, United States</div>
+
+                        <div className="row">
+                          <div className="col-lg-6 dateShow">
+                            <h6>Date</h6>
+                            <p>03/03/2020</p>
+                          </div> 
+
+                          <div className="col-lg-6 statusShow">
+                            <h6>Status</h6>
+                            <p>03/03/2020</p>
+                          </div> 
+
+                          <div className="col-lg-4 actionShow">
+                            <h6>Action</h6>
+                            <div><a class="btn btn-info btn-sm" href="/user/my-listings/5e819742c463de186344d503"><i class="fa fa-pencil"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp;</div>
+                          </div>  
+                          <div className="col-lg-8 statusShow">
+                            <h6>Address</h6>
+                            <p>United States</p>
+                          </div> 
+                        </div>
+                    </div>
+                  </div>
+               </div>
+            </div> 
+            <div className="col-lg-4 SecondRow">
+              <div class="item">
+                  <div class="products-item-card">
+                    <div class="products-item-image">
+                        <div className="icon-big text-center icon-warning">
+                          <img src="/images/1.png" alt="listings" />
+                        </div>
+                     </div>
+                    <div class="products-item-content">
+                        <h2><a href="#">Silver Spoon Food Trucks</a></h2>
+                        <div class="products-rate"><i class="fa fa-star-o"></i> 0</div>
+                        <div class="location">311 W. Broadway, Eden, TX 76837, United States</div>
+
+                        <div className="row">
+                          <div className="col-lg-6 dateShow">
+                            <h6>Date</h6>
+                            <p>03/03/2020</p>
+                          </div> 
+
+                          <div className="col-lg-6 statusShow">
+                            <h6>Status</h6>
+                            <p>03/03/2020</p>
+                          </div> 
+
+                          <div className="col-lg-4 actionShow">
+                            <h6>Action</h6>
+                            <div><a class="btn btn-info btn-sm" href="/user/my-listings/5e819742c463de186344d503"><i class="fa fa-pencil"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp;</div>
+                          </div>  
+                          <div className="col-lg-8 statusShow">
+                            <h6>Address</h6>
+                            <p>United States</p>
+                          </div> 
+                        </div>
+                    </div>
+                  </div>
+               </div>
+            </div>
+
+            <div className="col-lg-4 SecondRow">
+              <div class="item">
+                  <div class="products-item-card">
+                    <div class="products-item-image">
+                        <div className="icon-big text-center icon-warning">
+                          <img src="/images/1.png" alt="listings" />
+                        </div>
+                     </div>
+                    <div class="products-item-content">
+                        <h2><a href="#">Silver Spoon Food Trucks</a></h2>
+                        <div class="products-rate"><i class="fa fa-star-o"></i> 0</div>
+                        <div class="location">311 W. Broadway, Eden, TX 76837, United States</div>
+
+                        <div className="row">
+                          <div className="col-lg-6 dateShow">
+                            <h6>Date</h6>
+                            <p>03/03/2020</p>
+                          </div> 
+
+                          <div className="col-lg-6 statusShow">
+                            <h6>Status</h6>
+                            <p>03/03/2020</p>
+                          </div> 
+
+                          <div className="col-lg-4 actionShow">
+                            <h6>Action</h6>
+                            <div><a class="btn btn-info btn-sm" href="/user/my-listings/5e819742c463de186344d503"><i class="fa fa-pencil"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp;</div>
+                          </div>  
+                          <div className="col-lg-8 statusShow">
+                            <h6>Address</h6>
+                            <p>United States</p>
+                          </div> 
+                        </div>
+                    </div>
+                  </div>
+               </div>
+            </div>
+
+            <div className="col-lg-4 SecondRow">
+              <div class="item">
+                  <div class="products-item-card">
+                    <div class="products-item-image">
+                        <div className="icon-big text-center icon-warning">
+                          <img src="/images/1.png" alt="listings" />
+                        </div>
+                     </div>
+                    <div class="products-item-content">
+                        <h2><a href="#">Silver Spoon Food Trucks</a></h2>
+                        <div class="products-rate"><i class="fa fa-star-o"></i> 0</div>
+                        <div class="location">311 W. Broadway, Eden, TX 76837, United States</div>
+
+                        <div className="row">
+                          <div className="col-lg-6 dateShow">
+                            <h6>Date</h6>
+                            <p>03/03/2020</p>
+                          </div> 
+
+                          <div className="col-lg-6 statusShow">
+                            <h6>Status</h6>
+                            <p>03/03/2020</p>
+                          </div> 
+
+                          <div className="col-lg-4 actionShow">
+                            <h6>Action</h6>
+                            <div><a class="btn btn-info btn-sm" href="/user/my-listings/5e819742c463de186344d503"><i class="fa fa-pencil"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp;</div>
+                          </div>  
+                          <div className="col-lg-8 statusShow">
+                            <h6>Address</h6>
+                            <p>United States</p>
+                          </div> 
+                        </div>
+                    </div>
+                  </div>
+               </div>
+            </div>
+          </div>
             
-            <Row>
-              
+            {/*<Row>
               <Col md={12}>
                 <FoodTruckData data={truckLists} editStoreAction={this.handleEditStore} deleteFoodTruckAction={this.handleDeleteFoodTruck} dataTableLoadingStatus = {this.state.loading} />
               </Col>
-            </Row> 
+            </Row> */}
           </CardBody>
         </Card>
 

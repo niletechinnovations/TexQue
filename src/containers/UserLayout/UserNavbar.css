@@ -1,4 +1,4 @@
-.user-profile-section{background:#f4f7fb; padding: 20px 0;}
+.user-profile-section{background:#f4f7fb; padding: 20px 6rem;}
 .user-widget-info {position: relative; width: 100%; padding: 10px; background: #fff; margin-bottom: 20px; -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .07);
     box-shadow: 0 1px 2px rgba(0, 0, 0, .07); } 
 .user-profile-info-media {width: 100px; height: 100px; border-radius: 50%; position: relative; overflow: hidden; text-align: center; margin: 0 auto; }
@@ -25,5 +25,11 @@ ul.user-widget-list li a{ width: 100%;}
 
 
 
-.user-navbar .user-widget-list .nav-item a.nav-link{background: #ccc; padding: 10px;}
+.user-navbar .user-widget-list .nav-item .nav-link{background: #d8dfec; padding: .7rem 1.5rem; margin: 1px;}
+.user-profile-section .user-navbar .navbar.navbar-expand-md{padding: .5rem 0px;}
 
+.user-navbar .user-widget-list .nav-item .nav-link:hover{background: #c8d3e6;}
+.user-navbar .user-widget-list .nav-item .nav-link:active{background: #c8d3e6;}
+.user-navbar .user-widget-list .nav-item .nav-link:focus{background: #f4f7fb; border-top: 1px solid #acb8cc; border-left: 1px solid #acb8cc; border-right: 1px solid #acb8cc;}
+/*.user-navbar .user-widget-list .nav-item .nav-link:hover{color: #1239f3;}*/
+/*.user-navbar .user-widget-list .nav-item .nav-link .value-orders:active{color: #1239f3;}*/
