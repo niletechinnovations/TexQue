@@ -54,7 +54,7 @@ class AdvertisementData extends Component {
             name: 'adImage',
         },
         {
-            label: 'Date',
+            label: 'Posted on',
             name: 'createdAt',
         },
         {
@@ -82,7 +82,7 @@ class AdvertisementData extends Component {
       selectableRows: 'none',
       textLabels: {
         body: {
-          noMatch: this.props.dataTableLoadingStatus ? "Processing........" : "Sorry, no matching records found",
+          noMatch: this.props.dataTableLoadingStatus ? "Loading........" : "",
           toolTip: "Sort",
           columnHeaderTooltip: column => `Sort for ${column.label}`
         },

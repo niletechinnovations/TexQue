@@ -40,7 +40,7 @@ button.btn{ font-size: 13px;}
    color: #434b4e;
    font-size: 13px;
 }
-button.btn{ padding: 7px 15px; font-size: 14px; border-radius: 4px; cursor: pointer; outline: none;}
+/*button.btn{ padding: 7px 15px; font-size: 14px; border-radius: 4px; cursor: pointer; outline: none;}*/
 button.primary-button{
    background: #002164;
    border-color: #002164;

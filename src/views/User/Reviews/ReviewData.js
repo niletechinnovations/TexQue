@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-import MUIDataTable from "mui-datatables";
+//import MUIDataTable from "mui-datatables";
 
 import "./ReviewData.css";
 
@@ -44,7 +44,7 @@ class ReviewData extends Component {
       rowsItem.push(resInfo);
     }
 
-    const columns = [ 
+  /*   const columns = [ 
         {
             label: 'User',
             name: 'reviewedBY',
@@ -88,55 +88,55 @@ class ReviewData extends Component {
       },
       fixedHeaderOptions: { xAxis: false, yAxis: false }
 
-    };
+    }; */
 
      
     return (
       <>  
-       <div class="mainHeading card-header"><strong>Food Trucks</strong></div>
+       <div className="mainHeading card-header"><strong>Food Truck Reviews</strong></div>
        
-	<div class="container">
-	  <div class="row mt-3">
-	    <div class="col-lg-2 col-2 ">
+	<div className="container">
+	  <div className="row mt-3">
+	    <div className="col-lg-2 col-2 ">
 	    	<img className="img-thumnail" src="/images/avatar.jpg" alt="listings" width="100%"/>
-	    	<figcaption class="figure-caption text-center mt-1">A caption for the above image.</figcaption>
+	    	<figcaption className="figure-caption text-center mt-1">A caption for the above image.</figcaption>
 	    </div>
-	    <div class="col-lg-2 col-2 ">
+	    <div className="col-lg-2 col-2 ">
 	    	<img className="img-thumnail" src="/images/avatar.jpg" alt="listings" width="100%"/>
-	    	<figcaption class="figure-caption text-center mt-1">A caption for the above image.</figcaption>
+	    	<figcaption className="figure-caption text-center mt-1">A caption for the above image.</figcaption>
 	    </div>
-	    <div class="col-lg-2 col-2 ">
+	    <div className="col-lg-2 col-2 ">
 	    	<img className="img-thumnail" src="/images/avatar.jpg" alt="listings" width="100%"/>
-	    	<figcaption class="figure-caption text-center mt-1">A caption for the above image.</figcaption>
+	    	<figcaption className="figure-caption text-center mt-1">A caption for the above image.</figcaption>
 	    </div>
-	    <div class="col-lg-2 col-2 ">
+	    <div className="col-lg-2 col-2 ">
 	    	<img className="img-thumnail" src="/images/avatar.jpg" alt="listings" width="100%"/>
-	    	<figcaption class="figure-caption text-center mt-1">A caption for the above image.</figcaption>
+	    	<figcaption className="figure-caption text-center mt-1">A caption for the above image.</figcaption>
 	    </div>
-	    <div class="col-lg-2 col-2 ">
+	    <div className="col-lg-2 col-2 ">
 	    	<img className="img-thumnail" src="/images/avatar.jpg" alt="listings" width="100%"/>
-	    	<figcaption class="figure-caption text-center mt-1">A caption for the above image.</figcaption>
+	    	<figcaption className="figure-caption text-center mt-1">A caption for the above image.</figcaption>
 	    </div>
-	    <div class="col-lg-2 col-2 ">
+	    <div className="col-lg-2 col-2 ">
 	    	<img className="img-thumnail" src="/images/avatar.jpg" alt="listings" width="100%"/>
-	    	<figcaption class="figure-caption text-center mt-1">A caption for the above image.</figcaption>
+	    	<figcaption className="figure-caption text-center mt-1">A caption for the above image.</figcaption>
 	    </div>
 	  </div>
 	</div>
 
-        <div class="row d-flex justify-content-center">
-          <div class="col-lg-9">
-              <div class="card">
-                  <div class="comment-widgets">
-       				<div class="mainHeading card-header SubHeading"><strong>Reviews</strong></div>
-                      <div class="d-flex flex-row comment-row">
+        <div className="row d-flex justify-content-center">
+          <div className="col-lg-9">
+              <div className="card">
+                  <div className="comment-widgets">
+       				<div className="mainHeading card-header SubHeading"><strong>Reviews</strong></div>
+                      <div className="d-flex flex-row comment-row">
                           <div className="userProfile">
                             <img src="/images/avatar.jpg" alt="listings" width="100%"/>
                           </div>
-                          <div class="comment-text w-100">
-                              <h6 class="font-medium">James Thomas</h6> 
-                              <div class="products-rate-1"><i class="fa fa-star-o"></i> 0</div>
-                              <p class="description">This is awesome website. I would love to comeback again. </p>
+                          <div className="comment-text w-100">
+                              <h6 className="font-medium">James Thomas</h6> 
+                              <div className="products-rate-1"><i className="fa fa-star-o"></i> 0</div>
+                              <p className="description">This is awesome website. I would love to comeback again. </p>
                               <div className="row">
                                 <div className="col-lg-9">
                                   <div className="statusContainer">
@@ -146,22 +146,22 @@ class ReviewData extends Component {
                                   </div>
                                 </div>
                                 <div className="col-lg-3">
-                                  <div class="comment-footer float-right">
-                                    <button type="button" class="btn btn-cyan btn-sm"><i class="fa fa-edit"></i>  Reply</button>
+                                  <div className="comment-footer float-right">
+                                    <button type="button" className="btn btn-cyan btn-sm"><i className="fa fa-edit"></i>  Reply</button>
                                   </div>
                                 </div>
                               </div>
                           </div>
                       </div>
 
-                      <div class="d-flex flex-row comment-row">
+                      <div className="d-flex flex-row comment-row">
                           <div className="userProfile">
                             <img src="/images/avatar.jpg" alt="listings" width="100%"/>
                           </div>
-                          <div class="comment-text w-100">
-                              <h6 class="font-medium">James Thomas</h6> 
-                              <div class="products-rate-1"><i class="fa fa-star-o"></i> 0</div>
-                              <p class="description">This is awesome website. I would love to comeback again. </p>
+                          <div className="comment-text w-100">
+                              <h6 className="font-medium">James Thomas</h6> 
+                              <div className="products-rate-1"><i className="fa fa-star-o"></i> 0</div>
+                              <p className="description">This is awesome website. I would love to comeback again. </p>
                               <div className="row">
                                 <div className="col-lg-9">
                                   <div className="statusContainer">
@@ -171,8 +171,8 @@ class ReviewData extends Component {
                                   </div>
                                 </div>
                                 <div className="col-lg-3">
-                                  <div class="comment-footer float-right">
-                                    <button type="button" class="btn btn-cyan btn-sm"><i class="fa fa-edit"></i>  Reply</button>
+                                  <div className="comment-footer float-right">
+                                    <button type="button" className="btn btn-cyan btn-sm"><i className="fa fa-edit"></i>  Reply</button>
                                   </div>
                                 </div>
                               </div>
@@ -180,14 +180,14 @@ class ReviewData extends Component {
                       </div>
 
                       
-                      <div class="d-flex flex-row comment-row">
+                      <div className="d-flex flex-row comment-row">
                           <div className="userProfile">
                             <img src="/images/avatar.jpg" alt="listings" width="100%"/>
                           </div>
-                          <div class="comment-text w-100">
-                              <h6 class="font-medium">Johnathan Doeting</h6> 
-                              <div class="products-rate-1"><i class="fa fa-star-o"></i> 0</div>
-                              <p class="description">Great industry leaders are not the real heroes of stock market. </p>
+                          <div className="comment-text w-100">
+                              <h6 className="font-medium">Johnathan Doeting</h6> 
+                              <div className="products-rate-1"><i className="fa fa-star-o"></i> 0</div>
+                              <p className="description">Great industry leaders are not the real heroes of stock market. </p>
                               <div className="row">
                                 <div className="col-lg-9">
                                   <div className="statusContainer">
@@ -197,8 +197,8 @@ class ReviewData extends Component {
                                   </div>
                                 </div>
                                 <div className="col-lg-3">
-                                  <div class="comment-footer float-right">
-                                    <button type="button" class="btn btn-cyan btn-sm"><i class="fa fa-edit"></i>  Reply</button>
+                                  <div className="comment-footer float-right">
+                                    <button type="button" className="btn btn-cyan btn-sm"><i className="fa fa-edit"></i>  Reply</button>
                                   </div>
                                 </div>
                               </div>

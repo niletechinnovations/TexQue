@@ -6,12 +6,12 @@ import {
 
 import Select from 'react-select';
 
-//import  { Link } from 'react-router-dom';
+import  { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 
-import FoodTruckData from './FoodTruckData';
+//import FoodTruckData from './FoodTruckData';
 import Loader from '../../Loader/Loader';
 import { FormErrors } from '../../Formerrors/Formerrors';
 import AutoCompletePlaces from '../../../core/google-map/AutoCompletePlaces';
@@ -46,7 +46,7 @@ class FoodTruckLists extends Component {
         }),
         {}
       ),
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',description:'', defaultImage: '',category_id:''},
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',description:'', defaultImage: '',category_id:'',timing:''},
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', error: ''},
       formValid: false,
     } 
@@ -134,6 +134,7 @@ class FoodTruckLists extends Component {
         formData.append('contactPerson', formInputField.contactPerson);
         formData.append('phoneNumber', formInputField.phoneNumber);
         formData.append('description', formInputField.description);
+        formData.append('timing', formInputField.timing);
         formData.append('address', this.state.address);
         formData.append('latitude', this.state.latitude);
         formData.append('longitude', this.state.longitude);
@@ -292,16 +293,15 @@ class FoodTruckLists extends Component {
       modal: !this.state.modal,
       rowIndex: -1,
       formValid: false,
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '', },
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',timing:'' },
       formErrors: {truckName: '', error: ''}
     });
   }
   
   /* Delete Food Truck*/
   handleDeleteFoodTruck(rowIndex){
-
     const foodTruckItem = this.state.truckLists[rowIndex];
-   
+    
     this.setState( { loading: true}, () => {
       commonService.deleteAPIWithAccessToken( `food-truck/`, {foodTruckId: foodTruckItem.foodTruckId})
         .then( res => {
@@ -359,7 +359,7 @@ class FoodTruckLists extends Component {
   
 
   render() {
-    const { truckLists, loading, modal, formProccessing, categoryList } = this.state;
+    const {  loading, modal, formProccessing, truckLists, categoryList } = this.state;
     let categoryItems = []; 
     let counter = 0;
     for(const [i, category] of categoryList.entries()){
@@ -383,197 +383,46 @@ class FoodTruckLists extends Component {
         <Card>
           <CardHeader className="mainHeading">
             <strong>Food Truck list</strong>
-            <Button size="sm" color="secondary" className="addListing pull-right" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
+            <Button size="sm" color="secondary" className="addListing pull-right" type="button" onClick={this.toggle}  title="Add New Food Truck"><i className="fa fa-plus"></i> Add Food Truck</Button>
           </CardHeader>
           <CardBody>
           <div className="row">
-            <div className="col-lg-4 SecondRow">
-              <div class="item">
-                  <div class="products-item-card">
-                    <div class="products-item-image">
+          {truckLists.map((truckInfo, index) => 
+            <div key={index} className="col-lg-4 SecondRow">
+              <div className="item">
+                  <div className="products-item-card">
+                    <div className="products-item-image">
                         <div className="icon-big text-center icon-warning">
-                          <img src="/images/1.png" alt="listings" />
+                          { (truckInfo.featuredImage!=='' ? <img src={truckInfo.featuredImage} alt={truckInfo.truckName} /> : <img src="/images/1.png" alt="TruckBanner" /> ) }
                         </div>
                      </div>
-                    <div class="products-item-content">
-                        <h2><a href="#">Silver Spoon Food Trucks</a></h2>
-                        <div class="products-rate"><i class="fa fa-star-o"></i> 0</div>
-                        <div class="location">311 W. Broadway, Eden, TX 76837, United States</div>
-
+                    <div className="food-truck-item-content">
+                        <h2><Link to={`/user/my-listings/${truckInfo.foodTruckId}`}>{truckInfo.truckName}</Link></h2>
+                        <div className="products-rate"><i className="fa fa-star-o"></i> {truckInfo.rating}</div>
+                        <div className="location">{truckInfo.address}</div>
                         <div className="row">
                           <div className="col-lg-6 dateShow">
-                            <h6>Date</h6>
-                            <p>03/03/2020</p>
+                            <h6>Created on</h6>
+                            <p>{(new Date(truckInfo.createdAt)).toLocaleDateString("en-US")}</p>
                           </div> 
-
                           <div className="col-lg-6 statusShow">
                             <h6>Status</h6>
-                            <p>03/03/2020</p>
+                            <p>{truckInfo.status ? "Active" : "Inactive"}</p>
                           </div> 
 
-                          <div className="col-lg-4 actionShow">
-                            <h6>Action</h6>
-                            <div><a class="btn btn-info btn-sm" href="/user/my-listings/5e819742c463de186344d503"><i class="fa fa-pencil"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp;</div>
+                          <div className="col-lg-12 actionShow">
+                            <Link to={`/user/my-listings/${truckInfo.foodTruckId}`} className="btn btn-info btn-sm" title="Edit Food Truck Info"><i className="fa fa-pencil"></i></Link>
+                            &nbsp;
+                            <Button color="danger" size="sm" disabled={this.state.buttonProcessing} onClick={() => {
+                            if (window.confirm('Are you sure you want to delete this food truck?')) this.handleDeleteFoodTruck(index) }} title="Delete Food Truck"><i className="fa fa-trash"></i></Button>                              
                           </div>  
-                          <div className="col-lg-8 statusShow">
-                            <h6>Address</h6>
-                            <p>United States</p>
-                          </div> 
                         </div>
-                    </div>
+                      </div>
                   </div>
                </div>
             </div>
-            <div className="col-lg-4 SecondRow">
-              <div class="item">
-                  <div class="products-item-card">
-                    <div class="products-item-image">
-                        <div className="icon-big text-center icon-warning">
-                          <img src="/images/1.png" alt="listings" />
-                        </div>
-                     </div>
-                    <div class="products-item-content">
-                        <h2><a href="#">Silver Spoon Food Trucks</a></h2>
-                        <div class="products-rate"><i class="fa fa-star-o"></i> 0</div>
-                        <div class="location">311 W. Broadway, Eden, TX 76837, United States</div>
-
-                        <div className="row">
-                          <div className="col-lg-6 dateShow">
-                            <h6>Date</h6>
-                            <p>03/03/2020</p>
-                          </div> 
-
-                          <div className="col-lg-6 statusShow">
-                            <h6>Status</h6>
-                            <p>03/03/2020</p>
-                          </div> 
-
-                          <div className="col-lg-4 actionShow">
-                            <h6>Action</h6>
-                            <div><a class="btn btn-info btn-sm" href="/user/my-listings/5e819742c463de186344d503"><i class="fa fa-pencil"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp;</div>
-                          </div>  
-                          <div className="col-lg-8 statusShow">
-                            <h6>Address</h6>
-                            <p>United States</p>
-                          </div> 
-                        </div>
-                    </div>
-                  </div>
-               </div>
-            </div> 
-            <div className="col-lg-4 SecondRow">
-              <div class="item">
-                  <div class="products-item-card">
-                    <div class="products-item-image">
-                        <div className="icon-big text-center icon-warning">
-                          <img src="/images/1.png" alt="listings" />
-                        </div>
-                     </div>
-                    <div class="products-item-content">
-                        <h2><a href="#">Silver Spoon Food Trucks</a></h2>
-                        <div class="products-rate"><i class="fa fa-star-o"></i> 0</div>
-                        <div class="location">311 W. Broadway, Eden, TX 76837, United States</div>
-
-                        <div className="row">
-                          <div className="col-lg-6 dateShow">
-                            <h6>Date</h6>
-                            <p>03/03/2020</p>
-                          </div> 
-
-                          <div className="col-lg-6 statusShow">
-                            <h6>Status</h6>
-                            <p>03/03/2020</p>
-                          </div> 
-
-                          <div className="col-lg-4 actionShow">
-                            <h6>Action</h6>
-                            <div><a class="btn btn-info btn-sm" href="/user/my-listings/5e819742c463de186344d503"><i class="fa fa-pencil"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp;</div>
-                          </div>  
-                          <div className="col-lg-8 statusShow">
-                            <h6>Address</h6>
-                            <p>United States</p>
-                          </div> 
-                        </div>
-                    </div>
-                  </div>
-               </div>
-            </div>
-
-            <div className="col-lg-4 SecondRow">
-              <div class="item">
-                  <div class="products-item-card">
-                    <div class="products-item-image">
-                        <div className="icon-big text-center icon-warning">
-                          <img src="/images/1.png" alt="listings" />
-                        </div>
-                     </div>
-                    <div class="products-item-content">
-                        <h2><a href="#">Silver Spoon Food Trucks</a></h2>
-                        <div class="products-rate"><i class="fa fa-star-o"></i> 0</div>
-                        <div class="location">311 W. Broadway, Eden, TX 76837, United States</div>
-
-                        <div className="row">
-                          <div className="col-lg-6 dateShow">
-                            <h6>Date</h6>
-                            <p>03/03/2020</p>
-                          </div> 
-
-                          <div className="col-lg-6 statusShow">
-                            <h6>Status</h6>
-                            <p>03/03/2020</p>
-                          </div> 
-
-                          <div className="col-lg-4 actionShow">
-                            <h6>Action</h6>
-                            <div><a class="btn btn-info btn-sm" href="/user/my-listings/5e819742c463de186344d503"><i class="fa fa-pencil"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp;</div>
-                          </div>  
-                          <div className="col-lg-8 statusShow">
-                            <h6>Address</h6>
-                            <p>United States</p>
-                          </div> 
-                        </div>
-                    </div>
-                  </div>
-               </div>
-            </div>
-
-            <div className="col-lg-4 SecondRow">
-              <div class="item">
-                  <div class="products-item-card">
-                    <div class="products-item-image">
-                        <div className="icon-big text-center icon-warning">
-                          <img src="/images/1.png" alt="listings" />
-                        </div>
-                     </div>
-                    <div class="products-item-content">
-                        <h2><a href="#">Silver Spoon Food Trucks</a></h2>
-                        <div class="products-rate"><i class="fa fa-star-o"></i> 0</div>
-                        <div class="location">311 W. Broadway, Eden, TX 76837, United States</div>
-
-                        <div className="row">
-                          <div className="col-lg-6 dateShow">
-                            <h6>Date</h6>
-                            <p>03/03/2020</p>
-                          </div> 
-
-                          <div className="col-lg-6 statusShow">
-                            <h6>Status</h6>
-                            <p>03/03/2020</p>
-                          </div> 
-
-                          <div className="col-lg-4 actionShow">
-                            <h6>Action</h6>
-                            <div><a class="btn btn-info btn-sm" href="/user/my-listings/5e819742c463de186344d503"><i class="fa fa-pencil"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>&nbsp;</div>
-                          </div>  
-                          <div className="col-lg-8 statusShow">
-                            <h6>Address</h6>
-                            <p>United States</p>
-                          </div> 
-                        </div>
-                    </div>
-                  </div>
-               </div>
-            </div>
+          )}  
+          
           </div>
             
             {/*<Row>
@@ -585,7 +434,7 @@ class FoodTruckLists extends Component {
         </Card>
 
         <Modal isOpen={modal} toggle={this.toggle} size="lg" className="full-width-modal-section employee-modal">
-          <ModalHeader toggle={this.toggle}>Food Truck</ModalHeader>
+          <ModalHeader toggle={this.toggle} className="pb-0">Food Truck</ModalHeader>
           <Form onSubmit={this.submitHandler} noValidate className="texQueForm">
             <ModalBody>
               <FormErrors formErrors={this.state.formErrors} />
@@ -639,12 +488,6 @@ class FoodTruckLists extends Component {
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
-                  <FormGroup> 
-                    <Label htmlFor="description">Description</Label>
-                    <Input type="textarea" placeholder="Food truck details" id="description" name="description" value={this.state.formField.description} onChange={this.changeHandler} />
-                  </FormGroup>
-                </Col>
-                <Col md={"6"}>
                   <FormGroup>
                     <Label htmlFor="avl">Availability </Label><br/>
                     {weekArr.map((week, index) =>  
@@ -662,6 +505,19 @@ class FoodTruckLists extends Component {
                     )}
                   </FormGroup>  
                 </Col>
+                <Col md={"6"}>
+                  <FormGroup> 
+                    <Label htmlFor="timing">Opening Hours</Label>
+                    <input type="text" id="timing" className="form-control" name="timing" value={this.state.formField.timing} onChange={this.changeHandler} />
+                  </FormGroup>
+                </Col>
+                <Col md={"12"}>
+                  <FormGroup> 
+                    <Label htmlFor="description">Description</Label>
+                    <Input type="textarea" placeholder="Food truck details" id="description" name="description" value={this.state.formField.description} onChange={this.changeHandler} />
+                  </FormGroup>
+                </Col>
+                
               </Row>
             </ModalBody>
             <ModalFooter>

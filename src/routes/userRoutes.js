@@ -13,6 +13,7 @@ import AdvertiserProfile from '../views/Advertiser/Profile/Profile';
 import ReviewLists from '../views/User/Reviews/ReviewLists';
 import TransactionList from '../views/User/Transactions/TransactionLists';
 import SubscriptionPaymentStatus from '../views/User/FoodTruckSubscription/SubscriptionPaymentStatus';
+import AdvertiserTransactionLists from '../views/User/Transactions/AdvertiserTransactionLists';
 
 const userRoutes = [
   { path: '/user/', exact: true, name: 'Home' },
@@ -31,8 +32,8 @@ const userRoutes = [
   { path: '/advertiser/plan', exact: true,  name: 'Advertiser Plan', component: AdvertiserPlan },
   { path: '/advertiser/ads', exact: true,  name: 'Advertisement List', component: AdvertisementList },
   { path: '/advertiser/payment/:status', exact: true,  name: 'Payment Status', component: AdvertiserPaymentStatus },
-  { path: '/advertiser/profile', exact: true,  name: 'Advertiser Profile', component: AdvertiserProfile }
-  
+  { path: '/advertiser/profile', exact: true,  name: 'Advertiser Profile', component: AdvertiserProfile },
+  { path: '/advertiser/transactions', exact: true,  name: 'Advertiser Transactions', component: AdvertiserTransactionLists }
 
 ];
 

@@ -37,7 +37,7 @@ class TransactionData extends Component {
         indexVal: i,
         reviewId: enquiry.reviewId,
         action: <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-          this.editDataItem(i)}><i className="fa fa-eye"></i> </Button>
+          this.editDataItem(i)} title="View Transaction Details"><i className="fa fa-eye"></i> </Button>
       }      
       rowsItem.push(resInfo);
     }
@@ -70,18 +70,17 @@ class TransactionData extends Component {
       selectableRows: 'none',
       textLabels: {
         body: {
-          noMatch: this.props.dataTableLoadingStatus ? "Processing........" : "Sorry, no matching records found",
+          noMatch: this.props.dataTableLoadingStatus ? "Loading........" : "",
           toolTip: "Sort",
           columnHeaderTooltip: column => `Sort for ${column.label}`
         },
       },
       fixedHeaderOptions: { xAxis: false, yAxis: false }
-
     };
     
     return (
       <MUIDataTable
-        title={"My Transactions"}
+        title={"Payment History"}
         data={rowsItem}
         columns={columns}
         options={options}

@@ -71,10 +71,28 @@ class HomePage extends React.Component {
 
     changePlanType = () => {
         if(this.state.activePlanType===1)
-          this.setState( { activePlanType: 4 } );
+            this.setState( { activePlanType: 4 } );
         else
-          this.setState( { activePlanType: 1 } );
+            this.setState( { activePlanType: 1 } );
     }
+
+    choosePlan(planId, index){
+        if(planId!=='' && index!==''){
+          let choosedPlanInfo = this.state.planList[index];
+          let planVariationId = '';
+          if(this.state.activePlanType===1)
+            planVariationId = choosedPlanInfo.planVariation[0].id;
+          else
+            planVariationId = choosedPlanInfo.planVariation[1].id;
+            
+            localStorage.setItem( 'choosedPlanId', planId );
+            localStorage.setItem( 'choosedplanVariationId', planVariationId );
+            this.props.history.push('/register');
+        }else{
+            alert('Please choose a plan!');
+            return false;
+        }
+    }    
 
     render() {
         const { dataAdvertismentList, dataTopRatedTruckList, planList, activePlanType } = this.state;
@@ -178,46 +196,39 @@ class HomePage extends React.Component {
                     { planList.map( (planInfo, index) =>
 
                         <div className="col-md-3"  key={index}>
-                            <div className="plan-intro-card">
+                            <div className={ ( index===2 ? 'plan-intro-card current-plan' : 'plan-intro-card' ) }>
                                 <h2>{planInfo.planName}</h2>
-                                <div className="price-info">
-                                    <div  className="price-value">$9.99</div>
-                                    <span className="price-per">/ per month</span>
-                                </div>
                                 
+                                { (activePlanType===1) ? 
+                                    <div className="price-info">
+                                        <div className="price-value">${planInfo.planVariation[0].amount}</div>
+                                        <span className="price-per">/ per month</span>
+                                    </div>
+                                  :
+                                  <div className="price-info">
+                                        <div className="price-value">${planInfo.planVariation[1].amount}</div>
+                                        <span className="price-per">/ per year</span>
+                                    </div>
+                                }                              
                                 <div className="plan-point-list">
                                     <h4>Includes:</h4>
                                     <ul>
-                                    <li>Up to 2 Listings</li>
-                                    <li>Unlimited Inquiries</li>
-                                    <li>Unlimited Reviews</li>
-                                    <li>Unlimited Locations</li>
+                                    <li>Up to {planInfo.advertisementAccess} Listings</li>
+                                    {
+                                        planInfo.description.split("\n").map(function(item, idx) {
+                                            return (
+                                                <li key={idx}>
+                                                    {item}
+                                                </li>
+                                            )
+                                        })
+                                    }
                                     </ul>
                                 </div>
-                                <Link to="/register" className="btn btn-conversion">Subscribe Now</Link>
+                                <button onClick={ ()=> this.choosePlan(planInfo.planId, index)  } className="btn btn-conversion">Subscribe Now</button>
                             </div>
                         </div>
                     )}
-
-                        <div className="col-md-3">
-                            <div className="plan-intro-card current-plan">
-                                <h2>Gold</h2>
-                                <div className="price-info">
-                                    <div  className="price-value">$29.99</div>
-                                    <span className="price-per">/ per month</span>
-                                </div>
-                                <div className="plan-point-list">
-                                    <h4>Includes:</h4>
-                                    <ul>
-                                    <li>Up to 10 Listings</li>
-                                    <li>Unlimited Inquiries</li>
-                                    <li>Unlimited Reviews</li>
-                                    <li>Unlimited Locations</li>
-                                    </ul>
-                                </div>
-                                <Link to="/register" className="btn btn-conversion">Subscribe Now</Link>
-                            </div>
-                        </div>
 
                     </div>
                 </div>  
@@ -313,7 +324,7 @@ class HomePage extends React.Component {
             <div className="container">
                 <div className="heading-title text-center">
                     <h2>Trending Food Trucks</h2>
-                    <p>These Food Trucks use TexQue.com to drive more sales and customers to their locations and food trucks.</p>
+                    <p className="text-center">These Food Trucks use TexQue.com to drive more sales and customers to their locations and food trucks.</p>
                 </div>
                 <div className="row">
                     <div className="col-md-12">

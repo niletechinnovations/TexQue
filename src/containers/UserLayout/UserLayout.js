@@ -1,6 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { Container,Col,Row } from 'reactstrap';
+import { Col,Row } from 'reactstrap';
 import { ToastContainer } from 'react-toastify';
 // routes config
 import userRoutes from '../../routes/userRoutes';

@@ -11,7 +11,6 @@ import commonService from '../../../core/services/commonService';
 import EnquiryData from './AdvertisementData';
 import Loader from '../../Loader/Loader';
 
-
 class AdvertisementList extends Component {
   constructor(props){
     super(props);
@@ -235,7 +234,7 @@ class AdvertisementList extends Component {
         <Card>
           <CardHeader className="mainHeading">
             <strong>Advertisement</strong>
-            <Button size="sm" color="secondary" className="addListing pull-right" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
+            <Button size="sm" color="secondary" className="addListing pull-right" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add Advertisement</Button>
           </CardHeader>
           <CardBody>
             

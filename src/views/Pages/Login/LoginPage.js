@@ -47,7 +47,6 @@ class LoginPage extends Component {
       commenService.postAPI( `auth/sign-in`, loginData )
         .then( res => {
          
-          console.log(res);
           if ( undefined === res.data || !res.data.status ) {
             this.setState( { loading: false } );
             if(res.data.errors){
@@ -93,6 +92,9 @@ class LoginPage extends Component {
           localStorage.setItem( 'authId', loggedInfo.data.authId );
           localStorage.setItem( 'userName', loggedInfo.data.firstName+' '+loggedInfo.data.lastName );
           localStorage.setItem( 'userEmail', loggedInfo.data.email );
+          localStorage.setItem( 'isActivePlan', loggedInfo.data.isActivePlan );
+          localStorage.setItem( 'isAdvertiser', loggedInfo.data.isAdvertiser );
+          localStorage.setItem( 'isOrganization', loggedInfo.data.isOrganization );
           
           this.setState( {
             loading: false,              
@@ -101,10 +103,18 @@ class LoginPage extends Component {
           toast.success(res.data.message);
           if(loggedInfo.data.role.toLowerCase() === 'admin')
             this.props.history.push('/admin/dashboard');
-          else if(loggedInfo.data.role.toLowerCase() === 'organization')
-            this.props.history.push('/user/dashboard');
-          else if(loggedInfo.data.role.toLowerCase() === 'advertiser')
-          this.props.history.push('/advertiser/ads');
+          else if(loggedInfo.data.role.toLowerCase() === 'organization'){
+            if(loggedInfo.data.isActivePlan)
+              this.props.history.push('/user/dashboard');
+            else
+              this.props.history.push('/subscription-plan');
+          }
+          else if(loggedInfo.data.role.toLowerCase() === 'advertiser'){
+            if(loggedInfo.data.isActivePlan)
+              this.props.history.push('/advertiser/ads');
+            else
+              this.props.history.push('/advertiser-plan');
+          }
           else
             this.props.history.push('/');
         } )
@@ -233,7 +243,7 @@ class LoginPage extends Component {
                       <p>Don’t have an account? <br />
                         <Link className="sign-up-link" to="/register">Sign up as Food Truck Owner</Link> <br />
                         OR <br />
-                        <Link className="sign-up-link" to="/become-an-advertiser">Sign up as an Advertiser</Link>
+                        <Link className="sign-up-link" to="/advertiser-plan">Sign up as an Advertiser</Link>
                       </p>
                       </div>
                     </FormGroup>

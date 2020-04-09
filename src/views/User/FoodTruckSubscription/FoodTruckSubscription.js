@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 import Loader from '../../../views/Loader/Loader';
 import "./FoodTruckSubscription.css";
+import "../../../containers/CommonLayout/planSwitcher.css";
 
 const getPlanType = (planType) => {
     if(planType === 1)
@@ -84,7 +85,7 @@ class FoodTruckSubscription extends React.Component {
           }
           //console.log(res.data);
           if (typeof window !== 'undefined') {
-            //window.location.href = res.data.data.redirectUrl;
+            window.location.href = res.data.data.redirectUrl;
           }
         })
         .catch( err => {

@@ -89,13 +89,20 @@ button.btn-rating {background: #002164; color: #fff; border: none; padding: 5px 
 
 .dateShow h6{padding-bottom: 0px; margin-bottom: 4px; font-size: 14px;}
 .statusShow h6{padding-bottom: 0px; margin-bottom: 4px; font-size: 14px;}
+.actionShow{ text-align: right;}
 .actionShow h6{padding-bottom: 0px; margin-bottom: 4px; font-size: 14px;}
-.products-item-content .statusShow{text-align: right;}
+.food-truck-item-content{ background-color: #fff;box-shadow: 0 12px 20px rgba(1,84,85,.1);border-radius: 10px;padding: 15px;position: relative;margin-left: auto;margin-top: -60px;width: calc(100% - 40px);margin-right: auto; }
+.food-truck-item-content .statusShow{text-align: right;}
+.food-truck-item-content h2 {font-size: 16px; font-weight: bold; padding: 0 50px 0 0; }
+.food-truck-item-content h2 a{color:#202223;}
+.app .food-truck-item-content p { text-align: inherit; font-size: 14px; font-weight: 300; line-height: 22px; color: #607d8b; }
+
+
 .actionShow a.btn.btn-danger.btn-sm{color: #fff; border-radius: 4px;}
 .actionShow .btn-sm{ border-radius: 4px;}
 .SecondRow{margin-top: 30px;}
 .mainHeading .addListing{ background: #002064; border: 1px solid #002064;}
-.mainHeading.card-header{background: #fff; line-height: 37px;}
+.mainHeading.card-header{background: #fff; line-height: 37px; font-size: 18px; color: #000;}
 .location{font-weight: 300; font-size: 14px;}
 
 

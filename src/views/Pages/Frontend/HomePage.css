@@ -1,4 +1,4 @@
-.homepage-search-block{background-color:#002164;background: url(/images/slider-bg.png);position: relative;padding: 4rem 0;background-size: cover;height: 600px;display: flex;align-items: center;}
+.homepage-search-block{background-color:#002164;background: url(/images/slider-bg.jpg);position: relative;padding: 4rem 0;background-size: cover;height: 600px;display: flex;align-items: center;}
 .homepage-search-title h1 {font-weight: 700;padding: 0;color: #ffffff;margin-bottom: .5rem;font-size: 3rem;}
 .homepage-search-title h1 span {font-weight: bold; }
 .homepage-search-title h5 {color: #fff; font-size:30px; font-weight: 300; padding: 0; margin-bottom: 20px; }
@@ -18,14 +18,13 @@ button.btn-search {background: #002164; border: none; padding: 10px 20px; border
 #offer-slider .owl-nav button {background: #fff; border-radius: 30px; box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2); color: #000; display: inline-block; font-size: 21px; height: 40px; line-height: 40px; margin: 0; text-align: center; text-transform: uppercase; width: 40px; }
 #offer-slider .owl-nav .owl-prev,
 .offer-slider .owl-carousel .owl-item img{ width: 300px; }
-
+.owl-item .item:hover{ border: none;}
 #home-category-carousel .owl-nav .owl-prev{margin: 0 0 0 -15px; } 
 .inner-item{ display: flex; align-items: center;}
 #homepage-slider .owl-nav button {background: #fff; border-radius: 30px; box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2); color: #000; display: inline-block; font-size: 21px; height: 40px; line-height: 40px; margin: 0; text-align: center; text-transform: uppercase; width: 40px; }
 #homepage-slider .owl-nav .owl-prev,
 #home-category-carousel .owl-nav .owl-prev{margin: 0 0 0 -15px; } 
-#homepage-slider .owl-nav .owl-next,
-#homepage-slider .owl-nav .owl-prev {margin: 0 -15px 0 0; } 
+#homepage-slider .owl-carousel .owl-stage-outer { margin-left: 6px; } 
 .owl-prev {left: 0; position: absolute; top: 42%; transition: all 0.45s cubic-bezier(0.165, 0.84, 0.44, 1) 0s; } 
 .owl-next {position: absolute; right: 0; top: 42%; transition: all 0.45s cubic-bezier(0.165, 0.84, 0.44, 1) 0s; } 
 #homepage-slider .owl-dots{ display: none;}
@@ -36,20 +35,21 @@ button.btn-search {background: #002164; border: none; padding: 10px 20px; border
 .Benefits-section:before {content: ''; position: absolute; background: url(/images/ft-strip.png); z-index: 9; height: 14px; width: 100%; top: -12px; }
 .Benefits-section:after {content: ''; position: absolute; background: url(/images/ft-strip1.png); z-index: 9; height: 14px; width: 100%; bottom: -12px; }
 
-.Benefits-section .heading-title{margin-bottom: 4rem; margin-top: 0px;}
+.Benefits-section .heading-title{margin-bottom: 3rem; margin-top: 0px;}
 .Benefits-section  .heading-title h2 {font-weight: 700; padding: 0; color: #000000; margin-bottom: .5rem; font-size: 2.0rem; }
 .Benefits-section  .heading-title p {color: #6c757d; font-size: 20px; font-weight: 300; padding: 0; margin-bottom: 20px;}
 .Benefits-card-media {display: flex; align-items: center; justify-content: center; height: 100%; } 
 .Benefits-card-media img {width: 100%; } 
 .Benefits-list-card {/*border: 1px solid #eff1fe;*/ border-radius: 5px; position: relative; width: 60%; /*padding: 20px;*/ margin-bottom: 10px; } 
 .app .Benefits-card-content h2 {color: #002164; font-size: 24px; margin: 0; font-weight: 600; padding: 5px 0 15px 0;}
-.Benefits-card-content p {color: #607D8B; font-weight:500; font-size: 16px; }
+.app .Benefits-card-content p {color: #607D8B; font-weight:500; font-size: 16px; line-height: inherit; text-align: inherit; }
 .margin-right{margin: 0 0 30px auto;}
 
 
 /*Plan*/
 
 .plan-section{padding: 2rem 0; position: relative; background: #f4f7fb;}
+.plan-section:after {content: ''; position: absolute; background: url(/images/ft-strip1.png); z-index: 9; height: 14px; width: 100%; bottom: -12px; }
 
 .plan-section .heading-title{margin-bottom: 30px; margin-top: 0px;}
 .plan-section  .heading-title h2 {font-weight: 700; padding: 0; color: #000000; margin-bottom: .5rem; font-size: 2.0rem; }
@@ -108,14 +108,14 @@ button.btn-search {background: #002164; border: none; padding: 10px 20px; border
   
 .carousel-caption { background-color: rgba(0, 0, 0, 0.5); padding: 20px; border-radius: .5rem;}
 .how-it-section {padding: 2rem 0; position: relative; background: #002164 url(/images/footer_bg.png) fixed; }
-.how-it-section .heading-title{margin-bottom: 40px; margin-top: 0px;}
+.app .how-it-section .heading-title{margin-bottom: 40px; margin-top: 0px;}
 .app .how-it-section .heading-title h2 {font-weight: 700; padding: 0; color: #fff; margin-bottom: .5rem; font-size: 2.0rem; }
-.how-it-section .heading-title p {color: #fff; font-size: 20px; font-weight: 300; padding: 0; margin-bottom: 20px; line-height: 1.5;}
-.howitwork-card{border-radius: 4px;margin-bottom: 25px;display: flex;background: #ffffff;padding: 20px 15px;transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;-moz-transition: all 0.5s ease-in-out;-ms-transition: all 0.5s ease-in-out;-o-transition: all 0.5s ease-in-out;-webkit-transition: all 0.5s ease-in-out;border: 1px solid #eff1fe;}
+.app .how-it-section .heading-title p {color: #fff; font-size: 20px; font-weight: 300; padding: 0; margin-bottom: 20px; line-height: 1.5; text-align: inherit;}
+.app .howitwork-card{border-radius: 4px;margin-bottom: 25px;display: flex;background: #ffffff;padding: 20px 15px;transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;-moz-transition: all 0.5s ease-in-out;-ms-transition: all 0.5s ease-in-out;-o-transition: all 0.5s ease-in-out;-webkit-transition: all 0.5s ease-in-out;border: 1px solid #eff1fe;}
 .howitwork-card:hover {box-shadow: 4.871px 34.659px 30px -24px rgba(0, 0, 0, 0.06); }
 .app .howitwork-card-content h2 {font-size: 18px; padding: 0; font-weight: bold; color: #000; }
-.howitwork-card-content p{font-size: 14px;font-weight: 300;text-align: justify;line-height: 22px;color: #607d8b;margin-bottom: 0;}
-.howitwork-card-media {width: 90px; margin-right: 10px; }  
+.app .howitwork-card-content p{font-size: 14px;font-weight: 300;text-align: justify;line-height: 22px;color: #607d8b;margin-bottom: 0;}
+.app .howitwork-card-media {width: 90px; margin-right: 10px; }  
 
 section.products-section {padding: 2rem 0; position: relative; background: #f3f7f8; }
 .products-section .heading-title{margin-bottom: 40px; margin-top: 0px; max-width: inherit;}

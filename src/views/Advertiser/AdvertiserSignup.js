@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commenService from '../../core/services/commonService';
 import Loader from '../../views/Loader/Loader';
+import VerifyOtp from '../Pages/Register/VerifyOtp';
 
 import "./SignupPage.css";
 
@@ -20,6 +21,7 @@ class AdvertiserSignup extends React.Component {
       phoneNumber:'',
       password: '',
       confirmPassword: '',
+      isRegistered: false,
       loading: false,
       errors: {}
     };
@@ -44,6 +46,12 @@ class AdvertiserSignup extends React.Component {
           password: this.state.password,
           role: 'advertiser'
         };
+
+        if( localStorage.getItem( 'choosedPlanId' ) ){
+          signupData['planId'] = localStorage.getItem( 'choosedPlanId' );
+          signupData['planVariationId'] = localStorage.getItem( 'choosedplanVariationId' );
+        }
+
         this.setState( { loading: true }, () => {
           commenService.postAPI( `auth/sign-up`, signupData )
             .then( res => {
@@ -53,10 +61,8 @@ class AdvertiserSignup extends React.Component {
                 return;
               }
       
-              this.setState( {
-                loading: false,              
-              } )
-              this.props.history.push('/login');
+              this.setState({loading: false, isRegistered: true, organizationName: "",firstName: "",lastName: "",phoneNumber: "",password: "",confirmPassword: "" });
+              //this.props.history.push('/login');
               toast.success(res.data.message);
             } )
             .catch( err => {
@@ -164,41 +170,45 @@ class AdvertiserSignup extends React.Component {
                 <ToastContainer /> 
                 {loaderElement} 
                 <div className="account-form">
-                  <h3 className="login-heading mb-4">Sign up for your Advertising account now.</h3>
-                  <p>The Food Truck app that Pros use. Advertise on this app and get your message to reach Millions of Users who are connected with TexQue application. And all this at very attractive Advertising Tarrif's.</p>
+                  <h3 className="login-heading mb-4">
+                  { !this.state.isRegistered ? `Sign up for your Advertising account now!` : `Verify Account`}
+                  </h3>
+                  
+                  { !this.state.isRegistered ? 
                   <Form onSubmit={this.submitUserRegistrationForm} noValidate>
+                    <p>The Food Truck app that Pros use. Advertise on this app and get your message to reach Millions of Users who are connected with TexQue application. And all this at very attractive Advertising Tarrif's.</p>
                     <Row form>
                       <Col md={6}>
                         <FormGroup>
-                          <Label for="firstName">First Name</Label>
-                          <Input type="text" name="firstName" id="firstName" invalid={errors['firstName'] !== undefined && errors['firstName'] !== ""} value={firstName} onChange={this.changeHandler} placeholder="First Name *" required />
+                          <Label for="firstName">First Name *</Label>
+                          <Input type="text" name="firstName" id="firstName" invalid={errors['firstName'] !== undefined && errors['firstName'] !== ""} value={firstName} onChange={this.changeHandler} placeholder="First Name" required />
                           <FormFeedback>{errors['firstName']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
-                          <Label for="lastName">Last Name</Label>
-                          <Input type="text" name="lastName" id="lastName" value={lastName} invalid={errors['lastName'] !== undefined && errors['lastName'] !== ""} onChange={this.changeHandler} placeholder="Last Name *" required />
+                          <Label for="lastName">Last Name *</Label>
+                          <Input type="text" name="lastName" id="lastName" value={lastName} invalid={errors['lastName'] !== undefined && errors['lastName'] !== ""} onChange={this.changeHandler} placeholder="Last Name" required />
                           <FormFeedback>{errors['lastName']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
-                          <Label for="email">Email</Label>
-                          <Input type="email" name="email" id="email" placeholder="Email *" invalid={errors['email'] !== undefined && errors['email'] !== ""} value={email} onChange={this.changeHandler} required />
+                          <Label for="email">Email *</Label>
+                          <Input type="email" name="email" id="email" placeholder="Email" invalid={errors['email'] !== undefined && errors['email'] !== ""} value={email} onChange={this.changeHandler} required />
                           <FormFeedback>{errors['email']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
-                          <Label for="phoneNumber">Mobile no.</Label>
-                          <Input type="number" name="phoneNumber" id="phoneNumber" invalid={errors['phoneNumber'] !== undefined && errors['phoneNumber'] !== ""} placeholder="Mobile no. *" value={phoneNumber} onChange={this.changeHandler} required />
+                          <Label for="phoneNumber">Mobile no. *</Label>
+                          <Input type="number" name="phoneNumber" id="phoneNumber" invalid={errors['phoneNumber'] !== undefined && errors['phoneNumber'] !== ""} placeholder="Mobile no." value={phoneNumber} onChange={this.changeHandler} required />
                           <FormFeedback>{errors['phoneNumber']}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
-                          <Label for="password">Password</Label>
+                          <Label for="password">Password *</Label>
                           <Input type="password" name="password" invalid={errors['password'] !== undefined && errors['password'] !== ""} id="password" value={password} onChange={this.changeHandler} placeholder="Enter Password" required />
                           <FormFeedback>{errors['password']}</FormFeedback>
                           <FormText>Be at least 8 characters, Uppercase, lowercase letters, numbers & special characters</FormText>
@@ -206,7 +216,7 @@ class AdvertiserSignup extends React.Component {
                       </Col>
                       <Col md={6}>
                         <FormGroup>
-                          <Label for="confirmPassword">Confirm Password</Label>
+                          <Label for="confirmPassword">Confirm Password *</Label>
                           <Input type="password" name="confirmPassword" id="confirmPassword" invalid={errors['confirmPassword'] !== undefined && errors['confirmPassword'] !== ""} value={confirmPassword} onChange={this.changeHandler}  placeholder="Re-enter Password" required />
                           <FormFeedback>{errors['confirmPassword']}</FormFeedback>
                         </FormGroup>
@@ -220,12 +230,15 @@ class AdvertiserSignup extends React.Component {
                       </Col>
                     </Row>
                     <FormGroup>
-                      <div className="footer-text text-center pt-3">
+                      <div className="footer-text text-left pt-3">
                         Already have an account? <Link className="sign-up-link" to="/login">Sign In</Link>
                       </div>
                     </FormGroup>
                     
                   </Form>
+                : 
+                <VerifyOtp email = {this.state.email} page="register" />
+                }
                 </div>
               </div>
             </div>

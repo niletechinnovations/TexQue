@@ -12,7 +12,7 @@ import ReviewData from './TransactionData';
 import Loader from '../../Loader/Loader';
 
 
-class TransactionLists extends Component {
+class AdvertiserTransactionLists extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -41,7 +41,7 @@ class TransactionLists extends Component {
   /*get current subscription API*/
   getCurrentPlan() {
     this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('profile/business-subscription')
+      commonService.getAPIWithAccessToken('profile/advertisement-subscription')
         .then( res => {
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( { loading: false } );
@@ -64,13 +64,10 @@ class TransactionLists extends Component {
   /* Transaction List API */
   itemLists(filterItem = {}) {
     let strWalkQuery = "?pageSize=10000";
-    if(filterItem.filter_foodTruckId !== undefined && filterItem.filter_foodTruckId !== "" ) 
-      strWalkQuery += (strWalkQuery !=="" ) ? "/"+filterItem.filter_foodTruckId : "/"+filterItem.filter_foodTruckId;
     
       this.setState( { loading: true}, () => {
-      commonService.getAPIWithAccessToken('statistics/subscriber-payment-history/'+strWalkQuery)
-        .then( res => {
-           
+      commonService.getAPIWithAccessToken('statistics/advertiser-payment-history/'+strWalkQuery)
+        .then( res => {        
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( { loading: false } );
             toast.error(res.data.message);
@@ -164,19 +161,18 @@ class TransactionLists extends Component {
     return (
       <div className="user-dashboard">
         {loaderElement}
-
         { ( localStorage.getItem( 'isOrganization' )=== "true" && localStorage.getItem( 'isAdvertiser' )=== "true" ) && <> 
         <Nav tabs>
           <NavItem>
-            <Link className="nav-link active" to="/user/transactions">Food Truck Subscription</Link>
+            <Link className="nav-link" to="/user/transactions">Food Truck Subscription</Link>
           </NavItem>
           <NavItem>
-            <Link className="nav-link" to="/advertiser/transactions">Advertisement Subscription</Link>
+            <Link className="nav-link active" to="/advertiser/transactions">Advertisement Subscription</Link>
           </NavItem>
         </Nav>
         </>
         }
-
+        
         <Card className="mb-3">
           <CardHeader className="mainHeading">
             <h5 className="m-0 p-0">Subscription Info</h5>
@@ -192,7 +188,7 @@ class TransactionLists extends Component {
               <Col md="4"> Expiry Date: <strong>{(new Date(currentPalnData.planInfo.expiryDate)).toLocaleDateString("en-US")}</strong></Col>
               <Col md="12" className="mt-4">
                 <Button color="danger" onClick={ () =>  this.cancelSubscription(currentPalnData.planInfo.subscriberId) }>Cancel Subscription</Button> &nbsp; 
-                <Link to="/subscription-plan" className="btn btn-warning">Upgrade Subscription</Link>
+                <Link to="/advertiser-plan" className="btn btn-warning">Upgrade Subscription</Link>
               </Col>
             </Row>
             }
@@ -277,10 +273,8 @@ class TransactionLists extends Component {
         </Modal>
       </div>
 
-  
-
     );
   }
 }
 
-export default TransactionLists;
+export default AdvertiserTransactionLists;

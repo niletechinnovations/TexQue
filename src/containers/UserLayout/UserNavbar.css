@@ -20,16 +20,12 @@ ul.user-widget-list li a{ width: 100%;}
 .MuiTable-root .MuiTableCell-root{ padding: 7px 10px;}
 .MuiPaper-root .MuiToolbar-gutters{ padding-left: 10px;}
 .user-dashboard .MuiTableCell-body{ font-size: 13px;}
-.transaction-details{ font-size: 14px; line-height: 2.5em;}
+.transaction-details{ font-size: 15px; line-height: 2.5em; color: #000000;}
 .transaction-details .col-lg-2{ font-weight: 500;}
-
-
-
-.user-navbar .user-widget-list .nav-item .nav-link{background: #d8dfec; padding: .7rem 1.5rem; margin: 1px;}
+.transaction-details button.btn{ font-size: 1rem;}
+.user-navbar .user-widget-list .nav-item .nav-link{background: #d8dfec; padding: .7rem 1.4rem; margin: 1px;}
 .user-profile-section .user-navbar .navbar.navbar-expand-md{padding: .5rem 0px;}
-
 .user-navbar .user-widget-list .nav-item .nav-link:hover{background: #c8d3e6;}
-.user-navbar .user-widget-list .nav-item .nav-link:active{background: #c8d3e6;}
-.user-navbar .user-widget-list .nav-item .nav-link:focus{background: #f4f7fb; border-top: 1px solid #acb8cc; border-left: 1px solid #acb8cc; border-right: 1px solid #acb8cc;}
-/*.user-navbar .user-widget-list .nav-item .nav-link:hover{color: #1239f3;}*/
-/*.user-navbar .user-widget-list .nav-item .nav-link .value-orders:active{color: #1239f3;}*/
+.user-navbar .user-widget-list .nav-item .nav-link:active{background: #f4f7fb;}
+.user-dashboard .nav-tabs .nav-link{ border-color: #e9ecef #e9ecef #dee2e6; font-size: 15px; color: #000;}
+.user-dashboard .nav-tabs .nav-link.active{ background: #d8dfec; }

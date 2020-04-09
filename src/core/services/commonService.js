@@ -3,6 +3,19 @@ const API_BASE_URL = 'https://api.texque.com/v0.0/';
 const API_BASE_URL_WITH_OUT_VERSION = 'https://api.texque.com/';
 class ApiService {
 
+    /*Get Organization Subscribe*/
+    getIsSubscribe() {
+        let isSubscribed = localStorage.getItem("isSubscribed");        
+        if(isSubscribed === '' || isSubscribed === null)
+          return "";
+        else
+          return ( localStorage.getItem("isSubscribed") === "true") ? true : false;
+    }
+    setIsSubscribe(isSubscribe = "false") {
+        isSubscribe = isSubscribe.toString();
+        localStorage.setItem( 'isSubscribed');
+    }
+
     /*Get API*/
     getAPI(urlSegment) {
         return axios.get(API_BASE_URL+urlSegment);

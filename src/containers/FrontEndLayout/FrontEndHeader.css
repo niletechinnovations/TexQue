@@ -186,11 +186,10 @@ body{ background: none !important;}
 .footer ul li a { color: #6c8293;}
 
 .footer-link h2,
-.app h2{font-size: 18px; font-weight: bold; color: #fff; padding: 0; }
-.app p{font-size: 14px; font-weight: 300; text-align: justify; line-height: 22px; color: #aaa;}
+.footer .about-app h2{font-size: 18px; font-weight: bold; color: #fff; padding: 0; }
+.footer .about-app p{font-size: 14px; font-weight: 300; text-align: justify; line-height: 22px; color: #aaa;}
 
 .footer ul li a {color: #aaa; font-size: 14px; }
-
 
 .footer-contact-info{
   padding-left: 17px;

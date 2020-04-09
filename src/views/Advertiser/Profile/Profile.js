@@ -14,7 +14,7 @@ class Profile extends Component {
    constructor(props){
       super(props);
       this.state = {
-         formField: { email: '', firstName: '', lastName: '', phoneNumber: '' },
+         formField: { email: '', firstName: '', lastName: '', phoneNumber: '',organizationName: '', address: '' },
          formErrors: { email: '', firstName: '', lastName: '', error: ''},
          formValid: true,
          profileId: "",
@@ -45,8 +45,10 @@ class Profile extends Component {
               email: userInfo.email, 
               firstName: userInfo.firstName, 
               lastName: userInfo.lastName,
-              phoneNumber: userInfo.phoneNumber
-             };  
+              phoneNumber: userInfo.phoneNumber,
+              organizationName: userInfo.organizationName,
+              address: userInfo.address, 
+            };  
   
             this.setState({loading:false, formField: formField, formValid: true, profileId: userInfo.profileId});     
            
@@ -75,19 +77,19 @@ class Profile extends Component {
           "firstName": formInputField.firstName, 
           "lastName": formInputField.lastName, 
           "phoneNumber": formInputField.phoneNumber, 
+          "organizationName": formInputField.organizationName, 
+          "address": formInputField.address, 
         };
         //debugger;
         commonService.putAPIWithAccessToken('profile', formData)
           .then( res => {
             if ( undefined === res.data.data || !res.data.status ) {
-             
               this.setState( { loading: false} );
               toast.error(res.data.message);
               return;
             }           
             this.setState({ loading: false});
             toast.success(res.data.message);
-            
           } )
           .catch( err => {         
             if(err.response !== undefined && err.response.status === 401) {
@@ -188,10 +190,22 @@ class Profile extends Component {
                         <input type="number" name="phoneNumber" id="phoneNumber" className="form-control" placeholder="Mobile No." value={this.state.formField.phoneNumber} onChange={this.changeHandler} />
                      </div>
                   </div>
-                              
                   <div className="col-md-6">
                      <div className="form-group">
-                        <Button color="primary" className="Submit-form-button" disabled={!this.state.formValid} type="submit">Update Profile</Button>
+                        <label htmlFor="organizationName">Business Name</label>
+                        <input type="text" name="organizationName" id="organizationName" className="form-control" placeholder="Business Name" value={this.state.formField.organizationName} onChange={this.changeHandler} />
+                     </div>
+                  </div>
+                  <div className="col-md-6">
+                     <div className="form-group">
+                        <label htmlFor="address">Address</label>
+                        <input type="text" name="address" id="address" className="form-control" placeholder="Address / Location" value={this.state.formField.address} onChange={this.changeHandler} />
+                     </div>
+                  </div>
+                              
+                  <div className="col-md-12">
+                     <div className="form-group">
+                        <Button color="primary" className="pull-right Submit1-form-button" disabled={!this.state.formValid} type="submit">Update Profile</Button>
                      </div>
                   </div>
                </div>

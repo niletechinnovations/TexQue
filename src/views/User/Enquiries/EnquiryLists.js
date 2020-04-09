@@ -308,10 +308,9 @@ class EnquiryLists extends Component {
               </Row>
             </ModalBody>
             <ModalFooter>
-                <Button className="btn-success" type="button" onClick={this.acceptEnquiry}> <i className="fa fa-check"></i> Accept</Button>
-                <Button className="btn-danger" type="button" onClick={this.rejectEnquiry}> <i className="fa fa-times"></i> Reject</Button>
-                {/* <Button color="primary" type="submit">{formProccessing ? processingBtnText : 'Update Details' }</Button> */}
-                <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                <Button className="btn-success" type="button" onClick={this.acceptEnquiry} title="Accept Inquiry"> <i className="fa fa-check"></i> Accept</Button>
+                <Button className="btn-danger" type="button" onClick={this.rejectEnquiry} title="Reject Inquiry"> <i className="fa fa-times"></i> Reject</Button>
+                <Button color="secondary" onClick={this.toggle} title="Close Window">Cancel</Button>
             </ModalFooter>
           </Form>
         </Modal>

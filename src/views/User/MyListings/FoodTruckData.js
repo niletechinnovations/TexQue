@@ -77,10 +77,10 @@ class FoodTruckData extends Component {
           customBodyRender: (value, tableMeta, updateValue) => {
             
             return (  <>
-              <Link to={`/user/my-listings/${value.foodTruckId}`} className="btn btn-info btn-sm"><i className="fa fa-pencil"></i></Link>
+              <Link to={`/user/my-listings/${value.foodTruckId}`} className="btn btn-info btn-sm" title="Edit Food Truck Info"><i className="fa fa-pencil"></i></Link>
              &nbsp;
               <Button color="danger" size="sm" disabled={this.state.buttonProcessing} onClick={() => {
-            if (window.confirm('Are you sure you wish to delete this food truck?')) this.props.deleteFoodTruckAction(tableMeta.rowIndex) }} ><i className="fa fa-trash"></i></Button>&nbsp;
+            if (window.confirm('Are you sure you wish to delete this food truck?')) this.props.deleteFoodTruckAction(tableMeta.rowIndex) }} title="Delete Food Truck"><i className="fa fa-trash"></i></Button>&nbsp;
               
               </>     
             );

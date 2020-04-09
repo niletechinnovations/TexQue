@@ -23,6 +23,8 @@ class SubscriptionPaymentStatus extends React.Component {
         if(params.status==='success'){
             const value=queryString.parse(this.props.location.search);
             const token=value.token;
+            localStorage.setItem( 'isActivePlan', true );
+            localStorage.setItem( 'isOrganization', true );
             this.setState({paymentStatus: params.status, token: token });
             this.getPaymentDetail(token);
         }else{
@@ -31,7 +33,7 @@ class SubscriptionPaymentStatus extends React.Component {
             else
                 toast.error('Your transaction has been '+params.status);
            
-            this.props.history.push('/user/subscription');
+            this.props.history.push('/subscription-plan');
             return;
         }
         

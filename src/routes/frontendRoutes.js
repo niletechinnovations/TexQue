@@ -11,14 +11,16 @@ import AdvertiserSignup from '../views/Advertiser/AdvertiserSignup';
 import PrivacyPolicyPage from '../views/Pages/Frontend/PrivacyPolicyPage';
 import TermsConditionsPage from '../views/Pages/Frontend/TermsConditionsPage';
 import FaqPage from '../views/Pages/Frontend/FaqPage';
+import SubscriptionPlan from '../views/Pages/Subscription/SubscriptionPlan';
+import AdvertiserPlan from '../views/Pages/Subscription/AdvertiserPlan';
 
 const frontendRoutes = [
   { path: '/', exact: true, name: 'Home', component: HomePage },
   { path: '/home', name: 'Home', component: HomePage },  
   { path: '/about-us', exact: true,  name: 'About us', component: AboutPage },
   { path: '/contact-us', exact: true,  name: 'Contact us', component: ContactPage },
-  //{ path: '/blog', exact: true,  name: 'Blog', component: BlogPage },
-  //{ path: '/blog/:token', exact: true,  name: 'Single Blog', component: SingleBlogPage },
+  { path: '/subscription-plan', exact: true,  name: 'Subscription Plan', component: SubscriptionPlan },
+  { path: '/advertiser-plan/', exact: true,  name: 'Advertiser Plan', component: AdvertiserPlan },
   { path: '/login', exact: true, name: 'Login', component: LoginPage },
   { path: '/register', exact: true,  name: 'Register', component: RegisterPage },
   { path: '/verify-email/:token', exact: true,  name: 'Verify Email', component: VerifyEmailPage },

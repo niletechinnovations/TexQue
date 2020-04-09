@@ -38,7 +38,7 @@ class EnquiryData extends Component {
         indexVal: i,
         enquiryId: enquiry.enquiryId,
         action: <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-          this.editEnquiryItem(i)}><i className="fa fa-pencil"></i> </Button>
+          this.editEnquiryItem(i)} title="Edit Inquiry"><i className="fa fa-pencil"></i> </Button>
       }      
       rowsItem.push(resInfo);
     }
@@ -85,7 +85,7 @@ class EnquiryData extends Component {
       selectableRows: 'none',
       textLabels: {
         body: {
-          noMatch: this.props.dataTableLoadingStatus ? "Processing........" : "Sorry, no matching records found",
+          noMatch: this.props.dataTableLoadingStatus ? "Loading........" : "",
           toolTip: "Sort",
           columnHeaderTooltip: column => `Sort for ${column.label}`
         },
