@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Input, Col, FormGroup, Label} from 'reactstrap';
+import { Button, Form, Input, Col, Row, FormGroup, Label} from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
@@ -14,14 +14,14 @@ class MyProfile extends Component {
    constructor(props){
       super(props);
       this.state = {
-         formField: { organizationName: '', email: '', firstName: '', lastName: '', phoneNumber: '', address: '' },
+         formField: { organizationName: '', email: '', firstName: '', lastName: '', phoneNumber: '', address: '', profilePic:'' },
          formErrors: {organization_name: '', email: '', firstName: '', lastName: '', error: ''},
          formValid: true,
          organizationId: "",
          orgDocument: [],
          organizationDocuments: [],
+         invalidImage:'',
          loading: true
-
       };
       this.submitHandler = this.submitHandler.bind(this);
     }
@@ -50,20 +50,23 @@ class MyProfile extends Component {
               lastName: organizationInfo.lastName,
               phoneNumber: organizationInfo.phoneNumber, 
               address: organizationInfo.address, 
+              profilePic: organizationInfo.profilePic,
               city: organizationInfo.city, 
               state: organizationInfo.state, 
               country: organizationInfo.country, 
-              postalCode: organizationInfo.postalCode };  
-  
-            this.setState({loading:false, organizationDocuments:organizationInfo.documents, formField: formField, formValid: true, organizationId: organizationInfo.organizationId});     
-           
+              postalCode: organizationInfo.postalCode
+            };
+
+            if(organizationInfo.profilePic!=='')
+              localStorage.setItem( 'profilePic', organizationInfo.profilePic );
+
+            this.setState({loading:false, organizationDocuments:organizationInfo.documents, formField: formField, formValid: true, organizationId: organizationInfo.organizationId});
           } )
           .catch( err => {         
             if(err.response !== undefined && err.response.status === 401) {
               localStorage.clear();
               this.props.history.push('/login');
-            }
-            else
+            }else
               this.setState( { loading: false } );
               toast.error(err.message);
           } )
@@ -85,7 +88,6 @@ class MyProfile extends Component {
           "address": formInputField.address, 
           "organizationName": formInputField.organizationName
         };
-        //debugger;
         commonService.putAPIWithAccessToken('profile', formData)
           .then( res => {
             if ( undefined === res.data.data || !res.data.status ) {
@@ -191,16 +193,56 @@ class MyProfile extends Component {
         if(err.response !== undefined && err.response.status === 401) {
           localStorage.clear();
           this.props.history.push('/login');
-        }
-        else
+        }else
           this.setState( { loading: false } );
           toast.error(err.message);
       } )
    }
  }
 
+   //To set profile image
+   onProfilePicChange = (e) => {  
+      if( e.target.files.length>0){
+         const imageFile = e.target.files[0];
+         if (!imageFile) {
+            this.setState({ invalidImage: 'Please select image.' });
+            return false;
+         }
+         
+         if (!imageFile.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+            this.setState({ invalidImage: 'Please select valid image.' });
+            return false;
+         }
+         this.setState( { loading: true}, () => {
+            const formData = new FormData();
+            formData.append('profileImage', imageFile );   
+            formData.append('profileId', this.state.organizationId);
+        
+            commonService.putAPIWithAccessToken('profile/picture', formData)
+            .then( res => {
+               if ( undefined === res.data.data || !res.data.status ) {
+                  this.setState( { loading: false} );
+                  toast.error(res.data.message);
+                  return;
+               }
+               this.setState({ loading: false});
+               toast.success(res.data.message);
+               this.getProfile();
+            } )
+            .catch( err => {         
+               if(err.response !== undefined && err.response.status === 401) {
+                  localStorage.clear();
+                  this.props.history.push('/login');
+               }else
+               this.setState( { loading: false } );
+               toast.error(err.message);
+            } )
+         } );   
+      }
+   }
+
   render() {
-   const { loading, organizationDocuments} = this.state;
+   const { loading, organizationDocuments, invalidImage } = this.state;
     let loaderElement = '';
     if(loading)
       loaderElement = <Loader />
@@ -219,12 +261,25 @@ class MyProfile extends Component {
                         <label htmlFor="firstName">First Name</label>
                         <input type="text" name="firstName" id="firstName" className="form-control" placeholder="First Name" value={this.state.formField.firstName} onChange={this.changeHandler} required />
                      </div>
-                  </div>
-                  <div className="col-md-6">
                      <div className="form-group">
                         <label htmlFor="lastName">Last Name</label>
                         <input type="text" name="lastName" id="lastName" className="form-control" placeholder="Last Name" value={this.state.formField.lastName} onChange={this.changeHandler} required />
                      </div>
+                  </div>
+                  <div className="col-md-6">
+                     <Row>
+                        <Col md="4">
+                           <img src={ ( this.state.formField.profilePic!=='' ? this.state.formField.profilePic : '/images/profile_image_dummy.svg' ) } height="150" className="img-fluid img-thumbnail" alt="Profile" />
+                        </Col>
+                        <Col md="6">
+                           <FormGroup>
+                              <label htmlFor="profilePic">Profile Picture</label>
+                              <input type="file" id="profilePic" className="form-control" onChange={this.onProfilePicChange}  />
+                              <small>The picture you upload here will be used as your Profile image on the Mobile app which the customer can view</small>
+                              {invalidImage && <p className="text-danger">{invalidImage}</p>}
+                           </FormGroup>
+                        </Col>
+                     </Row>
                   </div>
                   <div className="col-md-6">
                      <div className="form-group">
@@ -257,18 +312,20 @@ class MyProfile extends Component {
                      </FormGroup>
                   </Col>
                   <Col md={"6"}>
+                  {organizationDocuments && (
                      <FormGroup> 
                         <Label htmlFor="downloadOrgDoc" className="downloadOrgDocLabel">Uploaded Documents</Label>   
-                        {organizationDocuments.map((doc, index) =>
+                        { organizationDocuments.map((doc, index) =>
                         <div className="docBtnArea" key={index}>
                            <a className="btn btn-primary btn-sm" href={doc} target="_blank" rel="noopener noreferrer" > <i className="fa fa-file-o"></i></a>
                         </div>
                         )}
                      </FormGroup>
+                     )}
                   </Col>
                   <div className="col-md-6">
                      <div className="form-group">
-                        <Button color="primary" className="Submit-form-button" type="submit">Update Profile</Button>
+                        <Button color="primary" className="btn btn-primary btn-lg" type="submit">Update Profile</Button>
                      </div>
                   </div>
                </div>

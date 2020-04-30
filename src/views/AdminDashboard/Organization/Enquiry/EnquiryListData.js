@@ -94,7 +94,7 @@ class EnquiryListData extends Component {
               let i = tableMeta.rowIndex;
               return (
                 <div className="actionBtnGroup"><Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-                this.editEnquiryItem(i)}><i className="fa fa-pencil"></i> </Button><Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteEnquiryItem(i) };}} ><i className="fa fa-trash"></i> </Button></div>
+                this.editEnquiryItem(i)} title="Edit Inquiry"><i className="fa fa-pencil"></i> </Button><Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteEnquiryItem(i) };}} title="Delete Inquiry"><i className="fa fa-trash"></i> </Button></div>
               );
             }
           }
@@ -113,7 +113,7 @@ class EnquiryListData extends Component {
       selectableRows: 'none',
       textLabels: {
         body: {
-          noMatch: this.props.dataTableLoadingStatus ? "Processing........" : "Sorry, no matching records found",
+          noMatch: this.props.dataTableLoadingStatus ? "Loading........" : "",
           toolTip: "Sort",
           columnHeaderTooltip: column => `Sort for ${column.label}`
         },

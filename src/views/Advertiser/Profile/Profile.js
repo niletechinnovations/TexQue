@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form} from 'reactstrap';
+import { Button, Form, Row, Col, FormGroup} from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
@@ -18,6 +18,7 @@ class Profile extends Component {
          formErrors: { email: '', firstName: '', lastName: '', error: ''},
          formValid: true,
          profileId: "",
+         invalidImage:'',
          loading: true
       };
       this.submitHandler = this.submitHandler.bind(this);
@@ -46,19 +47,20 @@ class Profile extends Component {
               firstName: userInfo.firstName, 
               lastName: userInfo.lastName,
               phoneNumber: userInfo.phoneNumber,
+              profilePic: userInfo.profilePic,
               organizationName: userInfo.organizationName,
               address: userInfo.address, 
             };  
-  
+            if(userInfo.profilePic!=='')
+              localStorage.setItem( 'profilePic', userInfo.profilePic );
+
             this.setState({loading:false, formField: formField, formValid: true, profileId: userInfo.profileId});     
-           
           } )
           .catch( err => {         
             if(err.response !== undefined && err.response.status === 401) {
               localStorage.clear();
               this.props.history.push('/login');
-            }
-            else
+            }else
               this.setState( { loading: false } );
               toast.error(err.message);
           } )
@@ -112,8 +114,6 @@ class Profile extends Component {
       formField[name] = value;
       this.setState({ formField: formField },
                     () => { this.validateField(name, value) });
-
-      console.log(this.state.formValid);
     };
 
     /* Validate Form Field */
@@ -150,9 +150,49 @@ class Profile extends Component {
       return(error.length === 0 ? '' : 'has-error');
    }
 
+   //To set profile image
+   onProfilePicChange = (e) => {  
+      if( e.target.files.length>0){
+         const imageFile = e.target.files[0];
+         if (!imageFile) {
+            this.setState({ invalidImage: 'Please select image.' });
+            return false;
+         }
+         
+         if (!imageFile.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+            this.setState({ invalidImage: 'Please select valid image.' });
+            return false;
+         }
+         this.setState( { loading: true}, () => {
+            const formData = new FormData();
+            formData.append('profileImage', imageFile );   
+            formData.append('profileId', this.state.profileId);
+        
+            commonService.putAPIWithAccessToken('profile/picture', formData)
+            .then( res => {
+               if ( undefined === res.data.data || !res.data.status ) {
+                  this.setState( { loading: false} );
+                  toast.error(res.data.message);
+                  return;
+               }
+               this.setState({ loading: false});
+               toast.success(res.data.message);
+               this.getProfile();
+            } )
+            .catch( err => {         
+               if(err.response !== undefined && err.response.status === 401) {
+                  localStorage.clear();
+                  this.props.history.push('/login');
+               }else
+               this.setState( { loading: false } );
+               toast.error(err.message);
+            } )
+         } );   
+      }
+   }
 
   render() {
-   const { loading } = this.state;
+   const { loading, invalidImage } = this.state;
     let loaderElement = '';
     if(loading)
       loaderElement = <Loader />
@@ -171,12 +211,25 @@ class Profile extends Component {
                         <label htmlFor="firstName">First Name</label>
                         <input type="text" name="firstName" id="firstName" className="form-control" placeholder="First Name" value={this.state.formField.firstName} onChange={this.changeHandler} required />
                      </div>
-                  </div>
-                  <div className="col-md-6">
                      <div className="form-group">
                         <label htmlFor="lastName">Last Name</label>
                         <input type="text" name="lastName" id="lastName" className="form-control" placeholder="Last Name" value={this.state.formField.lastName} onChange={this.changeHandler} required />
                      </div>
+                  </div>
+                  <div className="col-md-6">
+                     <Row>
+                        <Col md="4">
+                           <img src={ ( this.state.formField.profilePic!=='' ? this.state.formField.profilePic : '/images/profile_image_dummy.svg' ) } className="img-fluid img-thumbnail profile-pic" alt="Profile" />
+                        </Col>
+                        <Col md="6">
+                           <FormGroup>
+                              <label htmlFor="profilePic">Profile Picture</label>
+                              <input type="file" id="profilePic" className="form-control" onChange={this.onProfilePicChange}  />
+                              <small>The picture you upload here will be used as your Profile image on the Mobile app which the customer can view</small>
+                              {invalidImage && <p className="text-danger">{invalidImage}</p>}
+                           </FormGroup>
+                        </Col>
+                     </Row>
                   </div>
                   <div className="col-md-6">
                      <div className="form-group">

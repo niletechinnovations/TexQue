@@ -67,8 +67,8 @@ class AdvertiserListData extends Component {
             let i = tableMeta.rowIndex;
             return (
               <div><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
-                this.editUserRow(i)}><i className="fa fa-pencil"></i> </button>
-                <a href="#!" className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteUserRow(i) };}} ><i className="fa fa-trash"></i></a></div>
+                this.editUserRow(i)} title="Edit Advertiser"><i className="fa fa-pencil"></i> </button>
+                <a href="#!" className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteUserRow(i) };}} title="Delete Advertiser"><i className="fa fa-trash"></i></a></div>
             );
           }
         }
@@ -85,7 +85,7 @@ class AdvertiserListData extends Component {
       selectableRows: 'none',
       textLabels: {
         body: {
-          noMatch: this.props.dataTableLoadingStatus ? "Processing........" : "Sorry, no matching records found",
+          noMatch: this.props.dataTableLoadingStatus ? "Loading........" : "",
           toolTip: "Sort",
           columnHeaderTooltip: column => `Sort for ${column.label}`
         },

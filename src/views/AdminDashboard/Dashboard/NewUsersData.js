@@ -55,7 +55,7 @@ class NewUserData extends Component{
             <>
             <h5>
                 Recent Registered Users
-                <Link to="/admin/users" className="btn btn-primary view-all-btn">View All</Link>
+                <Link to="/admin/users" className="btn btn-primary view-all-btn" title="View All Users">View All</Link>
             </h5>
             <div className="table-responsive">
                 <table className="table-outline mb-0 d-none d-sm-table table table-hover">

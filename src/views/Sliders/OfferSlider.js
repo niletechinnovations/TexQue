@@ -21,7 +21,7 @@ const OfferSlider = (props) => {
     
     return (
       <>
-      <OwlCarousel className="owl-theme" loop nav items="1" dots="0">
+      <OwlCarousel className="owl-theme" loop nav items="1" dots="0" autoplay={true} autoplayTimeout="7000">
         {listItems}
       </OwlCarousel>
       </>

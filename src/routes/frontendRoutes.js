@@ -13,6 +13,7 @@ import TermsConditionsPage from '../views/Pages/Frontend/TermsConditionsPage';
 import FaqPage from '../views/Pages/Frontend/FaqPage';
 import SubscriptionPlan from '../views/Pages/Subscription/SubscriptionPlan';
 import AdvertiserPlan from '../views/Pages/Subscription/AdvertiserPlan';
+import ProceedToPaymentPage from '../views/Pages/Subscription/ProceedToPaymentPage';
 
 const frontendRoutes = [
   { path: '/', exact: true, name: 'Home', component: HomePage },
@@ -29,7 +30,7 @@ const frontendRoutes = [
   { path: '/privacy-policy', exact: true,  name: 'Privacy Policy', component: PrivacyPolicyPage },
   { path: '/terms-of-service', exact: true,  name: 'Terms of Service', component: TermsConditionsPage },
   { path: '/faq', exact: true,  name: 'Faq', component: FaqPage },
-   
+  { path: '/proceed-to-payment', exact: true,  name: 'ProceedToPayment', component: ProceedToPaymentPage },
 ];
 
 export default frontendRoutes;

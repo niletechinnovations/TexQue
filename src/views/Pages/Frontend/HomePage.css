@@ -1,7 +1,8 @@
-.homepage-search-block{background-color:#002164;background: url(/images/slider-bg.jpg);position: relative;padding: 4rem 0;background-size: cover;height: 600px;display: flex;align-items: center;}
+.homepage-search-block{background-color:#002164; /*background: url(/images/slider-bg.jpg); height: 620px; */position: relative;}
 .homepage-search-title h1 {font-weight: 700;padding: 0;color: #ffffff;margin-bottom: .5rem;font-size: 3rem;}
 .homepage-search-title h1 span {font-weight: bold; }
 .homepage-search-title h5 {color: #fff; font-size:30px; font-weight: 300; padding: 0; margin-bottom: 20px; }
+.home-slider-content-info {position: absolute;z-index: 9;left: 0;right: 0;top: 0;bottom: 0;display: flex;align-items: center;}
 
 .homepage-search-form .form-control {font-size: 16px;padding-right: 106px;font-weight: 300;height: 50px;border-radius: 2px;outline: none;}
 .homepage-search-form .custom-select {font-size: 16px;font-weight: 300;height: 50px;border-radius: 2px;outline: none;}
@@ -67,7 +68,7 @@ button.btn-search {background: #002164; border: none; padding: 10px 20px; border
 .plan-point-list h4 {font-size: 16px; font-weight: bold; padding: 0; }
 .plan-point-list ul {margin: 0; padding: 0 0 0 20px; list-style: circle; }
 .plan-point-list ul li{position: relative;color: #5d676b; font-weight: 500; font-size: 14px;}
-.btn-conversion {background: #002164; color: #fff; font-size: 16px; padding: 10px 25px; border-radius: 5px; font-weight: bold; }
+.btn-conversion {background: #002164; color: #fff; font-size: 16px !important; padding: 10px 25px; border-radius: 5px; font-weight: bold; }
 .btn-conversion:hover{color:#fff;}
 .current-plan{background: #002164;}
 .app .current-plan h2,
@@ -77,6 +78,22 @@ button.btn-search {background: #002164; border: none; padding: 10px 20px; border
 .current-plan .plan-point-list ul li{color: #fff;}
 .current-plan .plan-point-list{border-color: #2d519a;}
 .current-plan .btn-conversion{background: #fff; color: #002164; }
+.plan-intro-card{ overflow: hidden;}
+.plan-intro-card .ribbon {
+  width: 160px;
+  height: 32px;
+  font-size: 14px;
+  text-align: center;
+  color: #002164;
+  font-weight: bold;
+  box-shadow: 0px 2px 3px rgba(136, 136, 136, 0.25);
+  background: #ffffff;
+  transform: rotate(45deg);
+  position: absolute;
+  right: -42px;
+  top: 20px;
+  padding-top: 4px; 
+}
 
 
 
@@ -88,6 +105,12 @@ button.btn-search {background: #002164; border: none; padding: 10px 20px; border
       max-width: 50%;
     }
   }
+  @media only screen and (max-width : 767px) { 
+    .home-slider-content-info {    position: relative; padding:22px 0px;  }
+    .homepage-search-title h1{font-size: 2rem;}
+    .offer-slider.pl-4.pt-3{padding:12px; }
+    .Benefits-list-card{ width: 100%;}
+  }
   
   @media (min-width: 768px) and (max-width: 991.98px) {
     .slide-box img {
@@ -95,6 +118,7 @@ button.btn-search {background: #002164; border: none; padding: 10px 20px; border
       flex: 0 0 33.3333%;
       max-width: 33.3333%;
     }
+    .Benefits-list-card{ width: 100%;}
   }
   
   @media (min-width: 992px)

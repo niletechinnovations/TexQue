@@ -52,7 +52,12 @@ const frontEndFooter = () => {
                       <li>
                         <a href="https://www.instagram.com/texque8/" target="_blank" rel="noopener noreferrer"><i className="fa fa-instagram"></i> Instagram</a>
                       </li>
+
                     </ul>
+                    <h2 className="pt-2"><small>Powered By:</small></h2>
+                    <a className="text-white" href="https://www.retailoep.com/" target="_blank" rel="noopener noreferrer">
+                      <img className="img-fluid" src="/images/oep-logo.jpg" alt="OEP Retail Tech" width="170" />
+                    </a>
                   </div>
                 </div>
               </div>

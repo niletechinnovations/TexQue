@@ -4,29 +4,30 @@ import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 const HomeSlider = (props) => {
-  
-  const myLists = props.data;
-  const listItems = myLists.map((value, index) =>  
-    <div  key={index} className="home-category-item">
-      <div className="inner-item">
-      <a href="#!">
-        <img src={ ( value.featuredImage!=='' ? value.featuredImage : "/images/dummy-food-truck.png" ) } alt={value.truckName}/>
-        <h6>{value.truckName}</h6>
-      </a>
-      </div>
-    </div>
-  );  
-  
-  if(listItems.length===0)
-    return (<></>);
     
-    return (
-      <>
-      <OwlCarousel  className="owl-theme" loop nav={false} lazyLoad  responsive={ {0:{items:2},200:{items:3},1000:{items:4},12000:{items:4}}}>
-        {listItems}
-      </OwlCarousel>
-      </>
-    );
+  return (
+    
+    <OwlCarousel id="home-slider" className="owl-theme" loop nav={false} lazyLoad items="1" dots={false} autoplay={true} >
+      
+      <div className="item">
+        <img src="/images/slider1.jpg" alt="TexQue" />
+      </div>
+      <div className="item">
+        <img src="/images/slider2.jpg" alt="TexQue" />
+      </div>
+      <div className="item">
+        <img src="/images/slider3.jpg" alt="TexQue" />
+      </div>
+      <div className="item">
+        <img src="/images/slider4.jpg" alt="TexQue" />
+      </div>
+      <div className="item">
+        <img src="/images/slider5.jpg" alt="TexQue" />
+      </div>
+      
+    </OwlCarousel>
+  
+  );
 }
 
 export default HomeSlider;

@@ -42,8 +42,8 @@ class NewEnquiriesData extends Component{
         return (
             <>
             <h5>
-                New Enquiries
-                <Link to="/admin/enquiries" className="btn btn-primary view-all-btn">View All</Link>
+                New Inquiries
+                <Link to="/admin/enquiries" className="btn btn-primary view-all-btn" title="View All Inquiries">View All</Link>
             </h5>
             <div className="table-responsive">
                 <table className="table-outline mb-0 d-none d-sm-table table table-hover">

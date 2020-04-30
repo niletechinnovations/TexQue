@@ -38,10 +38,9 @@ class SubscriptionPaymentStatus extends React.Component {
         }
         
     }else 
-        this.props.history.push('/user/subscription');
+        this.props.history.push('/subscription-plan');
   }
 
-  
   getPaymentDetail(token){
     if(token!==''){
       const formData = {
@@ -55,8 +54,8 @@ class SubscriptionPaymentStatus extends React.Component {
             toast.error(res.data.message);
             return;
           }
-          console.log(res);
-          this.setState( { loading: false, paymentData:res.data.data } );
+          this.setState( { loading: true, paymentData:res.data.data } );
+          this.props.history.push('/user/transactions');
         })
         .catch( err => {
           if(err.response !== undefined && err.response.status === 401) {

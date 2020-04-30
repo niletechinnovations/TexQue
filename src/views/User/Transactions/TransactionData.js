@@ -29,7 +29,7 @@ class TransactionData extends Component {
       let resInfo = {
         subscriberId: enquiry.transactionProfileId,
         planName: enquiry.planName,
-        amount: '$'+enquiry.amount,
+        amount: ( enquiry.isTrail ? 'Free Trial' : '$'+enquiry.amount),
         startDate: (new Date(enquiry.startDate)).toLocaleDateString("en-US"),
         endDate: (new Date(enquiry.endDate)).toLocaleDateString("en-US"),
         status: enquiry.statusLabel ? enquiry.statusLabel : "Pending",   

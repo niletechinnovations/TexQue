@@ -70,22 +70,18 @@ class TransactionLists extends Component {
       this.setState( { loading: true}, () => {
       commonService.getAPIWithAccessToken('statistics/subscriber-payment-history/'+strWalkQuery)
         .then( res => {
-           
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( { loading: false } );
             toast.error(res.data.message);
             return;
           }   
-
-          this.setState({loading:false, dataLists: res.data.data.listItem});     
-         
+          this.setState({loading:false, dataLists: res.data.data.listItem});              
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else {
+          }else {
             this.setState( { loading: false } );
             toast.error(err.message);
           }
@@ -186,7 +182,10 @@ class TransactionLists extends Component {
             <Row className="pl-2">
               <Col md="4"> Subscription Type: <strong>{currentPalnData.planInfo.planDuration}</strong></Col>
               <Col md="4"> Subscription Id: <strong>{currentPalnData.planInfo.transactionProfileId}</strong></Col>
-              <Col md="4"> Subscription Amount: <strong>${currentPalnData.planInfo.amount}</strong></Col>
+              <Col md="4"> Subscription Amount: <strong>
+                { (currentPalnData.planInfo.isTrail ? ' Free Trial' : '$'+currentPalnData.planInfo.amount ) }
+                </strong>
+              </Col>
               <Col md="4"> Payment Method: <strong>PayPal</strong></Col>
               <Col md="4"> Start Date: <strong>{(new Date(currentPalnData.planInfo.startDate)).toLocaleDateString("en-US")}</strong></Col>
               <Col md="4"> Expiry Date: <strong>{(new Date(currentPalnData.planInfo.expiryDate)).toLocaleDateString("en-US")}</strong></Col>

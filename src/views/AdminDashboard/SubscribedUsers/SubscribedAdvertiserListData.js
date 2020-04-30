@@ -90,7 +90,7 @@ class SubscribedAdvertiserListData extends Component {
             let i = tableMeta.rowIndex;
             return (
               <button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
-                this.editUserRow(i)}><i className="fa fa-eye"></i> </button>
+                this.editUserRow(i)} title="View Subscriber Info"><i className="fa fa-eye"></i> </button>
             );
           }
         }
@@ -107,7 +107,7 @@ class SubscribedAdvertiserListData extends Component {
       selectableRows: 'none',
       textLabels: {
         body: {
-          noMatch: this.props.dataTableLoadingStatus ? "Processing........" : "Sorry, no matching records found",
+          noMatch: this.props.dataTableLoadingStatus ? "Loading........" : "",
           toolTip: "Sort",
           columnHeaderTooltip: column => `Sort for ${column.label}`
         },

@@ -1,6 +1,6 @@
 import React from "react";
 import { Row} from 'reactstrap';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 
@@ -115,6 +115,8 @@ class SubscriptionPlan extends React.Component {
        return (
         <section className="plan-section">
             {loaderElement}
+            <ToastContainer /> 
+            
             <div className="container p-4">
                 <div className="heading-title text-center">
                     <h2>Subscription Plans</h2>
@@ -135,7 +137,8 @@ class SubscriptionPlan extends React.Component {
                     { planList.map( (planInfo, index) =>
 
                         <div className="col-md-3"  key={index}>
-                            <div className={ ( index===2 ? 'plan-intro-card current-plan' : 'plan-intro-card' ) }>
+                            <div className={ ( index===1 ? 'plan-intro-card current-plan' : 'plan-intro-card' ) }>
+                                { ( index===1 ? <div className="ribbon">Best Value</div> : '' ) }
                                 <h2>{planInfo.planName}</h2>
                                 
                                 { (activePlanType===1) ? 
@@ -152,6 +155,7 @@ class SubscriptionPlan extends React.Component {
                                 <div className="plan-point-list">
                                     <h4>Includes:</h4>
                                     <ul>
+                                    <li><strong>30 Days Free Trial</strong></li>
                                     <li>Up to {planInfo.advertisementAccess} Listings</li>
                                     {
                                         planInfo.description.split("\n").map(function(item, idx) {

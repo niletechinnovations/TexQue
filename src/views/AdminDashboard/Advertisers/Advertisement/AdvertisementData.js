@@ -69,7 +69,7 @@ class AdvertisementData extends Component {
           name: 'userName',
         },
         {
-            label: 'Created on',
+            label: 'Posted on',
             name: 'createdAt',
         },
         {
@@ -86,10 +86,10 @@ class AdvertisementData extends Component {
             customBodyRender: (value, tableMeta, updateValue) => {
               let i = tableMeta.rowIndex;
               return (
-                <>
+              <>
               <Button className="btn-edit btn-info" size='sm' disabled={this.state.buttonProcessing} onClick={() => 
-              this.editRowItem(i)}><i className="fa fa-pencil"></i> </Button> &nbsp;
-              <Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteRowItem(i) };}}><i className="fa fa-trash"></i> </Button>
+              this.editRowItem(i)} title="Edit Advertisement"><i className="fa fa-pencil"></i> </Button> &nbsp;
+              <Button className="btn-delete btn-danger" size='sm' disabled={this.state.buttonProcessing} onClick={() => { if(window.confirm('Are you sure you want to delete this record?')){ this.deleteRowItem(i) };}} title="Delete Advertisement"><i className="fa fa-trash"></i> </Button>
               </>
               );
             }
@@ -109,13 +109,12 @@ class AdvertisementData extends Component {
       selectableRows: 'none',
       textLabels: {
         body: {
-          noMatch: this.props.dataTableLoadingStatus ? "Processing........" : "Sorry, no matching records found",
+          noMatch: this.props.dataTableLoadingStatus ? "Loading........" : "",
           toolTip: "Sort",
           columnHeaderTooltip: column => `Sort for ${column.label}`
         },
       },
       fixedHeaderOptions: { xAxis: false, yAxis: false }
-
     };
     
     return (

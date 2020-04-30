@@ -13,9 +13,9 @@ import AutoCompletePlaces from '../../../../core/google-map/AutoCompletePlaces';
 
 import Loader from '../../../Loader/Loader';
 import './FoodTruck.css'
+import "../../../../containers/CommonLayout/planSwitcher.css";
 import Checkbox from "../../../../core/commonComponent/Checkbox";
 const weekArr = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-
 
 class EditFoodTruckList extends Component {
   constructor(props) {
@@ -44,8 +44,9 @@ class EditFoodTruckList extends Component {
         {}
       ),
       schedules: [],
+      isOpenToday: false,
       changeStatusBtn: '',
-      formField: { organizationId:'', truckName: '', contactPerson: '', phoneNumber:'', address: '',description:'', defaultImage: '',category_id:''},
+      formField: { organizationId:'', truckName: '', contactPerson: '', phoneNumber:'', address: '',description:'', defaultImage: '',category_id:'', openTime:'', closeTime:'' },
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', address:'', error: ''},
       formValid: false,
     };
@@ -78,6 +79,7 @@ class EditFoodTruckList extends Component {
             return;
           } 
           const foodTruckDetail = res.data.data;
+          const timing = foodTruckDetail.timing.split('-');
           let formField = this.state.formField;
           formField.truckName = foodTruckDetail.truckName;
           formField.organizationId = foodTruckDetail.authId;
@@ -85,6 +87,8 @@ class EditFoodTruckList extends Component {
           formField.phoneNumber = foodTruckDetail.phoneNumber;
           formField.address = foodTruckDetail.address;
           formField.description = foodTruckDetail.description;
+          formField.openTime = timing[0];
+          formField.closeTime = timing[1];
           formField.category_id = foodTruckDetail.categories.length > 0 ? foodTruckDetail.categories : "";
 
           let selectedOption = [];
@@ -115,7 +119,7 @@ class EditFoodTruckList extends Component {
           const statusBtn = <Button type="button" size="sm" className={ ( foodTruckDetail.status ? 'btn-danger' : 'btn-success' )} onClick={() => 
             this.changeFoodTruckStatus(foodTruckDetail.foodTruckId, foodTruckDetail.status )} >{ ( foodTruckDetail.status ? 'Un-Approve Listing' : 'Approve Listing' )}</Button>
           
-          this.setState({ loading: false, foodTruckDetail: foodTruckDetail, address: foodTruckDetail.address, latitude: foodTruckDetail.latitude,  longitude: foodTruckDetail.longitude, changeStatusBtn:statusBtn, formValid: true, formField: formField});
+          this.setState({ loading: false, foodTruckDetail: foodTruckDetail, address: foodTruckDetail.address, latitude: foodTruckDetail.latitude,  longitude: foodTruckDetail.longitude, isOpenToday:foodTruckDetail.isOpen, changeStatusBtn:statusBtn, formValid: true, formField: formField});
         } )
         .catch( err => {               
           if(err.response !== undefined && err.response.status === 401) {
@@ -150,8 +154,7 @@ class EditFoodTruckList extends Component {
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else
+          }else
             this.setState( { loading: false } );
             toast.error(err.message);
         } )
@@ -171,6 +174,7 @@ class EditFoodTruckList extends Component {
       formData.append('contactPerson', formInputField.contactPerson);
       formData.append('phoneNumber', formInputField.phoneNumber);
       formData.append('description', formInputField.description);
+      formData.append('timing', formInputField.openTime+'-'+formInputField.closeTime);
       formData.append('address', this.state.address);
       formData.append('latitude', this.state.latitude);
       formData.append('longitude', this.state.longitude);
@@ -210,8 +214,7 @@ class EditFoodTruckList extends Component {
         if(err.response !== undefined && err.response.status === 401) {
           localStorage.clear();
           this.props.history.push('/login');
-        }
-        else
+        }else
           this.setState( { formProccessing: false } );
           toast.error(err.message);
       } )
@@ -304,7 +307,7 @@ class EditFoodTruckList extends Component {
       modal: !this.state.modal,
       rowIndex: -1,
       formValid: false,
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '', },
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '', openTime:'', closeTime:'' },
       formErrors: {truckName: '', error: ''}
     });
   }
@@ -387,9 +390,32 @@ organizationList() {
     this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address, formField: formField })
   }
 
+  openToday = () => {
+    if(this.state.foodTruckId!==''){
+
+    var isOpen = false;
+    if(!this.state.isOpenToday){ 
+      isOpen = true;
+    }
+
+    const formData = { "foodTruckId": this.state.foodTruckId, "isOpen" : isOpen }
+      this.setState( { loading:true }, () =>{
+        commonService.putAPIWithAccessToken('food-truck/open', formData)
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) {           
+            this.setState( { loading: false} );
+            toast.error(res.data.message);
+            return;
+          }
+          toast.success(res.data.message);
+          this.getFoodTruckDetail(this.state.foodTruckId);
+        })
+      } );
+    }
+  }
 
   render() {
-    const { loading, formProccessing, organizationList, categoryList, foodTruckDetail,selectedCategories, changeStatusBtn } = this.state;
+    const { loading, formProccessing, organizationList, categoryList, foodTruckDetail,selectedCategories, changeStatusBtn, isOpenToday } = this.state;
     const processingBtnText = <>Submit <i className="fa fa-spinner"></i></>;
     let loaderElement = '';
     let defaultImagePreview = '';  
@@ -418,11 +444,28 @@ organizationList() {
       <div className="user-dashboard">
         {loaderElement}
         <Card>
-          <CardHeader className="mainHeading">
-            <strong className="mr-5">Food Truck</strong>
-            <Link to={`/admin/reviews/`+ this.state.foodTruckId} className="btn btn-sm btn btn-outline-info">Reviews: {foodTruckDetail.totalReviews}</Link>
-            
-            <Link to="/admin/organization/truck-listing" className="btn btn-sm btn-secondary backButtonRight pull-right"><i className="fa fa-arrow-left"></i> Back</Link>
+          <CardHeader>
+            <Row>
+            <Col md="3" className="mainHeading">
+              <strong className="mr-5">Food Truck</strong>
+            </Col>
+            <Col md="3">
+              <Link to={`/admin/reviews/`+ this.state.foodTruckId} className="btn btn-sm btn btn-outline-info">Reviews: {foodTruckDetail.totalReviews}</Link>
+            </Col>
+            <Col md="4">
+            <div className="pricing-section pb-0">
+              <label className={ ( !isOpenToday ? 'my-0 toggler toggler--is-active' : 'my-0 toggler' ) } id="filt-monthly">Closed</label>
+              <div className="toggle my-0">
+                <input type="checkbox" id="switcher" className="check" onClick={ () =>  this.openToday() } checked={ ( isOpenToday ? 'checked' : '' ) } onChange={this.changeHandler} />
+                <b className="b switch"></b>
+              </div>
+              <label className={ ( isOpenToday ? 'my-0 toggler toggler--is-active' : 'my-0 toggler' ) }  id="filt-yearly">Open Today</label>
+            </div>
+            </Col>
+            <Col md="2">
+              <Link to="/admin/organization/truck-listing" className="btn btn-sm btn-secondary backButtonRight pull-right"><i className="fa fa-arrow-left"></i> Back</Link>
+            </Col>
+            </Row>
           </CardHeader>
           <CardBody>
             
@@ -471,7 +514,7 @@ organizationList() {
                     <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} truckAdress={ this.state.formField.address } />     
                   </FormGroup>
                 </Col>
-                <Col md={"6"}>
+                <Col md={"12"}>
                   <FormGroup> 
                     <Label htmlFor="description">Description</Label>
                     <Input type="textarea" placeholder="Food truck details" id="description" name="description" value={this.state.formField.description} onChange={this.changeHandler} />
@@ -496,8 +539,17 @@ organizationList() {
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
+                    <Label htmlFor="openTime">Opening Hours</Label><br/>
+                    <input type="time" id="openTime" className="form-control input-hour" name="openTime" value={this.state.formField.openTime} onChange={this.changeHandler} />
+                    <input type="time" id="closeTime" className="form-control input-hour" name="closeTime" value={this.state.formField.closeTime} onChange={this.changeHandler} />
+                  </FormGroup>
+                </Col>
+                
+                <Col md={"6"}>
+                  <FormGroup> 
                     <Label htmlFor="defaultImage">Banner Image</Label>            
                     <Input type="file" id="defaultImage" name="defaultImage" className="form-control"  onChange={this.handleImageChange} />
+                    <small>Banner Image will be shown as a Food truck profile image.</small>
                   </FormGroup>              
                 </Col>
                 <Col md={"6"}>{defaultImagePreview}</Col>
@@ -505,6 +557,7 @@ organizationList() {
                   <FormGroup> 
                     <Label htmlFor="truckImages">Gallery Images</Label>            
                     <Input type="file" id="truckImages" name="truckImages" className="form-control" multiple onChange={this.onGalleryImageChange} />
+                    <small>Gallery images will be shown to user inside gallery option while scrolling on Food Truck Details page.</small>
                   </FormGroup> 
                 </Col>  
                 <Col md={"6"}>

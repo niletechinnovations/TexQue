@@ -180,7 +180,7 @@ body{ background: none !important;}
 	}
 }
 .footer{ background:#1b1b1b url(/images/footer_bg.png); position: relative;}
-.footer-top{padding: 3rem 0;}
+.footer-top{padding: 3rem 0 0 0;}
 .footer ul { margin: 0; padding: 0;}
 .footer ul li { line-height: 26px; list-style: outside none none;}
 .footer ul li a { color: #6c8293;}

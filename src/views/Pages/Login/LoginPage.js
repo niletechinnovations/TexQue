@@ -87,44 +87,41 @@ class LoginPage extends Component {
             return;
           }
           localStorage.setItem( 'accessToken', loggedInfo.data.accessToken );
-          localStorage.setItem( 'refreshToken', loggedInfo.data.refreshToken );
+          //localStorage.setItem( 'refreshToken', loggedInfo.data.refreshToken );
           localStorage.setItem( 'role', loggedInfo.data.role );
           localStorage.setItem( 'authId', loggedInfo.data.authId );
           localStorage.setItem( 'userName', loggedInfo.data.firstName+' '+loggedInfo.data.lastName );
           localStorage.setItem( 'userEmail', loggedInfo.data.email );
+          localStorage.setItem( 'profilePic', loggedInfo.data.profilePic );
           localStorage.setItem( 'isActivePlan', loggedInfo.data.isActivePlan );
           localStorage.setItem( 'isAdvertiser', loggedInfo.data.isAdvertiser );
           localStorage.setItem( 'isOrganization', loggedInfo.data.isOrganization );
           
-          this.setState( {
-            loading: false,              
-            loggedIn: true
-          } )
+          this.setState( { loading: false, loggedIn: true } )
+          
           toast.success(res.data.message);
-          if(loggedInfo.data.role.toLowerCase() === 'admin')
+          if(loggedInfo.data.role.toLowerCase() === 'admin'){
             this.props.history.push('/admin/dashboard');
-          else if(loggedInfo.data.role.toLowerCase() === 'organization'){
+          }else if( localStorage.getItem( 'choosedPlanId' ) ){
+            this.props.history.push('/proceed-to-payment');
+          }else if(loggedInfo.data.role.toLowerCase() === 'organization'){
             if(loggedInfo.data.isActivePlan)
               this.props.history.push('/user/dashboard');
             else
               this.props.history.push('/subscription-plan');
-          }
-          else if(loggedInfo.data.role.toLowerCase() === 'advertiser'){
+          }else if(loggedInfo.data.role.toLowerCase() === 'advertiser'){
             if(loggedInfo.data.isActivePlan)
               this.props.history.push('/advertiser/ads');
             else
               this.props.history.push('/advertiser-plan');
-          }
-          else
+          }else
             this.props.history.push('/');
         } )
         .catch( err => {
-          
           toast.error(err.message);
           this.setState( { loading: false} );
         } )
     } )
-
   };
 
   changeHandler = event => {

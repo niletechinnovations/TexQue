@@ -433,7 +433,7 @@ class FoodTruckList extends Component {
           <Col lg={12}>
             <Card>
               <CardHeader className="mainHeading">
-                <strong>Food Truck List</strong> <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button>
+                <strong>Food Truck List</strong> <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add Food Truck</Button>
               </CardHeader>
               <CardBody>
                 
@@ -512,8 +512,8 @@ class FoodTruckList extends Component {
                       <Col md={"1"} className="p-0">
                         <FormGroup> 
                           <Label>&nbsp;</Label><br />
-                          <Button color="success" type="button" size="sm" onClick={this.filterTruckList}><i className="fa fa-search"></i></Button>&nbsp;
-                          <Button color="danger" type="reset" size="sm" onClick={this.resetfilterForm}><i className="fa fa-refresh"></i></Button>
+                          <Button color="success" type="button" size="sm" onClick={this.filterTruckList} title="Filter Food Truck"><i className="fa fa-search"></i></Button>&nbsp;
+                          <Button color="danger" type="reset" size="sm" onClick={this.resetfilterForm} title="Reset Fields"><i className="fa fa-refresh"></i></Button>
                         </FormGroup>             
                       </Col>
                     </Row>

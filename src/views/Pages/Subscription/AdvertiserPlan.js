@@ -1,7 +1,7 @@
 import React from "react";
 import { Row} from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 
@@ -115,6 +115,8 @@ class AdvertiserPlan extends React.Component {
        return (
         <section className="advertiser-plan-section plan-section">
             {loaderElement}
+            <ToastContainer /> 
+            
             <div className="container p-4">
                 <div className="heading-title text-center">
                     <h2>Advertisement Plans</h2>
@@ -153,7 +155,8 @@ class AdvertiserPlan extends React.Component {
                                 <div className="heading">
                                     <h4>{planInfo.planName}</h4>
                                 </div>
-                                <p>Up to {planInfo.advertisementAccess} Ads</p>
+                                <p><strong>30 Days Free Trial</strong></p>
+                                <p>Up to {planInfo.advertisementAccess} different images</p>
                                 {
                                     planInfo.description.split("\n").map(function(item, idx) {
                                         return (

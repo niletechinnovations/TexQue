@@ -50,9 +50,9 @@ class CategoryData extends Component {
         image: (cat.imagUrl!=='' ? <img src={cat.imagUrl} width="100" alt="" /> : '' ),
         status: cat.status ? "Active" : "Inactive" ,       
         action: <p><a href="#!" className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
-          this.editCategoryItem(i)}><i className="fa fa-pencil"></i> </a>
+          this.editCategoryItem(i)} title="Edit Cuisine"><i className="fa fa-pencil"></i> </a>
           <a href="#!" className="btn-delete" disabled={this.state.buttonProcessing} onClick={() => 
-          this.deleteCategoryItem(i)}><i className="fa fa-trash"></i></a></p>,       
+          this.deleteCategoryItem(i)} title="Delete Cuisine"><i className="fa fa-trash"></i></a></p>,       
       }      
       rowsItem.push(catInfo);
     }
@@ -66,7 +66,7 @@ class CategoryData extends Component {
       selectableRows: 'none',
       textLabels: {
         body: {
-          noMatch: this.props.dataTableLoadingStatus ? "Processing........" : "Sorry, no matching records found",
+          noMatch: this.props.dataTableLoadingStatus ? "Loading........" : "",
           toolTip: "Sort",
           columnHeaderTooltip: column => `Sort for ${column.label}`
         },

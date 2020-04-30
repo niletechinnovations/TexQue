@@ -51,7 +51,7 @@ export default class VerifyOtp extends React.Component {
             const loggedInfo = res.data;
           
             localStorage.setItem( 'accessToken', loggedInfo.data.accessToken);
-            localStorage.setItem( 'refreshToken', loggedInfo.data.refreshToken);
+            //localStorage.setItem( 'refreshToken', loggedInfo.data.refreshToken);
             localStorage.setItem( 'role', loggedInfo.data.role );
             localStorage.setItem( 'authId', loggedInfo.data.authId);
             localStorage.setItem( 'profilePic', loggedInfo.data.profilePic );

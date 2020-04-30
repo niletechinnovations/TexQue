@@ -21,6 +21,7 @@ class AdvertisementList extends Component {
       loading: true,
       rowIndex: -1,
       formField: { advertisementId: '', adFile: '', adLink:'', status:'' },
+      imageError : 'required'
     } 
     this.submitHandler = this.submitHandler.bind(this);
     this.handleEditEnquiry = this.handleEditEnquiry.bind(this);
@@ -47,7 +48,7 @@ class AdvertisementList extends Component {
           }
           if(!res.data.data.isActive){
             this.setState({loading:false, profileInfo: res.data.data});     
-            this.props.history.push('/advertiser/plan');
+            this.props.history.push('/advertiser-plan');
             toast.error('Please choose an advertising plan to continue as an Advertiser.');
           }
         } )
@@ -69,22 +70,18 @@ class AdvertisementList extends Component {
     this.setState( { loading: true}, () => {
       commonService.getAPIWithAccessToken('advertisement?pageSize=1000')
         .then( res => {
-           
           if ( undefined === res.data.data || !res.data.status ) {
             this.setState( { loading: false } );
             toast.error(res.data.message);
             return;
           }   
-
           this.setState({loading:false, enquiryLists: res.data.data});     
-         
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
-            //this.props.history.push('/login');
-          }
-          else {
+            this.props.history.push('/login');
+          }else {
             this.setState( { loading: false } );
             toast.error(err.message);
           }
@@ -114,32 +111,32 @@ class AdvertisementList extends Component {
             toast.error(res.data.message);
             return;
           } 
-          
           this.setState({ modal: false, formProccessing: false});
           toast.success(res.data.message);
           this.enquiryLists();
-         
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else
+          }else
             this.setState( { formProccessing: false } );
             toast.error(err.message);
         } )
       }
       else{
+        if(!this.state.adFile){
+          this.setState( { imageError:'required',formProccessing: false } );
+          toast.error('Post image should not be empty!');
+          return;
+        }
         commonService.postAPIWithAccessToken('advertisement', formData)
-        .then( res => {
-         
+        .then( res => {        
           if ( undefined === res.data.data || !res.data.status ) { 
             this.setState( { modal: false, formProccessing: false} );
             toast.error(res.data.message);
             return;
           } 
-          
           this.setState({ modal: false, formProccessing: false});
           toast.success(res.data.message);
           this.enquiryLists();
@@ -149,8 +146,7 @@ class AdvertisementList extends Component {
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else
+          }else
             this.setState( { modal: false, formProccessing: false } );
             toast.error(err.message);
         } )
@@ -178,6 +174,7 @@ class AdvertisementList extends Component {
       modal: !this.state.modal,
       rowIndex: -1,
       formField: { advertisementId:'', adFile: '', adLink: '', status: '', },
+      imageError : 'required'
     });
   }
 
@@ -189,7 +186,7 @@ class AdvertisementList extends Component {
           adLink: rowData.adLink,
           status: rowData.adStatus,
       }
-      this.setState({rowIndex: rowIndex, formField: formField, modal: true });
+      this.setState({rowIndex: rowIndex, formField: formField, imageError : '', modal: true });
   }
   handleDeleteData(rowIndex){
     const rowInfo = this.state.enquiryLists[rowIndex];
@@ -220,7 +217,7 @@ class AdvertisementList extends Component {
 
   
   render() {
-    const { enquiryLists, loading, modal, formField, formProccessing } = this.state;
+    const { enquiryLists, loading, modal, formField, imageError, formProccessing } = this.state;
         
     let loaderElement = '';
     if(loading)        
@@ -256,7 +253,8 @@ class AdvertisementList extends Component {
                 <Col md={"12"}>
                   <FormGroup> 
                     <Label htmlFor="adFile">Ad File *</Label>            
-                    <Input type="file" id="adFile" name="adFile" className="form-control" onChange={this.handleImageChange} required />
+                    <Input type="file" id="adFile" name="adFile" className="form-control" onChange={this.handleImageChange} required={imageError} />
+                    <small>Recommended image size: 300 x 250 pixels. </small>
                   </FormGroup>  
                 </Col>
                 <Col md={"12"}>

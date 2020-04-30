@@ -44,7 +44,7 @@ class EditFoodTruck extends Component {
         {}
       ),
       schedules: [],
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', address:'', description:'', defaultImage: '',category_id:'', timing:'' },
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', address:'', description:'', defaultImage: '',category_id:'', openTime:'', closeTime:'' },
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', error: ''},
       formValid: false,
       isOpenToday: false,
@@ -75,13 +75,15 @@ class EditFoodTruck extends Component {
             return;
           } 
           const foodTruckDetail = res.data.data;
+          const timing = foodTruckDetail.timing.split('-');
           let formField = this.state.formField;
           formField.truckName = foodTruckDetail.truckName;
           formField.contactPerson = foodTruckDetail.contactPerson;
           formField.phoneNumber = foodTruckDetail.phoneNumber;
           formField.address = foodTruckDetail.address;
           formField.description = foodTruckDetail.description;
-          formField.timing = foodTruckDetail.timing;
+          formField.openTime = timing[0];
+          formField.closeTime = timing[1];
           formField.category_id = foodTruckDetail.categories.length > 0 ? foodTruckDetail.categories : "";
 
           let selectedOption = [];
@@ -136,11 +138,10 @@ class EditFoodTruck extends Component {
       formData.append('contactPerson', formInputField.contactPerson);
       formData.append('phoneNumber', formInputField.phoneNumber);
       formData.append('description', formInputField.description);
-      formData.append('timing', formInputField.timing);
+      formData.append('timing', formInputField.openTime+'-'+formInputField.closeTime);
       formData.append('address', this.state.address);
       formData.append('latitude', this.state.latitude);
       formData.append('longitude', this.state.longitude);
-      
       if(this.state.featuredImage !== "")
         formData.append('featuredImage', this.state.featuredImage);
       
@@ -254,7 +255,6 @@ class EditFoodTruck extends Component {
   }
   /* Validate Form */
   validateForm() {
-    
     const formErrors = this.state.formErrors;
     const formField = this.state.formField;
     this.setState({formValid: 
@@ -271,7 +271,7 @@ class EditFoodTruck extends Component {
       modal: !this.state.modal,
       rowIndex: -1,
       formValid: false,
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', description:'', address: '',timing:'' },
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', description:'', address: '', openTime:'', closeTime:'' },
       formErrors: {truckName: '', error: ''}
     });
   }
@@ -281,8 +281,7 @@ class EditFoodTruck extends Component {
   categoryList() {   
     
     commonService.getAPIWithAccessToken('category')
-      .then( res => {       
-         
+      .then( res => {        
         if ( undefined === res.data.data || !res.data.status ) {
           this.setState( { loading: false } );
           toast.error(res.data.message);
@@ -293,8 +292,7 @@ class EditFoodTruck extends Component {
       .catch( err => {         
         if(err.response !== undefined && err.response.status === 401) {
           toast.error(err.response);
-        }
-        else 
+        }else 
           this.setState( { loading: false } );
       } )
   }
@@ -322,8 +320,7 @@ class EditFoodTruck extends Component {
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else{
+          }else{
             this.setState( { loading: false } );
             toast.error(err.message);
           }
@@ -463,8 +460,9 @@ class EditFoodTruck extends Component {
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="timing">Opening Hours</Label>
-                    <input type="text" id="timing" className="form-control" name="timing" value={this.state.formField.timing} onChange={this.changeHandler} />
+                    <Label htmlFor="openTime">Opening Hours</Label><br/>
+                    <input type="time" id="openTime" className="form-control input-hour" name="openTime" value={this.state.formField.openTime} onChange={this.changeHandler} />
+                    <input type="time" id="closeTime" className="form-control input-hour" name="closeTime" value={this.state.formField.closeTime} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
@@ -481,8 +479,9 @@ class EditFoodTruck extends Component {
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="defaultImage">Food Truck Image</Label>            
+                    <Label htmlFor="defaultImage">Banner Image</Label>            
                     <Input type="file" id="defaultImage" name="defaultImage" className="form-control"  onChange={this.handleImageChange} />
+                    <small>Banner Image will be shown as a Food truck profile image.</small>
                     {defaultImagePreview}
                   </FormGroup>              
                 </Col>
@@ -503,8 +502,9 @@ class EditFoodTruck extends Component {
                 <Col md={"12"}><hr /></Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="truckImages">Gallery Images</Label>            
+                    <Label htmlFor="truckImages">Food Truck Gallery Images</Label>            
                     <Input type="file" id="truckImages" name="truckImages" className="form-control" multiple onChange={this.onGalleryImageChange} />
+                    <small>Gallery images will be shown to user inside gallery option while scrolling on Food Truck Details page.</small>
                   </FormGroup> 
                 </Col>  
                 <Col md={"6"}>

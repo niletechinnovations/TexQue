@@ -307,8 +307,8 @@ class AdvertiserList extends Component {
                   <Col md={"1"} className="p-0">
                     <FormGroup> 
                       <Label>&nbsp;</Label><br />
-                      <Button color="success" type="button" size="sm" onClick={this.filterUserList}><i className="fa fa-search"></i></Button>&nbsp;
-                      <Button color="danger" type="reset" size="sm" onClick={this.resetfilterForm}><i className="fa fa-refresh"></i></Button>
+                      <Button color="success" type="button" size="sm" onClick={this.filterUserList} title="Filter Advertiser"><i className="fa fa-search"></i></Button>&nbsp;
+                      <Button color="danger" type="reset" size="sm" onClick={this.resetfilterForm} title="Clear Fields"><i className="fa fa-refresh"></i></Button>
                     </FormGroup>             
                   </Col>
                 </Row>

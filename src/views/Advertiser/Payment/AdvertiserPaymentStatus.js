@@ -29,7 +29,6 @@ class AdvertiserPaymentStatus extends React.Component {
             localStorage.setItem( 'isAdvertiser', true );
             this.setState({paymentStatus: params.status, token: token });
             this.getPaymentDetail(token);
-            this.props.history.push('/advertiser/transactions');
         }else{
             if(params.status==='cancel')
                 toast.error('You have cancelled your transaction');
@@ -41,7 +40,7 @@ class AdvertiserPaymentStatus extends React.Component {
         }
         
     }else 
-        this.props.history.push('/advertiser/plan');
+        this.props.history.push('/advertiser-plan');
   }
 
   
@@ -58,8 +57,8 @@ class AdvertiserPaymentStatus extends React.Component {
             toast.error(res.data.message);
             return;
           }
-          console.log(res);
-          this.setState( { loading: false, paymentData:res.data.data } );
+          this.setState( { loading: true, paymentData:res.data.data } );
+          this.props.history.push('/advertiser/transactions');
         })
         .catch( err => {
           if(err.response !== undefined && err.response.status === 401) {

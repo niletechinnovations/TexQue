@@ -4,6 +4,7 @@ import commonService from '../../../core/services/commonService';
 
 import OfferSlider from "../../Sliders/OfferSlider";
 import ProductSlider from "../../Sliders/ProductSlider";
+import HomeSlider from "../../Sliders/HomeSlider";
 import "./HomePage.css";
 import "../../../containers/CommonLayout/planSwitcher.css";
 
@@ -100,19 +101,24 @@ class HomePage extends React.Component {
         return (
         <>
         <section className="homepage-search-block">
-            <div className="container">
-                <div className="row d-flex align-items-center">
-                    <div className="col-md-8">
-                        <div className="homepage-search-title">
-                            <h1>Food that finds you!</h1>
-                            <h5>The Food Truck app that the Pros & Foodies use.</h5>
-                            <Link to="/register" className="btn btn-get">Get Started</Link>
+            <div className="home-slider">
+                <HomeSlider />
+            </div>
+            <div className="home-slider-content-info">
+                <div className="container">
+                    <div className="row d-flex align-items-center">
+                        <div className="col-md-8">
+                            <div className="homepage-search-title">
+                                <h1>Food that finds you!</h1>
+                                <h5>The Food Truck app that the Pros & Foodies use.</h5>
+                                <Link to="/register" className="btn btn-get">Get Started</Link>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="col-md-4">
-                        <div className="offer-slider pl-4 pt-3" id="homepage-slider">
-                            <OfferSlider data={dataAdvertismentList} />
+                        <div className="col-md-4">
+                            <div className="offer-slider pl-4 pt-3" id="homepage-slider">
+                                <OfferSlider data={dataAdvertismentList} />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -195,8 +201,9 @@ class HomePage extends React.Component {
                     <div className="row">
                     { planList.map( (planInfo, index) =>
 
-                        <div className="col-md-3"  key={index}>
-                            <div className={ ( index===2 ? 'plan-intro-card current-plan' : 'plan-intro-card' ) }>
+                        <div className="col-md-4 col-lg-3"  key={index}>
+                            <div className={ ( index===1 ? 'plan-intro-card current-plan' : 'plan-intro-card' ) }>
+                                { ( index===1 ? <div className="ribbon">Best Value</div> : '' ) }
                                 <h2>{planInfo.planName}</h2>
                                 
                                 { (activePlanType===1) ? 
@@ -213,6 +220,7 @@ class HomePage extends React.Component {
                                 <div className="plan-point-list">
                                     <h4>Includes:</h4>
                                     <ul>
+                                    <li><strong>30 Days Free Trial</strong></li>
                                     <li>Up to {planInfo.advertisementAccess} Listings</li>
                                     {
                                         planInfo.description.split("\n").map(function(item, idx) {
@@ -243,7 +251,7 @@ class HomePage extends React.Component {
                     effective for the everyday seller and buyer of delicious meals on wheels.</p>
                 </div>
                 <div className="row">
-                    <div className="col-md-4">
+                    <div className="col-md-6 col-lg-4">
                         <div className="howitwork-card">
                         <div className="howitwork-card-media">
                             <img src="/images/step1.svg" height="80" alt="Register Food Truck" />
@@ -255,7 +263,7 @@ class HomePage extends React.Component {
                         </div>
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-md-6 col-lg-4">
                         <div className="howitwork-card">
                         <div className="howitwork-card-media">
                             <img src="/images/listing.svg" height="80" alt="List Your Menu" />
@@ -267,7 +275,7 @@ class HomePage extends React.Component {
                         </div>
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-md-6 col-lg-4">
                         <div className="howitwork-card">
                         <div className="howitwork-card-media">
                             <img src="/images/inquiry.svg" height="80" alt="Customer Access" />
@@ -279,7 +287,7 @@ class HomePage extends React.Component {
                         </div>
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-md-6 col-lg-4">
                         <div className="howitwork-card">
                         <div className="howitwork-card-media">
                             <img src="/images/Inquiries.svg" height="80" alt="Receive Inquiries" />
@@ -291,7 +299,7 @@ class HomePage extends React.Component {
                         </div>
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-md-6 col-lg-4">
                         <div className="howitwork-card">
                         <div className="howitwork-card-media">
                             <img src="/images/menu-control.svg" height="80" alt="Menu Control" />
@@ -303,7 +311,7 @@ class HomePage extends React.Component {
                         </div>
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-md-6 col-lg-4">
                         <div className="howitwork-card">
                         <div className="howitwork-card-media">
                             <img src="/images/Availability.svg" height="80" alt="Update Availability" />

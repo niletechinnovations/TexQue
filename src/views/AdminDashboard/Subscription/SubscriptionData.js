@@ -37,7 +37,7 @@ class SubscriptionData extends Component {
         description: plan.description || " ",
         status: plan.status ? 'Active' : 'Inactive',   
         action: <p><button className="btn-edit" disabled={this.state.buttonProcessing} onClick={() => 
-          this.editSubscriptionItem(i)}><i className="fa fa-pencil"></i> </button></p>,       
+          this.editSubscriptionItem(i)} title="Edit Subscription"><i className="fa fa-pencil"></i> </button></p>,       
       }      
       rowsItem.push(orgInfo);
     }      
@@ -82,7 +82,7 @@ class SubscriptionData extends Component {
       selectableRows: 'none',
       textLabels: {
         body: {
-          noMatch: this.props.dataTableLoadingStatus ? "Processing........" : "Sorry, no matching records found",
+          noMatch: this.props.dataTableLoadingStatus ? "Loading........" : "",
           toolTip: "Sort",
           columnHeaderTooltip: column => `Sort for ${column.label}`
         },

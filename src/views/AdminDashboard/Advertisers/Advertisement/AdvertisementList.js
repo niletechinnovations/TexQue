@@ -23,7 +23,7 @@ class AdvertisementList extends Component {
       enquiryLists: [],
       loading: true,
       rowIndex: -1,
-      formField: { advertisementId: '', adFile: '', adLink:'', status:'' },
+      formField: { advertisementId: '', adFile: '',adImage:'', adLink:'', status:'' },
       filterItem: { filterPhone:'', custom_search: '', filterFrom:'',  filterTo:'', filterStatus:''}
     } 
     this.submitHandler = this.submitHandler.bind(this);
@@ -99,18 +99,15 @@ class AdvertisementList extends Component {
             toast.error(res.data.message);
             return;
           } 
-          
           this.setState({ modal: false, formProccessing: false});
           toast.success(res.data.message);
           this.adsLists();
-         
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else
+          }else
             this.setState( { formProccessing: false } );
             toast.error(err.message);
         } )
@@ -118,17 +115,14 @@ class AdvertisementList extends Component {
       else{
         commonService.postAPIWithAccessToken('advertisement', formData)
         .then( res => {
-         
           if ( undefined === res.data.data || !res.data.status ) { 
             this.setState( { modal: false, formProccessing: false} );
             toast.error(res.data.message);
             return;
           } 
-          
           this.setState({ modal: false, formProccessing: false});
           toast.success(res.data.message);
           this.adsLists();
-         
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
@@ -162,7 +156,7 @@ class AdvertisementList extends Component {
     this.setState({
       modal: !this.state.modal,
       rowIndex: -1,
-      formField: { advertisementId:'', adFile: '', adLink: '', status: '', },
+      formField: { advertisementId:'', adFile: '', adImage:'', adLink: '', status: '', },
     });
   }
 
@@ -257,7 +251,7 @@ class AdvertisementList extends Component {
         {loaderElement}
         <Card>
           <CardHeader className="mainHeading">
-            <strong>Advertisement</strong>
+            <strong>Advertisement</strong> <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle} title="Add New Advertisement"><i className="fa fa-plus"></i> Add Advertisement</Button>
           </CardHeader>
           <CardBody>
             <Row>
@@ -307,7 +301,6 @@ class AdvertisementList extends Component {
           <ModalHeader toggle={this.toggle}>Advertisement</ModalHeader>
           <Form onSubmit={this.submitHandler} noValidate className="texQueForm">
             <ModalBody>
-              
               <Row>
                 <Col md={"6"}>
                   <FormGroup> 
@@ -336,7 +329,7 @@ class AdvertisementList extends Component {
                     </Input>
                   </FormGroup>
                 </Col>
-                <Col md={"6"}>
+                {/* <Col md={"6"}>
                   <FormGroup> 
                     <Label htmlFor="userName">User</Label>            
                     <Input type="text" id="userName" name="userName" value={formField.userName} disabled />
@@ -347,7 +340,7 @@ class AdvertisementList extends Component {
                     <Label htmlFor="createdAt">Created on </Label>            
                     <Input type="text" id="createdAt" name="createdAt" value={formField.createdAt} disabled />
                   </FormGroup>
-                </Col>
+                </Col> */}
               </Row>
             </ModalBody>
             <ModalFooter>

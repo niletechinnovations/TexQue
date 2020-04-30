@@ -46,7 +46,7 @@ class FoodTruckLists extends Component {
         }),
         {}
       ),
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',description:'', defaultImage: '',category_id:'',timing:''},
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',description:'', defaultImage: '',category_id:'',openTime:'', closeTime:''},
       formErrors: { truckName: '', contactPerson: '', phoneNumber:'', error: ''},
       formValid: false,
     } 
@@ -134,7 +134,7 @@ class FoodTruckLists extends Component {
         formData.append('contactPerson', formInputField.contactPerson);
         formData.append('phoneNumber', formInputField.phoneNumber);
         formData.append('description', formInputField.description);
-        formData.append('timing', formInputField.timing);
+        formData.append('timing', formInputField.openTime+'-'+formInputField.closeTime);
         formData.append('address', this.state.address);
         formData.append('latitude', this.state.latitude);
         formData.append('longitude', this.state.longitude);
@@ -174,8 +174,7 @@ class FoodTruckLists extends Component {
             if(err.response !== undefined && err.response.status === 401) {
               localStorage.clear();
               this.props.history.push('/login');
-            }
-            else
+            }else
               this.setState( { formProccessing: false } );
               toast.error(err.message);
           } )
@@ -193,14 +192,12 @@ class FoodTruckLists extends Component {
             this.setState({ modal: false});
             toast.success(res.data.message);
             this.truckLists();
-          
           } )
           .catch( err => {         
             if(err.response !== undefined && err.response.status === 401) {
               localStorage.clear();
               this.props.history.push('/login');
-            }
-            else
+            }else
               this.setState( { formProccessing: false } );
               toast.error(err.message);
           } )
@@ -293,7 +290,7 @@ class FoodTruckLists extends Component {
       modal: !this.state.modal,
       rowIndex: -1,
       formValid: false,
-      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',timing:'' },
+      formField: { truckName: '', contactPerson: '', phoneNumber:'', address: '',openTime:'', closeTime:'' },
       formErrors: {truckName: '', error: ''}
     });
   }
@@ -393,7 +390,7 @@ class FoodTruckLists extends Component {
                   <div className="products-item-card">
                     <div className="products-item-image">
                         <div className="icon-big text-center icon-warning">
-                          { (truckInfo.featuredImage!=='' ? <img src={truckInfo.featuredImage} alt={truckInfo.truckName} /> : <img src="/images/1.png" alt="TruckBanner" /> ) }
+                          { (truckInfo.featuredImage!=='' ? <img src={truckInfo.featuredImage} alt={truckInfo.truckName} className="img-fluid item-img" /> : <img src="/images/1.png" alt="TruckBanner" /> ) }
                         </div>
                      </div>
                     <div className="food-truck-item-content">
@@ -465,13 +462,13 @@ class FoodTruckLists extends Component {
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="defaultImage">Main Image *</Label>            
+                    <Label htmlFor="defaultImage">Food Truck Image *</Label>            
                     <Input type="file" id="defaultImage" name="defaultImage" className="form-control"  onChange={this.handleImageChange} />
                   </FormGroup>              
                 </Col>
                 <Col md={"6"}>
                   <FormGroup>
-                    <Label htmlFor="truckImages">Gallery Images</Label>            
+                    <Label htmlFor="truckImages">Food Truck Gallery Images</Label>            
                     <Input type="file" id="truckImages" name="truckImages" className="form-control" multiple onChange={this.onGalleryImageChange} />
                   </FormGroup> 
                 </Col>
@@ -507,8 +504,9 @@ class FoodTruckLists extends Component {
                 </Col>
                 <Col md={"6"}>
                   <FormGroup> 
-                    <Label htmlFor="timing">Opening Hours</Label>
-                    <input type="text" id="timing" className="form-control" name="timing" value={this.state.formField.timing} onChange={this.changeHandler} />
+                    <Label htmlFor="openTime">Opening Hours</Label><br/>
+                    <input type="time" id="openTime" className="form-control input-hour" name="openTime" value={this.state.formField.openTime} onChange={this.changeHandler} />
+                    <input type="time" id="closeTime" className="form-control input-hour" name="closeTime" value={this.state.formField.closeTime} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
                 <Col md={"12"}>
