@@ -112,6 +112,14 @@ class HomePage extends React.Component {
                                 <h1>Food that finds you!</h1>
                                 <h5>The Food Truck app that the Pros & Foodies use.</h5>
                                 <Link to="/register" className="btn btn-get">Get Started</Link>
+                                <p className="mt-5 pt-5">
+                                <a href="https://play.google.com/store/apps/details?id=com.texque&hl=en" target="_blank" rel="noopener noreferrer">
+                                    <img className="img-fluid" src="/images/google.png" alt="Google Play Store" />
+                                </a>
+                                <a href="https://apps.apple.com/us/app/texque/id1502952657?ls=1" target="_blank" rel="noopener noreferrer">
+                                    <img className="img-fluid" src="/images/apple.png" alt="iTunes PlayStore" />
+                                </a>
+                                </p>
                             </div>
                         </div>
 
