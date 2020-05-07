@@ -1,6 +1,6 @@
 import React from "react";
 import  { Redirect, Link } from 'react-router-dom';
-import { Col, Row, Button, Form, FormGroup, FormFeedback, FormText, Label, Input } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, FormFeedback, Label, Input } from 'reactstrap';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -123,12 +123,12 @@ class AdvertiserSignup extends React.Component {
         formIsValid = false;
         errors["password"] = "*Please enter your password.";
     }
-    if (typeof this.state.password !== "undefined") {
-        if (!this.state.password.match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
-            formIsValid = false;
-            errors["password"] = "*Please enter secure and strong password.";
-        }
-    }
+    /*if (typeof this.state.password !== "undefined") {
+      if (!this.state.password.match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
+        formIsValid = false;
+        errors["password"] = "*Please enter secure and strong password.";
+      } 
+    }*/
     if (!this.state.confirmPassword) {
       formIsValid = false;
       errors["confirmPassword"] = "*Please re-enter your password.";
@@ -211,7 +211,7 @@ class AdvertiserSignup extends React.Component {
                           <Label for="password">Password *</Label>
                           <Input type="password" name="password" invalid={errors['password'] !== undefined && errors['password'] !== ""} id="password" value={password} onChange={this.changeHandler} placeholder="Enter Password" required />
                           <FormFeedback>{errors['password']}</FormFeedback>
-                          <FormText>Be at least 8 characters, Uppercase, lowercase letters, numbers & special characters</FormText>
+                          {/* <FormText>Be at least 8 characters, Uppercase, lowercase letters, numbers & special characters</FormText> */}
                         </FormGroup>
                       </Col>
                       <Col md={6}>
