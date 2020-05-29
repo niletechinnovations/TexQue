@@ -137,6 +137,7 @@ button.btn-search {background: #002164; border: none; padding: 10px 20px; border
 .app .how-it-section .heading-title p {color: #fff; font-size: 20px; font-weight: 300; padding: 0; margin-bottom: 20px; line-height: 1.5; text-align: inherit;}
 .app .howitwork-card{border-radius: 4px;margin-bottom: 25px;display: flex;background: #ffffff;padding: 20px 15px;transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;-moz-transition: all 0.5s ease-in-out;-ms-transition: all 0.5s ease-in-out;-o-transition: all 0.5s ease-in-out;-webkit-transition: all 0.5s ease-in-out;border: 1px solid #eff1fe;}
 .howitwork-card:hover {box-shadow: 4.871px 34.659px 30px -24px rgba(0, 0, 0, 0.06); }
+.howitwork-card-content{ min-height: 95px;}
 .app .howitwork-card-content h2 {font-size: 18px; padding: 0; font-weight: bold; color: #000; }
 .app .howitwork-card-content p{font-size: 14px;font-weight: 300;text-align: justify;line-height: 22px;color: #607d8b;margin-bottom: 0;}
 .app .howitwork-card-media {width: 90px; margin-right: 10px; }  

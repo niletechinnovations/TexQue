@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import { Card, CardHeader, CardBody, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
@@ -19,7 +19,7 @@ class AdvertiserList extends Component {
       rowIndex: -1,
       changeStatusBtn:'',
       formProccessing: false,
-      formField: {profileId:'', email: '', first_name: '', last_name: '', phoneNumber: '', address: '', profilePic:'' },
+      formField: {profileId:'', email: '', first_name: '', last_name: '', phoneNumber: '', address: '', profilePic:'', subscriptionType:'' },
       formErrors: { email: '', first_name: '', last_name: '', error: ''},
       formValid: false,
       profileImage:'',
@@ -135,10 +135,34 @@ class AdvertiserList extends Component {
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else
+          }else{
             this.setState( { formProccessing: false } );
             toast.error(err.message);
+          }
+        } )
+      }else{
+        formData['subscriptionType'] = formInputField.subscriptionType;
+        formData['role'] = 'advertiser';
+
+        commonService.postAPIWithAccessToken('organization', formData)
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) { 
+            this.setState( { formProccessing: false} );
+            toast.error(res.data.message);
+            return;
+          } 
+          this.setState({ modal: false});
+          toast.success(res.data.message);
+          this.userList();        
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }else{
+            this.setState( { formProccessing: false } );
+            toast.error(err.message);
+          }
         } )
       }
     } );  
@@ -209,7 +233,7 @@ class AdvertiserList extends Component {
       rowIndex: -1,
       changeStatusBtn: '',
       formValid: false,
-      formField: { profileId:'', email: '', first_name: '', last_name: '', phoneNumber: '', address: '', profilePic: '' },
+      formField: { profileId:'', email: '', first_name: '', last_name: '', phoneNumber: '', address: '', profilePic: '', subscriptionType:'' },
       formErrors: { email: '', first_name: '', last_name: '', error: ''}
     });
   }
@@ -262,10 +286,15 @@ class AdvertiserList extends Component {
 
     return (
       <div className="animated fadeIn">
-          <ToastContainer />
+        <ToastContainer />
         {loaderElement}
         
         <Card>
+          <CardHeader className="mainHeading">
+            <strong>Advertiser List</strong>
+            <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add Advertiser</Button>
+          </CardHeader>
+          
           <CardBody>
             <Row>
               <Col md={12}>
@@ -347,14 +376,23 @@ class AdvertiserList extends Component {
                 <Col md={"6"}>  
                   <FormGroup> 
                     <Label htmlFor="phoneNumber">Contact Number</Label>            
-                    <Input type="text" placeholder="Contact Number " id="phoneNumber" name="phoneNumber" value={this.state.formField.phoneNumber} onChange={this.changeHandler}  />
+                    <Input type="text" placeholder="Contact Number " id="phoneNumber" name="phoneNumber" value={this.state.formField.phoneNumber} onChange={this.changeHandler} required />
+                  </FormGroup>
+                </Col>
+                <Col md={"6"}>  
+                  <FormGroup> 
+                    <Label htmlFor="subscriptionType">Subscriptin Type</Label>            
+                    <Input type="select" id="subscriptionType" name="subscriptionType" value={this.state.formField.subscriptionType} onChange={this.changeHandler}>
+                      <option>Select subscription type</option>
+                      <option value="advertiser">Advertiser</option>
+                    </Input>
                   </FormGroup>
                 </Col>
                 </Row>           
             </ModalBody>
             <ModalFooter>
               {changeStatusBtn}
-              <Button color="primary" disabled={!this.state.formValid || formProccessing} type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
+              <Button color="primary" disabled={formProccessing} type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
           </Form>

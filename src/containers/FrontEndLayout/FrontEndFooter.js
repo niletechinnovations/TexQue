@@ -11,10 +11,10 @@ const frontEndFooter = () => {
                 <div className="col-md-3 col-12 col-sm-12">
                   <div className="about-app">
                     <h2>DOWNLOAD APP</h2>
-                    <p>The Food Truck app that Pros use! The app will be simple and effective for the everyday seller and buyer of delicious meals on wheels.</p>
+                    <p>The Food Truck app the Pros use! The app will be simple and effective for the everyday seller and buyer of delicious meals on wheels.</p>
                     <a href="https://play.google.com/store/apps/details?id=com.texque&hl=en" target="_blank" rel="noopener noreferrer">
                       <img className="img-fluid" src="/images/google.png" alt="Google Play Store" />
-                      </a>
+                      </a> &nbsp;
                       <a href="https://apps.apple.com/us/app/texque/id1502952657?ls=1" target="_blank" rel="noopener noreferrer">
                       <img className="img-fluid" src="/images/apple.png" alt="iTunes PlayStore" />
                       </a>

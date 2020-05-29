@@ -24,7 +24,7 @@ class Organization extends Component {
       rowIndex: -1,
       changeStatusBtn:'',
       formProccessing: false,
-      formField: {organization_name: '', email: '', first_name: '', last_name: '', phoneNumber: '', address: '' },
+      formField: {organization_name: '', email: '', first_name: '', last_name: '', phoneNumber: '', address: '', subscriptionType:'' },
       formErrors: {organization_name: '', email: '', first_name: '', last_name: '', error: ''},
       formValid: false,
       filterItem: { filter_organization_id: '', filterOrgName: '', filterLocation: '', filterFrom:'',  filterTo:'', filterStatus:'', custom_search: ''},
@@ -116,10 +116,8 @@ class Organization extends Component {
        formData['profileId'] = organizationInfo.profileId;
         commonService.putAPIWithAccessToken('organization', formData)
         .then( res => {
-          
            
-          if ( undefined === res.data.data || !res.data.status ) {
-           
+          if ( undefined === res.data.data || !res.data.status ) {          
             this.setState( { formProccessing: false} );
             toast.error(res.data.message);
             return;
@@ -128,7 +126,6 @@ class Organization extends Component {
           this.setState({ modal: false, formProccessing: false});
           toast.success(res.data.message);
           this.organizationList();
-         
         } )
         .catch( err => {         
           if(err.response !== undefined && err.response.status === 401) {
@@ -141,9 +138,12 @@ class Organization extends Component {
         } )
       }
       else{
+        if(formInputField.subscriptionType)
+          formData['subscriptionType'] = formInputField.subscriptionType;
+          formData['role'] = 'organization';
+        
         commonService.postAPIWithAccessToken('organization', formData)
         .then( res => {
-           
           if ( undefined === res.data.data || !res.data.status ) { 
             this.setState( { formProccessing: false} );
             toast.error(res.data.message);
@@ -159,10 +159,10 @@ class Organization extends Component {
           if(err.response !== undefined && err.response.status === 401) {
             localStorage.clear();
             this.props.history.push('/login');
-          }
-          else
+          }else{
             this.setState( { formProccessing: false } );
             toast.error(err.message);
+          }
         } )
       }
     } );
@@ -222,7 +222,7 @@ class Organization extends Component {
       rowIndex: -1,
       changeStatusBtn: '',
       formValid: false,
-      formField: {organization_name: '', email: '', first_name: '', last_name: '', phoneNumber: '', address: '' },
+      formField: {organization_name: '', email: '', first_name: '', last_name: '', phoneNumber: '', address: '', subscriptionType:'' },
       formErrors: {organization_name: '', email: '', first_name: '', last_name: '', error: ''}
     });
   }
@@ -409,7 +409,7 @@ class Organization extends Component {
             <Card>
               <CardHeader className="mainHeading">
                 <strong>Food Truck Owner List</strong>
-                {/* <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add New</Button> */}
+                <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add Food Truck Owner</Button>
               </CardHeader>
               <CardBody>
                 <Row>
@@ -514,13 +514,26 @@ class Organization extends Component {
                     <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} truckAdress={ this.state.formField.address } /> 
                   </FormGroup>
                 </Col>
-                <Col md={"6"}>  
+                { this.state.rowIndex!== -1 ?
+                    <Col md={"6"}>  
                   <FormGroup> 
                     <Label htmlFor="orgDoc">Company Documents</Label>            
                     <Input type="file" id="orgDoc" className="chooseOrgDoc" name="orgDoc" multiple onChange={this.onDocumentChange} />
                     <Button color="info" className="uploadDocBtn" size="sm" onClick={this.uploadOrgDocument}>Upload</Button>
                   </FormGroup>
                 </Col>
+                : '' }
+                <Col md={"6"}>  
+                  <FormGroup> 
+                    <Label htmlFor="subscriptionType">Subscriptin Type</Label>            
+                    <Input type="select" id="subscriptionType" name="subscriptionType" value={this.state.formField.subscriptionType} onChange={this.changeHandler}>
+                      <option value="organization">Organization</option>
+                      <option value="advertiser">Advertiser</option>
+                      <option value="both">Both</option>
+                    </Input>
+                  </FormGroup>
+                </Col>
+                
                 <Col md={"12"} className="mt-2"> 
                   <Row>
                   {organizationDocuments.map((doc, index) =>

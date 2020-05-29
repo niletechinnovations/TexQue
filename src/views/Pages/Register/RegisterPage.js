@@ -44,6 +44,18 @@ class RegisterPage extends React.Component {
   submituserRegistrationForm(e) {
     e.preventDefault();
     e.target.className += " was-validated";
+      let addressError = {};
+      if(this.state.address===''){
+        addressError['address'] = 'Please filld your business adress!';
+        this.setState( { errors:addressError } );
+        toast.error('Address field should not be empty!');
+        return;
+      }else{
+        let addressError = {};
+        addressError['address'] = '';
+        this.setState( { errors:addressError } );
+      }
+    
       if (this.validateForm()) {
         const signupData = {
           firstName: this.state.firstName,
@@ -241,7 +253,7 @@ class RegisterPage extends React.Component {
                         </FormGroup>
                       </Col>
                       <Col md={6}>  
-                        <FormGroup>
+                        <FormGroup className={ ( this.state.address==='' ? ' location-error' : '') }>
                           <Label for="address">Address *</Label>
                           <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} />
                           <FormFeedback>{errors['address']}</FormFeedback>

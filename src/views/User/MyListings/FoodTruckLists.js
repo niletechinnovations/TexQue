@@ -75,7 +75,7 @@ class FoodTruckLists extends Component {
           if(res.data.data.isActive)
             return
           else{
-            this.props.history.push('/user/subscription');
+            this.props.history.push('/subscription-plan');
             toast.error('You need to buy a subscription plan.');
           }
         } )

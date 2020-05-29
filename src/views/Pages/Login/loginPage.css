@@ -39,3 +39,12 @@ span.location-btn {position: absolute;top: 50%;right: 10px;background: #002164;p
     background-position: right calc(.375em + .1875rem) center !important;
     background-size: calc(.75em + .375rem) calc(.75em + .375rem) !important;
 }
+
+.location-error .form-control.location-search-input.is-valid, .was-validated .location-error .form-control.location-search-input:valid {
+    border-color: #dc3545 !important;
+    padding-right: calc(1.5em + .75rem) !important;
+    background-image: url('/images/download.svg') !important;
+    background-repeat: no-repeat !important;
+    background-position: right calc(.375em + .1875rem) center !important;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem) !important;
+}

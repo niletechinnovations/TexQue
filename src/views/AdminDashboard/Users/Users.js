@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Card, CardBody, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import { Card, CardHeader, CardBody, Col, Row, Button, Form, Input, FormGroup, Label, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import commonService from '../../../core/services/commonService';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import AutoCompletePlaces from '../../../core/google-map/AutoCompletePlaces';
 
 import { FormErrors } from '../../Formerrors/Formerrors';
 import Loader from '../../Loader/Loader';
@@ -20,16 +21,20 @@ class Users extends Component {
       rowIndex: -1,
       changeStatusBtn:'',
       formProccessing: false,
-      formField: {profileId:'', email: '', first_name: '', last_name: '', phoneNumber: '', address: '', profilePic:'' },
+      formField: {profileId:'', email: '', first_name: '', last_name: '', phoneNumber: '', profilePic:'' },
       formErrors: { email: '', first_name: '', last_name: '', error: ''},
       formValid: false,
       profileImage:'',
+      address: '',
+      latitude:'',
+      longitude:'',
       filterItem: { filterPhone:'', filterLocation: '', custom_search: '', filterFrom:'',  filterTo:'', filterStatus:''}
     }
     this.handleEditUser = this.handleEditUser.bind(this);
     this.filterUserList = this.filterUserList.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.handleDeleteUser = this.handleDeleteUser.bind(this);
+    this.setLatitudeLongitude = this.setLatitudeLongitude.bind(this);
     this.onProfileImgChange = this.onProfileImgChange.bind(this);
   }
   componentDidMount() { 
@@ -115,9 +120,17 @@ class Users extends Component {
         "email": formInputField.email,
         "firstName": formInputField.first_name, 
         "lastName": formInputField.last_name, 
-        "phoneNumber": formInputField.phoneNumber,
-        "address": formInputField.address
+        "phoneNumber": formInputField.phoneNumber
       };
+
+      if(this.state.address)
+        formData['address'] = this.state.address;
+      
+      if(this.state.latitude)
+        formData['latitude'] = this.state.latitude;
+      
+      if(this.state.longitude)
+        formData['longitude'] = this.state.longitude;
       
       const rowIndex = this.state.rowIndex;
       if(rowIndex > -1) {
@@ -143,9 +156,42 @@ class Users extends Component {
             this.setState( { formProccessing: false } );
             toast.error(err.message);
         } )
+      }else{
+        formData['role'] = 'user';
+
+        commonService.postAPIWithAccessToken('organization', formData)
+        .then( res => {
+          if ( undefined === res.data.data || !res.data.status ) { 
+            this.setState( { formProccessing: false} );
+            toast.error(res.data.message);
+            return;
+          } 
+          this.setState({ modal: false, formProccessing: false});
+          toast.success(res.data.message);
+          this.userList();        
+        } )
+        .catch( err => {         
+          if(err.response !== undefined && err.response.status === 401) {
+            localStorage.clear();
+            this.props.history.push('/login');
+          }else{
+            this.setState( { formProccessing: false } );
+            toast.error(err.message);
+          }
+        } )
       }
-    } );  
+
+        
+    } );
   };
+
+  // Set address, latitude and longitude
+  setLatitudeLongitude(address, latLng){
+    let formField = this.state.formField;
+    formField.address = address;
+    this.setState({ latitude:latLng.lat, longitude:latLng.lng, address: address, formField: formField })
+  }
+  
 
   //Set profile picture on change
   onProfileImgChange = (event) => {
@@ -305,6 +351,10 @@ class Users extends Component {
         {loaderElement}
         
         <Card>
+          <CardHeader className="mainHeading">
+            <strong>TexQue User List</strong>
+            <Button color="primary" className="categoryAdd" type="button" onClick={this.toggle}><i className="fa fa-plus"></i> Add User</Button>
+          </CardHeader>
           <CardBody>
             <Row>
               <Col md={12}>
@@ -373,20 +423,20 @@ class Users extends Component {
               <Row>
                 <Col md={"6"}>  
                   <FormGroup> 
-                    <Label htmlFor="first_name">First Name</Label>            
-                    <Input type="text" placeholder="First Name *" id="first_name" name="first_name" value={this.state.formField.first_name} onChange={this.changeHandler} required />
+                    <Label htmlFor="first_name">First Name *</Label>            
+                    <Input type="text" placeholder="First Name" id="first_name" name="first_name" value={this.state.formField.first_name} onChange={this.changeHandler} required />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>  
                   <FormGroup> 
                     <Label htmlFor="last_name">Last Name</Label>            
-                    <Input type="text" placeholder="Last Name *" id="last_name" name="last_name" value={this.state.formField.last_name} onChange={this.changeHandler} />
+                    <Input type="text" placeholder="Last Name" id="last_name" name="last_name" value={this.state.formField.last_name} onChange={this.changeHandler} />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>  
                   <FormGroup> 
-                    <Label htmlFor="email">Email</Label>            
-                    <Input type="text" placeholder="Email *" id="email" name="email" value={this.state.formField.email} onChange={this.changeHandler} required />
+                    <Label htmlFor="email">Email *</Label>            
+                    <Input type="text" placeholder="Email" id="email" name="email" value={this.state.formField.email} onChange={this.changeHandler} required />
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>  
@@ -397,8 +447,8 @@ class Users extends Component {
                 </Col>
                 <Col md={"6"}>  
                   <FormGroup> 
-                    <Label htmlFor="address">Address</Label>            
-                    <Input type="text" placeholder="Address" id="address" name="address" value={this.state.formField.address} onChange={this.changeHandler}  />
+                    <Label htmlFor="address">Address *</Label>            
+                    <AutoCompletePlaces setLatitudeLongitude={this.setLatitudeLongitude} truckAdress={ this.state.formField.address } /> 
                   </FormGroup>
                 </Col>
                 <Col md={"6"}>
@@ -408,7 +458,7 @@ class Users extends Component {
             </ModalBody>
             <ModalFooter>
               {changeStatusBtn}
-              <Button color="primary" disabled={!this.state.formValid || formProccessing} type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
+              <Button color="primary" disabled={formProccessing} type="submit">{formProccessing ? processingBtnText : 'Submit' }</Button>
               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
           </Form>

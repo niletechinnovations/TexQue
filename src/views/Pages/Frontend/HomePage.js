@@ -110,7 +110,7 @@ class HomePage extends React.Component {
                         <div className="col-md-8">
                             <div className="homepage-search-title">
                                 <h1>Food that finds you!</h1>
-                                <h5>The Food Truck app that the Pros & Foodies use.</h5>
+                                <h5>The Food Truck app the Pros & Foodies use.</h5>
                                 <Link to="/register" className="btn btn-get">Get Started</Link>
                                 <p className="mt-5 pt-5">
                                 <a href="https://play.google.com/store/apps/details?id=com.texque&hl=en" target="_blank" rel="noopener noreferrer">
@@ -149,7 +149,7 @@ class HomePage extends React.Component {
                         <div className="col-md-8">
                             <div className="Benefits-card-content">
                                 <h2>Increase reachability to customers</h2>
-                                <p>Registering your food truck on texque will help your business to gain more customers. Indeed more sales more profit!</p>
+                                <p>Registering your Food Truck with TexQue enlists you in our global database of Food Truck vendors all over the world. Access to new customers will lead to increased sales and resultant profit.</p>
                             </div>
                         </div>
                     </div>
@@ -165,7 +165,7 @@ class HomePage extends React.Component {
                         <div className="col-md-8">
                             <div className="Benefits-card-content">
                                 <h2>Catering Inquiries at your fingertips</h2>
-                                <p>Customers can search your food truck in few clicks and post inquiries to cater their event. If the deal suits you, texque will help you to connect with the customers.</p>
+                                <p>Customers can search for your Food Truck in just a few clicks and post inquiries for catering their event. If the deal suits you, TexQue will help you connect with the customer.</p>
                             </div>
                         </div>
                     </div>
@@ -181,7 +181,7 @@ class HomePage extends React.Component {
                         <div className="col-md-8">
                             <div className="Benefits-card-content">
                                 <h2>Business Scalability</h2>
-                                <p>Customer can view your ratings, photos, and live location. Location is super important because you are mobile. Wherever you go, the app will always reflect your live location - making it super easy for customers to find you.</p>
+                                <p>Customers will have the ability to access your current and future location, hours of operation, menu, daily specials, reviews/ratings, and photos.</p>
                             </div>
                         </div>
                     </div>
@@ -255,7 +255,7 @@ class HomePage extends React.Component {
             <div className="container">
                 <div className="heading-title text-center">
                     <h2>How it Works</h2>
-                    <p>The Food Truck app that Pros use! The app will be simple and <br />
+                    <p>The Food Truck app the Pros use! The app will be simple and <br />
                     effective for the everyday seller and buyer of delicious meals on wheels.</p>
                 </div>
                 <div className="row">
@@ -265,7 +265,7 @@ class HomePage extends React.Component {
                             <img src="/images/step1.svg" height="80" alt="Register Food Truck" />
                         </div>
                             <div className="howitwork-card-content">
-                                <h2>Register Food Truck</h2>
+                                <h2>Food Truck Registration</h2>
                                 <p>Place your business and food truck in our database for immediate business opportunities.</p>
                             </div>
                         </div>
@@ -277,8 +277,20 @@ class HomePage extends React.Component {
                             <img src="/images/listing.svg" height="80" alt="List Your Menu" />
                         </div>
                             <div className="howitwork-card-content">
-                                <h2>List Your Menu</h2>
-                                <p>Your food truck will be visible by all foodies in your area and outside.  This will drive more sales! </p>
+                                <h2>Menu</h2>
+                                <p>You will have complete control of uploading and modifying your Menu at any time.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="col-md-6 col-lg-4">
+                        <div className="howitwork-card">
+                        <div className="howitwork-card-media">
+                            <img src="/images/location-marker.svg" height="80" alt="Location" />
+                        </div>
+                            <div className="howitwork-card-content">
+                                <h2>Location</h2>
+                                <p>Wherever you go, the app will always reflect your live location. You can also add future locations at your discretion.</p>
                             </div>
                         </div>
                     </div>
@@ -290,7 +302,7 @@ class HomePage extends React.Component {
                         </div>
                             <div className="howitwork-card-content">
                                 <h2>Customer Access</h2>
-                                <p>The customer can access your food truck to inquire about daily deals, future locations, catering, etc. </p>
+                                <p>In addition to location, customers can access your menu, daily specials, special events, reviews/ratings, and photos.</p>
                             </div>
                         </div>
                     </div>
@@ -298,23 +310,11 @@ class HomePage extends React.Component {
                     <div className="col-md-6 col-lg-4">
                         <div className="howitwork-card">
                         <div className="howitwork-card-media">
-                            <img src="/images/Inquiries.svg" height="80" alt="Receive Inquiries" />
+                            <img src="/images/Inquiries.svg" height="80" alt="Catering Inquiries" />
                         </div>
                             <div className="howitwork-card-content">
-                                <h2>Receive Inquiries</h2>
-                                <p>Accept or reject inquiries, notify your customer you are ready to cater.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-md-6 col-lg-4">
-                        <div className="howitwork-card">
-                        <div className="howitwork-card-media">
-                            <img src="/images/menu-control.svg" height="80" alt="Menu Control" />
-                        </div>
-                            <div className="howitwork-card-content">
-                                <h2>Menu Control</h2>
-                                <p>Edit menu images, and descriptions.</p>
+                                <h2>Catering Inquiries</h2>
+                                <p>Post catering availability and accept or reject opportunities accordingly.</p>
                             </div>
                         </div>
                     </div>
@@ -325,8 +325,8 @@ class HomePage extends React.Component {
                             <img src="/images/Availability.svg" height="80" alt="Update Availability" />
                         </div>
                             <div className="howitwork-card-content">
-                                <h2>Update Availability</h2>
-                                <p>Set your availability according to days and time</p>
+                                <h2>Availability</h2>
+                                <p>Add your actual and projected business hours & availability with the corresponding location.</p>
                             </div>
                         </div>
                     </div>
@@ -340,7 +340,7 @@ class HomePage extends React.Component {
             <div className="container">
                 <div className="heading-title text-center">
                     <h2>Trending Food Trucks</h2>
-                    <p className="text-center">These Food Trucks use TexQue.com to drive more sales and customers to their locations and food trucks.</p>
+                    <p className="text-center">Selected fleet of Food Trucks from our global TexQue database.</p>
                 </div>
                 <div className="row">
                     <div className="col-md-12">

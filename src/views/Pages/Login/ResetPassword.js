@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Row, Button, Form, FormGroup, FormText, FormFeedback, Label, Input } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, FormFeedback, Label, Input } from 'reactstrap';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -75,12 +75,6 @@ class ResetPassword extends Component {
         formIsValid = false;
         errors["newPassword"] = "*Please enter your new password.";
     }
-    if (typeof this.state.newPassword !== "undefined") {
-        if (!this.state.newPassword.match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
-            formIsValid = false;
-            errors["newPassword"] = "*Please enter secure and strong password.";
-        }
-    }
     if (!this.state.confirmPassword) {
       formIsValid = false;
       errors["confirmPassword"] = "*Please re-enter your password.";
@@ -126,7 +120,6 @@ class ResetPassword extends Component {
                           <Label for="newPassword">New password *</Label>
                           <Input type="password" name="newPassword" id="newPassword" placeholder="New password *" value={newPassword} onChange={this.changeHandler} invalid={errors['newPassword'] !== undefined && errors['newPassword'] !== ""} required />
                           <FormFeedback>{errors['newPassword']}</FormFeedback>
-                          <FormText>Be at least 8 characters, Upper and lowercase letter & One number</FormText>
                         </FormGroup>
                       </Col>
                       <Col md={12}>
